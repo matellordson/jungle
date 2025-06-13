@@ -67,7 +67,10 @@ export default function AddProduct() {
           )}
         </div>
       </CardContent>
-      <CardFooter className="flex justify-end items-center gap-x-2">
+      <CardFooter className="flex justify-between items-center gap-x-5">
+        <p className="w-full truncate text-muted-foreground">
+          {selectedFile?.name}
+        </p>
         <Button
           variant={"destructive"}
           size={"sm"}
