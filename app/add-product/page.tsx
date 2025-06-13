@@ -48,7 +48,7 @@ export default function AddProduct() {
               {previewURL && selectedFile && (
                 <div className="">
                   {selectedFile.type.startsWith("image/") ? (
-                    <img
+                    <Image
                       src={previewURL}
                       alt="Selected file"
                       height={200}
