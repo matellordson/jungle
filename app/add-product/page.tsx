@@ -14,7 +14,6 @@ import {
 } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { ImageUp } from "lucide-react";
-import { Input } from "@/components/ui/input";
 
 export default function AddProduct() {
   const [selectedFile, setSelectedFile] = useState<File | null>();
@@ -43,7 +42,7 @@ export default function AddProduct() {
           {!previewURL ? (
             <div className="">
               <ImageUp size={70} className="text-muted-foreground" />
-              <form action="">
+              <form action={addProductAction}>
                 <label htmlFor="media" className="cursor-pointer text-primary">
                   Upload file
                 </label>
