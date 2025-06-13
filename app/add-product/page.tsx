@@ -74,7 +74,7 @@ export default function AddProduct() {
         <Button
           variant={"destructive"}
           size={"sm"}
-          className={`cursor-pointer ${!previewURL && "opacity-30"}`}
+          className={`cursor-pointer ${!previewURL && "opacity-20"}`}
           onClick={() => setPreviewURL(null)}
         >
           Remove
