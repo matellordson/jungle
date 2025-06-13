@@ -42,33 +42,34 @@ export default function AddProduct() {
           {!previewURL ? (
             <div className="">
               <ImageUp size={70} className="text-muted-foreground" />
-              <form action={addProductAction}>
-                <label htmlFor="media" className="cursor-pointer text-primary">
-                  Upload file
-                </label>
-                <input
-                  onChange={handleFileChange}
-                  type="file"
-                  className="hidden"
-                  id="media"
-                  accept="images/*"
-                  name="media"
-                />
-              </form>
             </div>
           ) : (
-            <Image
-              src={previewURL}
-              alt="media"
-              height={200}
-              width={200}
-              className="min-h-56 min-w-full object-cover object-center rounded-lg"
-            />
+            <div className="w-full">
+              {previewURL && selectedFile && (
+                <div className="">
+                  {selectedFile.type.startsWith("image/") ? (
+                    <img
+                      src={previewURL}
+                      alt="Selected file"
+                      height={200}
+                      width={200}
+                      className="max-h-56 min-w-full object-cover object-center rounded-lg"
+                    />
+                  ) : selectedFile.type.startsWith("video/") ? (
+                    <video
+                      src={previewURL}
+                      controls
+                      className="max-h-56 min-w-full object-cover object-center rounded-lg"
+                    />
+                  ) : null}
+                </div>
+              )}
+            </div>
           )}
         </div>
       </CardContent>
-      <CardFooter className="flex justify-between items-center gap-x-5">
-        <p className="w-full truncate text-muted-foreground">
+      <CardFooter className="flex justify-end items-center gap-x-3">
+        <p className="w-full truncate text-muted-foreground hidden">
           {selectedFile?.name}
         </p>
         <Button
@@ -78,6 +79,21 @@ export default function AddProduct() {
           onClick={() => setPreviewURL(null)}
         >
           Remove
+        </Button>
+        <Button asChild size={"sm"} onClick={() => setPreviewURL(null)}>
+          <form action={addProductAction}>
+            <label htmlFor="media" className="cursor-pointer font-medium">
+              Upload
+            </label>
+            <input
+              onChange={handleFileChange}
+              type="file"
+              className="hidden"
+              id="media"
+              accept="image/*,video/*"
+              name="media"
+            />
+          </form>
         </Button>
       </CardFooter>
     </Card>
