@@ -46,58 +46,9 @@ const categories = [
   },
 ];
 
-function CategoryCombobox() {
-  const [open, setOpen] = useState(false);
-  const [value, setValue] = useState("");
-
-  return (
-    <Popover open={open} onOpenChange={setOpen}>
-      <PopoverTrigger asChild>
-        <Button
-          variant="outline"
-          role="combobox"
-          aria-expanded={open}
-          className="w-full justify-between"
-        >
-          {value
-            ? categories.find((category) => category.value === value)?.label
-            : "Select category..."}
-          <ChevronsUpDownIcon className="ml-2 h-4 w-4 shrink-0 opacity-50" />
-        </Button>
-      </PopoverTrigger>
-      <PopoverContent className="w-[200px] p-0">
-        <Command>
-          <CommandInput placeholder="Search category..." />
-          <CommandList>
-            <CommandEmpty>No category found.</CommandEmpty>
-            <CommandGroup>
-              {categories.map((category) => (
-                <CommandItem
-                  key={category.value}
-                  value={category.value}
-                  onSelect={(currentValue) => {
-                    setValue(currentValue === value ? "" : currentValue);
-                    setOpen(false);
-                  }}
-                >
-                  <CheckIcon
-                    className={cn(
-                      "mr-2 h-4 w-4",
-                      value === category.value ? "opacity-100" : "opacity-0",
-                    )}
-                  />
-                  {category.label}
-                </CommandItem>
-              ))}
-            </CommandGroup>
-          </CommandList>
-        </Command>
-      </PopoverContent>
-    </Popover>
-  );
-}
-
 export default function AddProduct() {
+  const [categoryOpen, setCategoryOpen] = useState(false);
+  const [categoryValue, setCategoryValue] = useState("");
   const [selectedFile, setSelectedFile] = useState<File | null>();
   const [previewURL, setPreviewURL] = useState<string | null>();
 
@@ -216,7 +167,66 @@ export default function AddProduct() {
         <CardContent className="space-y-4">
           <div className="space-y-2">
             <Label htmlFor="category">Category/Subcategory: </Label>
-            <CategoryCombobox />
+            {/* Category popover */}
+            <Popover open={categoryOpen} onOpenChange={setCategoryOpen}>
+              <PopoverTrigger asChild>
+                <Button
+                  variant="outline"
+                  role="combobox"
+                  aria-expanded={categoryOpen}
+                  className="w-full justify-between"
+                >
+                  {categoryValue
+                    ? categories.find(
+                        (category) => category.value === categoryValue,
+                      )?.label
+                    : "Select category..."}
+                  <ChevronsUpDownIcon className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                </Button>
+              </PopoverTrigger>
+              <PopoverContent className="w-[200px] p-0">
+                <Command>
+                  <CommandInput placeholder="Search category..." />
+                  <CommandList>
+                    <CommandEmpty>No category found.</CommandEmpty>
+                    <CommandGroup>
+                      {categories.map((category) => (
+                        <CommandItem
+                          key={category.value}
+                          value={category.value}
+                          onSelect={(currentValue) => {
+                            setCategoryValue(
+                              currentValue === categoryValue
+                                ? ""
+                                : currentValue,
+                            );
+                            setCategoryOpen(false);
+                          }}
+                        >
+                          <CheckIcon
+                            className={cn(
+                              "mr-2 h-4 w-4",
+                              categoryValue === category.value
+                                ? "opacity-100"
+                                : "opacity-0",
+                            )}
+                          />
+                          {category.label}
+                        </CommandItem>
+                      ))}
+                    </CommandGroup>
+                  </CommandList>
+                </Command>
+              </PopoverContent>
+            </Popover>
+            <Input
+              type="text"
+              name="category"
+              id="category"
+              value={categoryValue}
+              onChange={() => categoryValue}
+              hidden
+            />
           </div>
 
           <div className="space-y-2">
