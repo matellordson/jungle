@@ -13,9 +13,89 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { ImageUp } from "lucide-react";
+import { CheckIcon, ChevronsUpDownIcon, ImageUp } from "lucide-react";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
+import {
+  Command,
+  CommandEmpty,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+  CommandList,
+} from "@/components/ui/command";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+import { cn } from "@/lib/utils";
+
+const categories = [
+  {
+    value: "furniture",
+    label: "Furniture",
+  },
+  {
+    value: "clothing",
+    label: "Clothing",
+  },
+  {
+    value: "electronics",
+    label: "Electronics",
+  },
+];
+
+export function CategoryCombobox() {
+  const [open, setOpen] = useState(false);
+  const [value, setValue] = useState("");
+
+  return (
+    <Popover open={open} onOpenChange={setOpen}>
+      <PopoverTrigger asChild>
+        <Button
+          variant="outline"
+          role="combobox"
+          aria-expanded={open}
+          className="w-full justify-between"
+        >
+          {value
+            ? categories.find((category) => category.value === value)?.label
+            : "Select category..."}
+          <ChevronsUpDownIcon className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+        </Button>
+      </PopoverTrigger>
+      <PopoverContent className="w-[200px] p-0">
+        <Command>
+          <CommandInput placeholder="Search category..." />
+          <CommandList>
+            <CommandEmpty>No category found.</CommandEmpty>
+            <CommandGroup>
+              {categories.map((category) => (
+                <CommandItem
+                  key={category.value}
+                  value={category.value}
+                  onSelect={(currentValue) => {
+                    setValue(currentValue === value ? "" : currentValue);
+                    setOpen(false);
+                  }}
+                >
+                  <CheckIcon
+                    className={cn(
+                      "mr-2 h-4 w-4",
+                      value === category.value ? "opacity-100" : "opacity-0",
+                    )}
+                  />
+                  {category.label}
+                </CommandItem>
+              ))}
+            </CommandGroup>
+          </CommandList>
+        </Command>
+      </PopoverContent>
+    </Popover>
+  );
+}
 
 export default function AddProduct() {
   const [selectedFile, setSelectedFile] = useState<File | null>();
@@ -136,7 +216,7 @@ export default function AddProduct() {
         <CardContent className="space-y-4">
           <div className="space-y-2">
             <Label htmlFor="category">Category/Subcategory: </Label>
-            <Input type="text" name="category" id="category" />
+            <CategoryCombobox />
           </div>
 
           <div className="space-y-2">
@@ -145,6 +225,14 @@ export default function AddProduct() {
           </div>
         </CardContent>
       </Card>
+
+      <Button
+        type="submit"
+        size={"lg"}
+        className="w-full cursor-pointer tracking-wide"
+      >
+        Publish
+      </Button>
     </form>
   );
 }
