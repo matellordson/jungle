@@ -4,7 +4,7 @@
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { useAccount, WagmiProvider, type State } from "wagmi";
+import { useAccount, WagmiProvider } from "wagmi";
 import { config } from "@/config/wagmi";
 import { Account } from "@/wagmi/account";
 import { WalletOptions } from "@/wagmi/wallet-options";
