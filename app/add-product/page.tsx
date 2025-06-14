@@ -46,7 +46,7 @@ const categories = [
   },
 ];
 
-export function CategoryCombobox() {
+function CategoryCombobox() {
   const [open, setOpen] = useState(false);
   const [value, setValue] = useState("");
 
