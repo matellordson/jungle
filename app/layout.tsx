@@ -32,14 +32,13 @@ function ConnectWallet() {
   return <WalletOptions />;
 }
 
-type Props = {
+export default function RootLayout({
+  children,
+}: {
   children: React.ReactNode;
-  initialState: State | undefined;
-};
-
-export default function RootLayout({ children, initialState }: Props) {
+}) {
   return (
-    <WagmiProvider config={config} initialState={initialState}>
+    <WagmiProvider config={config}>
       <QueryClientProvider client={queryClient}>
         <html lang="en">
           <body
