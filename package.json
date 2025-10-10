@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@neondatabase/serverless": "^1.0.2",
+    "@phosphor-icons/react": "^2.1.10",
     "@tanstack/react-query": "5.45.1",
     "@tanstack/react-router": "^1.132.47",
     "@tanstack/react-router-devtools": "^1.132.51",

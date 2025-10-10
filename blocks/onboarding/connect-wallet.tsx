@@ -2,7 +2,7 @@ import { PageCard } from "../../elements/page-card";
 import { Tittle } from "../../elements/title";
 import { Paragraph } from "../../elements/paragraph";
 import { Button } from "../../elements/button";
-import { PendingButton } from "../../elements/button";
+import { Spinner } from "../../elements/spinner";
 
 import { useConnect } from "wagmi";
 
@@ -49,7 +49,9 @@ export function ConnectWallet() {
               )}
             </>
           ) : status == "pending" ? (
-            <PendingButton>Pending</PendingButton>
+            <Button $variant="icon">
+              <Spinner></Spinner>
+            </Button>
           ) : status == "success" ? (
             <Button>Connected</Button>
           ) : status == "error" ? (

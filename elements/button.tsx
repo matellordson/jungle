@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-export const Button = styled.button`
+export const Button = styled.button<{ $variant?: "default" | "icon" }>`
   padding: 1rem 0;
   width: 100%;
   border-radius: 0.5rem;
@@ -11,11 +11,13 @@ export const Button = styled.button`
   cursor: pointer;
   transition: all 0.2s ease;
 
+  /* applies to only icon button */
+  display: ${(props) => (props.$variant == "icon" ? "flex" : "")};
+  justify-content: ${(props) => (props.$variant == "icon" ? "center" : "")};
+  align-items: ${(props) => (props.$variant == "icon" ? "center" : "")};
+  gap: ${(props) => (props.$variant == "icon" ? "0.2rem" : "")};
+
   &:hover {
     filter: opacity(85%);
   }
-`;
-
-export const PendingButton = styled(Button)`
-  color: green;
 `;
