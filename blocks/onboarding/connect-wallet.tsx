@@ -1,8 +1,8 @@
-import { PageCard } from "../../../../elements/page-card";
-import { Tittle } from "../../../../elements/title";
-import { Paragraph } from "../../../../elements/paragraph";
-import { Button } from "../../../../elements/button";
-import { PendingButton } from "../../../../elements/button";
+import { PageCard } from "../../elements/page-card";
+import { Tittle } from "../../elements/title";
+import { Paragraph } from "../../elements/paragraph";
+import { Button } from "../../elements/button";
+import { PendingButton } from "../../elements/button";
 
 import { useConnect } from "wagmi";
 
