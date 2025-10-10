@@ -15,7 +15,7 @@ const SpinnerWrapper = styled(SpinnerIcon)`
   width: fit-content;
   height: fit-content;
   padding: 0;
-  size: 25;
+  height: 1.1rem;
   transform-origin: center;
   animation: ${spin} 1s linear infinite;
 `;
