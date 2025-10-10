@@ -9,4 +9,5 @@ export const Paragraph = styled.p<{ $positon?: "start" | "center" | "end" }>`
         : props.$positon == "end"
           ? "end"
           : "start"};
+  color: var(--color-mute);
 `;

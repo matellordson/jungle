@@ -21,4 +21,5 @@ export const Tittle = styled.p<{
           ? "end"
           : "start"};
   font-weight: bold;
+  color: var(--color);
 `;

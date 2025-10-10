@@ -15,10 +15,11 @@ const SpinnerWrapper = styled(SpinnerIcon)`
   width: fit-content;
   height: fit-content;
   padding: 0;
+  size: 25;
   transform-origin: center;
   animation: ${spin} 1s linear infinite;
 `;
 
 export function Spinner() {
-  return <SpinnerWrapper size={20} weight="duotone" />;
+  return <SpinnerWrapper weight="duotone" />;
 }

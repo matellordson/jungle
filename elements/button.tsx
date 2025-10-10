@@ -10,6 +10,8 @@ export const Button = styled.button<{ $variant?: "default" | "icon" }>`
   margin-top: 2rem;
   cursor: pointer;
   transition: all 0.2s ease;
+  background-color: var(--bg-accent);
+  color: var(--text-accent);
 
   /* applies to only icon button */
   display: ${(props) => (props.$variant == "icon" ? "flex" : "")};
@@ -18,6 +20,6 @@ export const Button = styled.button<{ $variant?: "default" | "icon" }>`
   gap: ${(props) => (props.$variant == "icon" ? "0.2rem" : "")};
 
   &:hover {
-    filter: opacity(85%);
+    filter: opacity(90%);
   }
 `;

@@ -25,7 +25,7 @@ export function ConnectWallet() {
             height: "100%",
             width: "100%",
             borderRadius: "1rem",
-            backgroundColor: "gray",
+            backgroundColor: "var(--bg-surface)",
             margin: "auto",
           }}
         ></div>
@@ -49,7 +49,7 @@ export function ConnectWallet() {
               )}
             </>
           ) : status == "pending" ? (
-            <Button $variant="icon">
+            <Button $variant="icon" style={{ color: "var(--text-accent)" }}>
               <Spinner></Spinner>
             </Button>
           ) : status == "success" ? (
