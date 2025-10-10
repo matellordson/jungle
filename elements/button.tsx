@@ -1,7 +1,7 @@
 import styled from "styled-components";
 
 export const Button = styled.button<{ $variant?: "default" | "icon" }>`
-  padding: 1rem 0;
+  padding: 0.8rem 0;
   width: 100%;
   border-radius: 0.5rem;
   font-size: 1rem;
