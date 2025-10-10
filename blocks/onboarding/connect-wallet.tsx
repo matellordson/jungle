@@ -37,7 +37,6 @@ export function ConnectWallet() {
           <Paragraph $positon="center">
             You in for a jungle adventure? Connect to find treasures.
           </Paragraph>
-
           {status == "idle" ? (
             <>
               {connectors[0] && (

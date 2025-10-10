@@ -4,7 +4,9 @@ import { walletConnect } from "wagmi/connectors";
 
 export const config = createConfig({
   chains: [mainnet, sepolia],
-  connectors: [walletConnect({ projectId: process.env.VITE_WC_PROJECT_ID! })],
+  connectors: [
+    walletConnect({ projectId: import.meta.env.VITE_WC_PROJECT_ID }),
+  ],
   transports: {
     [mainnet.id]: http(),
     [sepolia.id]: http(),
