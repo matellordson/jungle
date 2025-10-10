@@ -4,7 +4,7 @@ import { Paragraph } from "../../../../elements/paragraph";
 import { Button } from "../../../../elements/button";
 import { PendingButton } from "../../../../elements/button";
 
-import { useAccount, useConnect, useDisconnect } from "wagmi";
+import { useConnect } from "wagmi";
 
 export function ConnectWallet() {
   const { connectors, connect, status, error } = useConnect();
@@ -67,6 +67,8 @@ export function ConnectWallet() {
           ) : (
             ""
           )}
+          {/* TODO: make this better */}
+          {error && <p>An error occured</p>}
         </div>
       </PageCard>
     </div>
