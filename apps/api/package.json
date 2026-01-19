@@ -1,12 +1,15 @@
 {
   "name": "api",
   "scripts": {
-    "dev": "bun --watch run ./src/index.ts ",
+    "dev": "bun --watch ./src/index.ts ",
     "build": "bun build ./src/index.ts --outdir ./dist --target=bun",
     "start": "bun run dist/index.js"
   },
   "dependencies": {
-    "hono": "^4.11.4"
+    "hono": "^4.11.4",
+    "iron-session": "^8.0.4",
+    "postgres": "^3.4.8",
+    "viem": "^2.44.4"
   },
   "devDependencies": {
     "@types/bun": "latest"
