@@ -1,20 +1,26 @@
 "use client";
 
-import { ReactNode } from "react";
+import React from "react";
+import styled from "styled-components";
 
-interface ButtonProps {
-  children: ReactNode;
-  className?: string;
-  appName: string;
+const ButtonEl = styled.button`
+  background-color: var(--accent);
+  border: none;
+  font-size: 17px;
+  padding: 10px 15px;
+  border-radius: 5px;
+  color: #ffffff;
+  font-family: inherit;
+  font-weight: 450;
+  cursor: pointer;
+`;
+
+export function Button({
+  children,
+  style,
+}: {
+  children: React.ReactNode;
+  style?: React.CSSProperties;
+}) {
+  return <ButtonEl style={style}>{children}</ButtonEl>;
 }
-
-export const Button = ({ children, className, appName }: ButtonProps) => {
-  return (
-    <button
-      className={className}
-      onClick={() => alert(`Hello from your ${appName} app!`)}
-    >
-      {children}
-    </button>
-  );
-};

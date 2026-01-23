@@ -5,6 +5,10 @@
   --accent: #137771;
   --text-dark: #363f3f;
   --text-light: #53605f;
+
+  --alert-bg: #fef8e6;
+  --alert-border: 1.5px solid #eab308;
+  --alert-text: #2c2202;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -40,4 +44,36 @@ body {
 a {
   color: inherit;
   text-decoration: none;
+}
+
+/* styles for react-responsive-modal */
+.react-responsive-modal-overlay {
+  /* background: var(--transparent) !important; */
+  visibility: hidden;
+}
+
+@media only screen and (min-width: 992px) {
+  .react-responsive-modal-overlay {
+    visibility: visible;
+  }
+}
+
+.react-responsive-modal-modal {
+  visibility: hidden;
+  box-shadow: none !important;
+  background-color: transparent !important;
+}
+
+@media only screen and (min-width: 992px) {
+  .react-responsive-modal-modal {
+    visibility: visible;
+  }
+}
+
+.react-responsive-modal-modal:focus {
+  outline: none;
+}
+
+.react-responsive-modal-closeButton {
+  display: none !important;
 }
