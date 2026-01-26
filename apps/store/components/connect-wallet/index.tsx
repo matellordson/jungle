@@ -90,7 +90,13 @@ export default function ConnectWallet() {
     <Container>
       <Wrapper>
         <LogoWrapper>
-          <Image src={"/logo.svg"} alt="logo" height={100} width={100} />
+          <Image
+            src={"/logo.svg"}
+            alt="logo"
+            height={100}
+            width={100}
+            preload={true}
+          />
         </LogoWrapper>
         <Title>Connect Wallet into the Trustless Marketplace</Title>
         {connectors.map((connector) => (
