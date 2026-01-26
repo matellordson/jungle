@@ -1,24 +1,22 @@
 :root {
   --background: #fcfbf7;
   --foreground: #fbf8f4;
-  --border: #d3b583;
-  --accent: #137771;
+  --border: 1px solid #f2e9d9;
+  --primary-accent: #137771;
+  --secondary-accent: #f6efe5;
   --text-dark: #363f3f;
   --text-light: #53605f;
-
-  --alert-bg: #fef8e6;
-  --alert-border: 1.5px solid #eab308;
-  --alert-text: #2c2202;
+  --link-color: var(--primary-accent);
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
     --background: #020e0e;
     --foreground: #041514;
-    --border: #0a3e3a;
-    --accent: #f6efe5;
+    --border: 1px solid #052421;
     --text-dark: #f4f6f5;
     --text-light: #bac4c3;
+    --link-color: var(--secondary-accent);
   }
 }
 
@@ -42,8 +40,9 @@ body {
 }
 
 a {
-  color: inherit;
+  color: var(--link-color);
   text-decoration: none;
+  font-weight: 470;
 }
 
 /* styles for react-responsive-modal */
