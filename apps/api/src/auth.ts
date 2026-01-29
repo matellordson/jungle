@@ -2,6 +2,7 @@ import { Hono } from "hono";
 import { getSession } from "../lib/session";
 import { verifyMessage } from "viem";
 import { randomBytes } from "crypto";
+import { getCookie, setCookie } from "hono/cookie";
 
 const auth = new Hono();
 
@@ -57,6 +58,34 @@ auth.post("/verify", async (c) => {
   return c.json({
     success: true,
     address: session.address,
+  });
+});
+
+// FIXED: Session check route
+auth.get("/session", async (c) => {
+  console.log("🔍 Session check called");
+
+  // Check if cookie exists first
+  const cookieValue = getCookie(c, "web3_session");
+  console.log("🍪 Cookie value exists:", !!cookieValue);
+
+  const session = await getSession(c.req.raw, c.res as any);
+
+  console.log("📦 Session data:", {
+    isAuthenticated: session.isAuthenticated,
+    address: session.address,
+    nonce: session.nonce,
+  });
+
+  if (!session.isAuthenticated || !session.address) {
+    console.log("❌ No active session");
+    return c.json({ error: "No active session" }, 401);
+  }
+
+  console.log("✅ Session valid for:", session.address);
+  return c.json({
+    valid: true,
+    wallet_address: session.address,
   });
 });
 
