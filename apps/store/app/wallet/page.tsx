@@ -1,15 +1,24 @@
 "use client";
 
-import styled from "styled-components";
+import styled, { keyframes } from "styled-components";
 import { WalletMetamask } from "@web3icons/react";
 import { useEffect, useState } from "react";
-import Cookie from "js-cookie";
 import { Button } from "@repo/ui/button";
 import Image from "next/image";
 import Link from "next/link";
 import { useAccount, useConnect, useDisconnect } from "wagmi";
 import { useSignMessage } from "wagmi";
 import { ActiveWalletPage } from "./active-wallet";
+import { Loader, ToggleLeft, ToggleRight } from "lucide-react";
+import { redirect } from "next/navigation";
+
+const spin = keyframes`
+from {
+  transform: rotate(0deg);
+} to {
+  transform: rotate(360deg);
+}
+`;
 
 const Container = styled.div`
   display: flex;
@@ -54,7 +63,7 @@ const Account = styled.div`
   border-radius: 5px;
   padding: 10px;
   display: flex;
-  gap: 10px;
+  justify-content: space-between;
   align-items: center;
   cursor: pointer;
 
@@ -77,6 +86,20 @@ const Account = styled.div`
     font-weight: 450;
     color: var(--text-dark);
   }
+
+  & .content {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  & .state {
+    transition: all 2s ease;
+  }
+
+  & .spinner {
+    animation: ${spin} infinite 2s forwards linear;
+  }
 `;
 
 const Footer = styled.p`
@@ -86,15 +109,13 @@ const Footer = styled.p`
 
 export default function ConnectWallet() {
   const { connect, connectors } = useConnect();
-  const { address, isConnected } = useAccount();
-  const { disconnect } = useDisconnect();
+  const { address, isConnected, isConnecting, isReconnecting, status } =
+    useAccount();
+  const { disconnect, isPending } = useDisconnect();
   const { signMessageAsync } = useSignMessage();
   const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
-
-  // NEW: Track if user has active session
   const [hasSession, setHasSession] = useState(false);
-  // NEW: Track if we're loading/checking session
-  const [isLoading, setIsLoading] = useState(true);
+  const [sessionLoading, setSessionLoading] = useState(true);
 
   const authorizeWallet = async () => {
     try {
@@ -122,16 +143,11 @@ export default function ConnectWallet() {
         const error = await verifyRes.json();
         throw new Error(error.error || "Verification failed");
       }
-
-      const data = await verifyRes.json();
-      console.log("Authenticated:", data);
-
-      // NEW: Set session active after successful auth
-      setHasSession(true);
     } catch (err: any) {
       console.error("Auth error:", err);
     } finally {
       saveAddress();
+      redirect("/");
     }
   };
 
@@ -152,129 +168,100 @@ export default function ConnectWallet() {
     }
   };
 
-  // NEW: Check session and auto-reconnect wallet on mount
   useEffect(() => {
-    const checkAndReconnect = async () => {
-      console.log("🔍 Checking session...");
-      console.log("📍 API URL:", API_URL);
-
-      const sessionCookie = Cookie.get("web3_session");
-      console.log("🍪 Cookie exists:", !!sessionCookie);
-
-      if (sessionCookie) {
-        try {
-          const res = await fetch(`${API_URL}/auth/session`, {
-            credentials: "include",
-          });
-
-          console.log("📡 Session check response:", res.status);
-
-          if (res.ok) {
-            const data = await res.json();
-            console.log("✅ Session valid:", data);
-            setHasSession(true);
-
-            // NEW: Auto-reconnect wallet if not connected
-            if (!isConnected && connectors[0]) {
-              console.log("🔌 Auto-reconnecting wallet...");
-              connect({ connector: connectors[0] });
-            }
-          } else {
-            const error = await res.json();
-            console.log("❌ Session invalid:", error);
-            // FIXED: Remove correct cookie name
-            Cookie.remove("web3_session");
-            setHasSession(false);
-          }
-        } catch (error) {
-          console.error("💥 Session check failed:", error);
-          setHasSession(false);
-        }
-      } else {
-        console.log("ℹ️ No session cookie found");
-      }
-
-      setIsLoading(false);
+    const checkSession = async () => {
+      const api = await fetch(`${API_URL}/auth/session`, {
+        credentials: "include",
+      });
+      const data = await api.json();
+      setHasSession(data.valid);
+      setSessionLoading(false);
     };
+    checkSession();
+  });
 
-    checkAndReconnect();
-  }, []);
-
-  // NEW: Show loading while checking session
-  if (isLoading) {
+  if (hasSession) {
+    return <>{sessionLoading ? "Loading..." : <ActiveWalletPage />}</>;
+  } else {
     return (
-      <Container>
-        <Wrapper>
-          <p style={{ textAlign: "center" }}>Loading...</p>
-        </Wrapper>
-      </Container>
+      <>
+        {sessionLoading ? (
+          "Loading..."
+        ) : (
+          <Container>
+            <Wrapper>
+              <LogoWrapper>
+                <Image
+                  src={"/logo.svg"}
+                  alt="logo"
+                  height={100}
+                  width={100}
+                  preload={true}
+                />
+              </LogoWrapper>
+              <Title>Connect Wallet into the Trustless Marketplace</Title>
+              {connectors.map((connector) => (
+                <div key={connector.name}>
+                  <Account
+                    onClick={() => {
+                      if (isConnected) {
+                        disconnect();
+                      }
+                    }}
+                  >
+                    <div className="content">
+                      <div className="connector">
+                        <WalletMetamask variant="branded" size={45} />
+                      </div>
+                      <div>
+                        <p className="name">{connector.name}</p>
+                        <p>
+                          {address
+                            ? address.slice(0, 6) + "..." + address.slice(-4)
+                            : "— — — — — —"}
+                        </p>
+                      </div>
+                    </div>
+                    <div className="state">
+                      {isConnecting || isReconnecting || isPending ? (
+                        <Loader size={25} className="spinner" />
+                      ) : status == "connected" ? (
+                        <ToggleRight
+                          size={25}
+                          style={{ color: "var(--primary-accent)" }}
+                        />
+                      ) : (
+                        <ToggleLeft size={25} />
+                      )}
+                    </div>
+                  </Account>
+
+                  <Button
+                    style={{
+                      width: "100%",
+                      marginTop: "15px",
+                      padding: "12px",
+                    }}
+                    onClick={() => {
+                      if (!isConnected) {
+                        connect({ connector });
+                      } else {
+                        authorizeWallet();
+                      }
+                    }}
+                  >
+                    {isConnected ? "Authorize" : "Connect Wallet"}
+                  </Button>
+                </div>
+              ))}
+              <Footer>
+                By connecting you agree to our{" "}
+                <Link href={"#"}>Terms and Conditions</Link>
+              </Footer>
+            </Wrapper>
+          </Container>
+        )}
+      </>
     );
   }
-
-  // NEW: If session exists, show ActiveWalletPage
-  if (hasSession) {
-    return <ActiveWalletPage />;
-  }
-
-  // Otherwise show connect wallet page
-  return (
-    <Container>
-      <Wrapper>
-        <LogoWrapper>
-          <Image
-            src={"/logo.svg"}
-            alt="logo"
-            height={100}
-            width={100}
-            preload={true}
-          />
-        </LogoWrapper>
-        <Title>Connect Wallet into the Trustless Marketplace</Title>
-        {connectors.map((connector) => (
-          <div key={connector.name}>
-            <Account
-              onClick={() => {
-                if (isConnected) {
-                  disconnect();
-                }
-              }}
-            >
-              <div className="connector">
-                <WalletMetamask variant="branded" size={45} />
-              </div>
-              <div>
-                <p className="name">{connector.name}</p>
-                <p>
-                  {address
-                    ? address.slice(0, 6) + "..." + address.slice(-4)
-                    : "— — — — — —"}
-                </p>
-              </div>
-            </Account>
-
-            <Button
-              style={{
-                width: "100%",
-                marginTop: "15px",
-                padding: "12px",
-              }}
-              onClick={() => {
-                if (!isConnected) {
-                  connect({ connector });
-                } else {
-                  authorizeWallet();
-                }
-              }}
-            >
-              {isConnected ? "Authorize" : "Connect Wallet"}
-            </Button>
-          </div>
-        ))}
-        <Footer>
-          By connecting you agree to our{" "}
-          <Link href={"#"}>Terms and Conditions</Link>
-        </Footer>
-      </Wrapper>
-    </Container>
-  );
 }

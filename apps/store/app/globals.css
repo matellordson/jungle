@@ -45,6 +45,10 @@ a {
   font-weight: 470;
 }
 
+svg {
+  color: var(--text-light);
+}
+
 /* styles for react-responsive-modal */
 .react-responsive-modal-overlay {
   /* background: var(--transparent) !important; */

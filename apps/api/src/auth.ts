@@ -61,34 +61,6 @@ auth.post("/verify", async (c) => {
   });
 });
 
-// FIXED: Session check route
-auth.get("/session", async (c) => {
-  console.log("🔍 Session check called");
-
-  // Check if cookie exists first
-  const cookieValue = getCookie(c, "web3_session");
-  console.log("🍪 Cookie value exists:", !!cookieValue);
-
-  const session = await getSession(c.req.raw, c.res as any);
-
-  console.log("📦 Session data:", {
-    isAuthenticated: session.isAuthenticated,
-    address: session.address,
-    nonce: session.nonce,
-  });
-
-  if (!session.isAuthenticated || !session.address) {
-    console.log("❌ No active session");
-    return c.json({ error: "No active session" }, 401);
-  }
-
-  console.log("✅ Session valid for:", session.address);
-  return c.json({
-    valid: true,
-    wallet_address: session.address,
-  });
-});
-
 auth.get("/me", async (c) => {
   const session = await getSession(c.req.raw, c.res as any);
 
@@ -106,6 +78,19 @@ auth.post("/logout", async (c) => {
   const session = await getSession(c.req.raw, c.res as any);
   session.destroy();
   return c.json({ success: true });
+});
+
+auth.get("/session", async (c) => {
+  const session = await getSession(c.req.raw, c.res as any);
+
+  if (!session.isAuthenticated || !session.address) {
+    return c.json({ error: "No active session" }, 401);
+  }
+
+  return c.json({
+    valid: true,
+    wallet_address: session.address,
+  });
 });
 
 export default auth;
