@@ -113,7 +113,7 @@ export default function ConnectWallet() {
     useAccount();
   const { disconnect, isPending } = useDisconnect();
   const { signMessageAsync } = useSignMessage();
-  const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
+  const API_URL = process.env.NEXT_PUBLIC_API_URL;
   const [hasSession, setHasSession] = useState(false);
   const [sessionLoading, setSessionLoading] = useState(true);
 
@@ -228,7 +228,7 @@ export default function ConnectWallet() {
                       ) : status == "connected" ? (
                         <ToggleRight
                           size={25}
-                          style={{ color: "var(--primary-accent)" }}
+                          style={{ color: "var(--accent)" }}
                         />
                       ) : (
                         <ToggleLeft size={25} />

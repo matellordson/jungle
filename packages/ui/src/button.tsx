@@ -4,12 +4,12 @@ import React from "react";
 import styled from "styled-components";
 
 const ButtonEl = styled.button`
-  background-color: var(--primary-accent);
+  background-color: var(--accent);
   border: none;
   font-size: 17px;
   padding: 10px 15px;
   border-radius: 5px;
-  color: var(--secondary-accent);
+  color: #f6efe5;
   font-family: inherit;
   font-weight: 450;
   cursor: pointer;

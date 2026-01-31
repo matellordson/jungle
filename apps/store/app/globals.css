@@ -2,11 +2,11 @@
   --background: #fcfbf7;
   --foreground: #fbf8f4;
   --border: 1px solid #f2e9d9;
-  --primary-accent: #137771;
-  --secondary-accent: #f6efe5;
+  --accent: #137771;
   --text-dark: #363f3f;
   --text-light: #53605f;
-  --link-color: var(--primary-accent);
+  --link-color: var(--accent);
+  --mute-text: #bac4c3;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -16,7 +16,7 @@
     --border: 1px solid #052421;
     --text-dark: #f4f6f5;
     --text-light: #bac4c3;
-    --link-color: var(--secondary-accent);
+    --mute-text: #53605f;
   }
 }
 
@@ -46,7 +46,8 @@ a {
 }
 
 svg {
-  color: var(--text-light);
+  color: var(--mute-text);
+  vertical-align: middle;
 }
 
 /* styles for react-responsive-modal */
