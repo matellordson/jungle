@@ -42,7 +42,7 @@ body {
 a {
   color: var(--link-color);
   text-decoration: none;
-  font-weight: 470;
+  font-weight: 460;
 }
 
 svg {

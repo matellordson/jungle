@@ -23,7 +23,7 @@ app.get("/health", (c) => c.json({ status: "ok" }));
 
 app.route("/auth", auth);
 app.route("/user", user);
-app.route("products", product);
+app.route("product", product);
 
 const port = Number(process.env.PORT) || 8000;
 

@@ -2,7 +2,7 @@ import { Hono } from "hono";
 import { getSession } from "../lib/session";
 import { verifyMessage } from "viem";
 import { randomBytes } from "crypto";
-import { getCookie, setCookie } from "hono/cookie";
+import { withRLSContext } from "../lib/db";
 
 const auth = new Hono();
 
@@ -50,7 +50,22 @@ auth.post("/verify", async (c) => {
     return c.json({ error: "Invalid signature" }, 401);
   }
 
-  session.address = address.toLowerCase();
+  const walletAddress = address.toLowerCase();
+
+  // Create user with RLS context
+  await withRLSContext(walletAddress, async (txn: any) => {
+    const existingUser = await txn`
+      SELECT * FROM users WHERE wallet_address = ${walletAddress}
+    `;
+
+    if (existingUser.length === 0) {
+      await txn`
+        INSERT INTO users (wallet_address) VALUES (${walletAddress})
+      `;
+    }
+  });
+
+  session.address = walletAddress;
   session.isAuthenticated = true;
   session.nonce = undefined;
   await session.save();

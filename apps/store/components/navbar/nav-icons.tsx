@@ -27,8 +27,8 @@ export function NavIcons() {
       />
 
       <Navigation>
-        <ChevronLeft size={30} />
-        <ChevronRight size={30} />
+        <ChevronLeft size={20} />
+        <ChevronRight size={20} />
       </Navigation>
     </Wrapper>
   );

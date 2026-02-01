@@ -1,10 +1,10 @@
 import { Suspense } from "react";
-import ProductList from "./components/ProductList";
+import ProductGrid from "./components/ProductGrid";
 
 export default async function ProductPage() {
   return (
     <Suspense fallback={"Loading..."}>
-      <ProductList />
+      <ProductGrid />
     </Suspense>
   );
 }
