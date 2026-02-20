@@ -18,7 +18,7 @@ export const env = {
   SESSION_SECRET: requireEnv("SESSION_SECRET"),
   DATABASE_URL: requireEnv("DATABASE_URL"),
   FRONTEND_URL: requireEnv("FRONTEND_URL"),
-  NODE_ENV: process.env.NODE_ENV || "development",
+  NODE_ENV: process.env.NODE_ENV,
 };
 
 // Validate on startup
