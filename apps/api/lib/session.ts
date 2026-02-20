@@ -6,13 +6,11 @@ export interface SessionData {
   isAuthenticated: boolean;
 }
 
-const SESSION_SECRET =
-  process.env.SESSION_SECRET ||
-  "my-super-secret-session-key-must-be-at-least-32-characters-long";
+const SESSION_SECRET = process.env.SESSION_SECRET!;
 
 export const sessionOptions = {
   password: SESSION_SECRET,
-  cookieName: "web3_session",
+  cookieName: "jungle_session",
   cookieOptions: {
     httpOnly: true,
     secure: process.env.NODE_ENV === "production",

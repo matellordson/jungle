@@ -12,7 +12,7 @@ app.use("*", logger());
 app.use(
   "*",
   cors({
-    origin: "http://localhost:3001",
+    origin: process.env.FRONTEND_URL!,
     credentials: true,
     allowMethods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
     allowHeaders: ["Content-Type", "Authorization"],
@@ -23,11 +23,9 @@ app.get("/health", (c) => c.json({ status: "ok" }));
 
 app.route("/auth", auth);
 app.route("/user", user);
-app.route("product", product);
+app.route("/product", product);
 
 const port = Number(process.env.PORT) || 8000;
-
-console.log(`🚀 Server running on http://localhost:${port}`);
 
 export default {
   port,

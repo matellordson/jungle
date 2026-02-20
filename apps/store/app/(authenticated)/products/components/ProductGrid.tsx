@@ -38,8 +38,6 @@ const Item = styled.div`
   }
 
   & .link:hover {
-    text-decoration: underline;
-    text-underline-offset: 5px;
     color: var(--text-dark);
   }
 `;
@@ -75,7 +73,6 @@ export default async function ProductGrid() {
   });
 
   const data: ProductType[] = await api.json();
-  console.log(data);
   return (
     <Wrapper>
       <ItemWrapper>
