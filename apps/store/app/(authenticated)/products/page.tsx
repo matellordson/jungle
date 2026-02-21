@@ -5,8 +5,8 @@ import ProductGrid from "./components/ProductGrid";
 export default async function ProductPage() {
   return (
     <Suspense fallback={"Loading..."}>
-      {/* <Products /> */}
-      <ProductGrid />
+      <Products />
+      {/* <ProductGrid /> */}
     </Suspense>
   );
 }
