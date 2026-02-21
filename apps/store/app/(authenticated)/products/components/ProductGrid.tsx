@@ -9,21 +9,48 @@ const ItemWrapper = styled.div`
   margin: auto;
   max-width: 1000px;
   display: grid;
-  grid-column-gap: 10px;
-  grid-row-gap: 20px;
   margin-bottom: 5px;
 
-  /* Desktop (default) */
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(3, 1fr);
 
-  /* Tablet */
   @media (max-width: 1024px) {
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(2, 1fr);
   }
 
-  /* Mobile */
   @media (max-width: 600px) {
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(1, 1fr);
+  }
+`;
+
+const CellWrapper = styled.div`
+  padding: 5px;
+  border-right: var(--border);
+  border-bottom: var(--border);
+
+  &:nth-child(3n),
+  &:last-child {
+    border-right: none;
+  }
+
+  @media (max-width: 1024px) {
+    &:nth-child(3n) {
+      border-right: var(--border);
+    }
+    &:nth-child(2n),
+    &:last-child {
+      border-right: none;
+    }
+  }
+
+  @media (max-width: 600px) {
+    padding: 5px 0;
+
+    &:nth-child(n) {
+      border-right: none;
+    }
+    &:last-child {
+      border-bottom: none;
+    }
   }
 `;
 
@@ -31,29 +58,28 @@ const Item = styled.div`
   display: flex;
   flex-direction: column;
   gap: 5px;
-
-  & .link {
-    color: var(--text-light);
-    font-size: 15px;
-  }
-
-  & .link:hover {
-    color: var(--text-dark);
-  }
 `;
 
 const ImageBox = styled.div`
-  height: 200px;
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1 / 1;
   background-color: var(--foreground);
   border-radius: 5px;
   border: var(--border);
+  overflow: hidden;
 
   & img {
     width: 100%;
+    height: 100%;
     object-fit: cover;
     object-position: center;
     border-radius: 5px;
   }
+`;
+
+const ProductName = styled.p`
+  font-size: 15px;
 `;
 
 interface ProductType {
@@ -77,19 +103,16 @@ export default async function ProductGrid() {
     <Wrapper>
       <ItemWrapper>
         {data.map((product) => (
-          <Item key={product.id}>
-            <ImageBox>
-              <Image
-                src={product.cover_image}
-                alt={product.name}
-                height={200}
-                width={200}
-              />
-            </ImageBox>
-            <Link href={"#"} className="link">
-              {product.name}
+          <CellWrapper key={product.id}>
+            <Link href={"#"} className="link" style={{ color: "inherit" }}>
+              <Item>
+                <ImageBox>
+                  <Image src={product.cover_image} alt={product.name} fill />
+                </ImageBox>
+                <ProductName>{product.name}</ProductName>
+              </Item>
             </Link>
-          </Item>
+          </CellWrapper>
         ))}
       </ItemWrapper>
     </Wrapper>

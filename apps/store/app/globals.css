@@ -25,8 +25,8 @@
     --mute-text: #53605f;
     --red-bg: #e03030;
     --red-bg-text: #e8f6f3;
-    --green-bg: #4aad78;
-    --green-bg-text: #0a1e14;
+    --green-bg: #30714f;
+    --green-bg-text: #c8ddd2;
     --yellow-bg: #f0c040;
     --yellow-bg-text: #3b3107;
   }
@@ -54,7 +54,7 @@ body {
 a {
   color: var(--link-color);
   text-decoration: none;
-  font-weight: 460;
+  font-weight: 430;
 }
 
 svg {

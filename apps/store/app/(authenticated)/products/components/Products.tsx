@@ -1,20 +1,72 @@
 import { cookies } from "next/headers";
 import Image from "next/image";
+import Link from "next/link";
 import styled from "styled-components";
 
 const Grid = styled.div`
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
-  gap: 10px;
+  margin: auto;
+  max-width: 1500px;
+  display: grid;
+  grid-column-gap: 0px;
+  grid-row-gap: 0px;
+  margin-bottom: 5px;
+
+  /* Desktop (default) */
+  grid-template-columns: repeat(3, 1fr);
+
+  /* Tablet */
+  @media (max-width: 1024px) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  /* Mobile */
+  @media (max-width: 600px) {
+    grid-template-columns: repeat(1, 1fr);
+  }
+`;
+
+const CellWrapper = styled.div`
+  padding: 5px 10px;
+  border-right: var(--border);
+  border-bottom: var(--border);
+
+  &:nth-child(3n),
+  &:last-child {
+    border-right: none;
+  }
+
+  @media (max-width: 1024px) {
+    &:nth-child(3n) {
+      border-right: var(--border);
+    }
+    &:nth-child(2n),
+    &:last-child {
+      border-right: none;
+    }
+  }
+
+  @media (max-width: 600px) {
+    padding: 5px 0;
+
+    &:nth-child(n) {
+      border-right: none;
+    }
+    &:last-child {
+      border-bottom: none;
+    }
+  }
 `;
 
 const Wrapper = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  min-width: 500px;
-  max-width: 500px;
+  padding: 5px;
+  border-radius: 5px;
+
+  &:hover {
+    cursor: pointer;
+  }
 `;
 
 const ProductIdentity = styled.div`
@@ -41,11 +93,12 @@ const ProductImage = styled.div`
 const ProductNameAndType = styled.div``;
 
 const ProductName = styled.p`
-  font-size: 20px;
+  font-size: 16px;
+  color: var(--text-dark);
 `;
 
 const ProductType = styled.p`
-  font-size: 15px;
+  font-size: 14px;
 `;
 
 const ProductMetrics = styled.div`
@@ -58,11 +111,11 @@ const ProductMetrics = styled.div`
 `;
 
 const ProductSalesCount = styled.p`
-  font-size: 15px;
+  font-size: 14px;
 `;
 
 const ProductSalesPercent = styled.p`
-  font-size: 15px;
+  font-size: 14px;
   background-color: var(--green-bg);
   color: var(--green-bg-text);
   padding: 2px 10px;
@@ -90,27 +143,31 @@ export async function Products() {
   return (
     <Grid>
       {data.map((product) => (
-        <Wrapper key={product.id}>
-          <ProductIdentity>
-            <ProductImage>
-              <Image
-                src={product.cover_image}
-                alt={product.name}
-                height={50}
-                width={50}
-              />
-            </ProductImage>
-            <ProductNameAndType>
-              <ProductName>{product.name}</ProductName>
-              <ProductType>Single</ProductType>
-            </ProductNameAndType>
-          </ProductIdentity>
+        <CellWrapper key={product.id}>
+          <Link href={"#"} style={{ color: "inherit" }}>
+            <Wrapper>
+              <ProductIdentity>
+                <ProductImage>
+                  <Image
+                    src={product.cover_image}
+                    alt={product.name}
+                    height={50}
+                    width={50}
+                  />
+                </ProductImage>
+                <ProductNameAndType>
+                  <ProductName>{product.name}</ProductName>
+                  <ProductType>Single</ProductType>
+                </ProductNameAndType>
+              </ProductIdentity>
 
-          <ProductMetrics>
-            <ProductSalesCount>2382</ProductSalesCount>
-            <ProductSalesPercent>2.9k</ProductSalesPercent>
-          </ProductMetrics>
-        </Wrapper>
+              <ProductMetrics>
+                <ProductSalesCount>2382</ProductSalesCount>
+                <ProductSalesPercent>2.9k</ProductSalesPercent>
+              </ProductMetrics>
+            </Wrapper>
+          </Link>
+        </CellWrapper>
       ))}
     </Grid>
   );
