@@ -7,6 +7,12 @@
   --text-light: #53605f;
   --link-color: var(--accent);
   --mute-text: #bac4c3;
+  --red-bg: #c82020;
+  --red-bg-text: #ffffff;
+  --green-bg: #2e7d52;
+  --green-bg-text: #ffffff;
+  --yellow-bg: #c89200;
+  --yellow-bg-text: #ffffff;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -17,6 +23,12 @@
     --text-dark: #f4f6f5;
     --text-light: #bac4c3;
     --mute-text: #53605f;
+    --red-bg: #e03030;
+    --red-bg-text: #e8f6f3;
+    --green-bg: #4aad78;
+    --green-bg-text: #0a1e14;
+    --yellow-bg: #f0c040;
+    --yellow-bg-text: #3b3107;
   }
 }
 
