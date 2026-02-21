@@ -51,7 +51,8 @@ const ProductType = styled.p`
 const ProductMetrics = styled.div`
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  justify-content: center;
+  gap: 3px;
   align-items: center;
   height: 100%;
 `;
@@ -89,7 +90,7 @@ export async function Products() {
   return (
     <Grid>
       {data.map((product) => (
-        <Wrapper id={product.id}>
+        <Wrapper key={product.id}>
           <ProductIdentity>
             <ProductImage>
               <Image
