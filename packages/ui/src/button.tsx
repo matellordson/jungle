@@ -9,7 +9,7 @@ const ButtonEl = styled.button`
   font-size: 17px;
   padding: 10px 15px;
   border-radius: 5px;
-  color: #f6efe5;
+  color: var(--accent-bg-text);
   font-family: inherit;
   font-weight: 450;
   cursor: pointer;

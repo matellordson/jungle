@@ -3,10 +3,12 @@
   --foreground: #fbf8f4;
   --border: 1px solid #f2e9d9;
   --accent: #137771;
+  --accent-bg-text: #f6efe5;
   --text-dark: #363f3f;
   --text-light: #53605f;
   --link-color: var(--accent);
   --mute-text: #bac4c3;
+  --svg-text: #9ba3a2;
   --red-bg: #c82020;
   --red-bg-text: #ffffff;
   --green-bg: #2e7d52;
@@ -23,6 +25,7 @@
     --text-dark: #f4f6f5;
     --text-light: #bac4c3;
     --mute-text: #53605f;
+    --svg-text: #677170;
     --red-bg: #e03030;
     --red-bg-text: #e8f6f3;
     --green-bg: #30714f;
@@ -58,7 +61,7 @@ a {
 }
 
 svg {
-  color: var(--mute-text);
+  color: var(--svg-text);
   vertical-align: middle;
 }
 

@@ -128,7 +128,7 @@ interface ProductType {
   cover_image: string;
 }
 
-export async function Products() {
+export async function ProductList() {
   const cookieStore = await cookies();
   const allCookies = cookieStore.toString();
 
