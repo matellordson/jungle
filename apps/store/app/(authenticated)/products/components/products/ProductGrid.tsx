@@ -24,33 +24,9 @@ const ItemWrapper = styled.div`
 
 const CellWrapper = styled.div`
   padding: 5px;
-  border-right: var(--border);
-  border-bottom: var(--border);
-
-  &:nth-child(3n),
-  &:last-child {
-    border-right: none;
-  }
-
-  @media (max-width: 1024px) {
-    &:nth-child(3n) {
-      border-right: var(--border);
-    }
-    &:nth-child(2n),
-    &:last-child {
-      border-right: none;
-    }
-  }
 
   @media (max-width: 600px) {
     padding: 5px 0;
-
-    &:nth-child(n) {
-      border-right: none;
-    }
-    &:last-child {
-      border-bottom: none;
-    }
   }
 `;
 
