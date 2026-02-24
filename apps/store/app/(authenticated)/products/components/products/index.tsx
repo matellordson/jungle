@@ -9,6 +9,8 @@ const Wrapper = styled.div``;
 const Actions = styled.div`
   margin-bottom: 10px;
   padding: 10px 0;
+  display: flex;
+  justify-content: end;
 `;
 
 const ViewToggle = styled.div`

@@ -2,6 +2,7 @@ import { cookies } from "next/headers";
 import Image from "next/image";
 import Link from "next/link";
 import styled from "styled-components";
+import { FailedToFetch } from "../../../../../components/FailedToFetch";
 
 const Grid = styled.div`
   margin: auto;
@@ -139,7 +140,6 @@ export async function ProductList() {
   });
 
   const data: ProductType[] = await api.json();
-
   return (
     <Grid>
       {data.map((product) => (
