@@ -1,6 +1,7 @@
 "use client";
 
 import { Button } from "@repo/ui/button";
+import { WifiOff } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useTransition } from "react";
 import styled from "styled-components";
@@ -34,6 +35,7 @@ export default function ErrorPage({ reset }: { reset: () => void }) {
 
   return (
     <Wrapper>
+      <WifiOff size={40} />
       <Message>Unable to load. Refresh to try again.</Message>
       <ButtonEl
         onClick={handleRetry}

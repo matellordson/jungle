@@ -20,7 +20,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${rubik.variable}`}>
+      <body data-vaul-drawer-wrapper className={`${rubik.variable}`}>
         <WagmiProvider>{children}</WagmiProvider>
       </body>
     </html>

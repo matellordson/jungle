@@ -24,6 +24,7 @@
     "react-dom": "^19.2.0",
     "react-responsive-modal": "^7.1.0",
     "styled-components": "^6.3.8",
+    "vaul": "^1.1.2",
     "viem": "^2.45.0",
     "wagmi": "^3.4.1"
   },

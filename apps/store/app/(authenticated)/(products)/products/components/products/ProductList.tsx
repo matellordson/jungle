@@ -2,7 +2,7 @@ import { cookies } from "next/headers";
 import Image from "next/image";
 import Link from "next/link";
 import styled from "styled-components";
-import { FailedToFetch } from "../../../../../components/FailedToFetch";
+import { FailedToFetch } from "../../../../../../components/FailedToFetch";
 
 const Grid = styled.div`
   margin: auto;
@@ -144,7 +144,10 @@ export async function ProductList() {
     <Grid>
       {data.map((product) => (
         <CellWrapper key={product.id}>
-          <Link href={"#"} style={{ color: "inherit" }}>
+          <Link
+            href={`/product-details/${product.id}`}
+            style={{ color: "inherit" }}
+          >
             <Wrapper>
               <ProductIdentity>
                 <ProductImage>

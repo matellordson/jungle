@@ -80,7 +80,11 @@ export default async function ProductGrid() {
       <ItemWrapper>
         {data.map((product) => (
           <CellWrapper key={product.id}>
-            <Link href={"#"} className="link" style={{ color: "inherit" }}>
+            <Link
+              href={`/product-details/${product.id}`}
+              className="link"
+              style={{ color: "inherit" }}
+            >
               <Item>
                 <ImageBox>
                   <Image src={product.cover_image} alt={product.name} fill />
