@@ -2,6 +2,7 @@
 
 import { Button } from "@repo/ui/button";
 import { useRouter } from "next/navigation";
+import { useTransition } from "react";
 import styled from "styled-components";
 
 const Wrapper = styled.div`
@@ -22,10 +23,13 @@ const Message = styled.p`
 
 export default function ErrorPage({ reset }: { reset: () => void }) {
   const router = useRouter();
+  const [isPending, startTransition] = useTransition();
 
   const handleRetry = () => {
-    router.refresh(); // tells Next.js to re-fetch server component data
-    reset(); // clears the error boundary so the component re-renders
+    startTransition(() => {
+      reset();
+      router.refresh();
+    });
   };
 
   return (
@@ -33,14 +37,16 @@ export default function ErrorPage({ reset }: { reset: () => void }) {
       <Message>Unable to load. Refresh to try again.</Message>
       <ButtonEl
         onClick={handleRetry}
+        disabled={isPending}
         style={{
           background: "var(--foreground)",
           border: "var(--border)",
           color: "var(--text-light)",
           fontSize: "15px",
+          opacity: isPending ? 0.6 : 1,
         }}
       >
-        Retry
+        {isPending ? "Retrying..." : "Retry"}
       </ButtonEl>
     </Wrapper>
   );

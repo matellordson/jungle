@@ -1,7 +1,7 @@
 "use client";
 
 import styled from "styled-components";
-import { Suspense, useState } from "react";
+import { useState } from "react";
 import { LayoutGrid, LayoutList } from "lucide-react";
 
 const Wrapper = styled.div``;
@@ -63,11 +63,9 @@ export function Products({ listView, gridView }: ProductsProps) {
         </ViewToggle>
       </Actions>
 
-      <Suspense fallback={"Loading..."}>
-        <ProductWrapper>
-          {activeView === "list" ? listView : gridView}
-        </ProductWrapper>
-      </Suspense>
+      <ProductWrapper>
+        {activeView === "list" ? listView : gridView}
+      </ProductWrapper>
     </Wrapper>
   );
 }

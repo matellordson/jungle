@@ -19,13 +19,15 @@ export function Button({
   children,
   style,
   onClick,
+  disabled,
 }: {
   children: React.ReactNode;
   style?: React.CSSProperties;
   onClick?: React.FormEventHandler;
+  disabled?: boolean;
 }) {
   return (
-    <ButtonEl style={style} onClick={onClick}>
+    <ButtonEl style={style} onClick={onClick} disabled={disabled}>
       {children}
     </ButtonEl>
   );
