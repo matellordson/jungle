@@ -47,6 +47,7 @@ export function ProductModal({
         <StyledContent>
           <StyledHandle />
           <Drawer.Title>{title}</Drawer.Title>
+          <Drawer.Description>Description</Drawer.Description>
           {content}
         </StyledContent>
       </Drawer.Portal>
