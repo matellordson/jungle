@@ -3,6 +3,7 @@
 import { JSX } from "react";
 import { Drawer } from "vaul";
 import styled from "styled-components";
+import { useRouter } from "next/navigation";
 
 const StyledOverlay = styled(Drawer.Overlay)`
   position: fixed;
@@ -19,7 +20,7 @@ const StyledContent = styled(Drawer.Content)`
   background-color: var(--background);
   padding: 1.5rem;
   outline: none;
-  top: 5vh;
+  top: 1vh;
 `;
 
 const StyledHandle = styled(Drawer.Handle)`
@@ -40,8 +41,14 @@ export function ProductModal({
   title: JSX.Element;
   content: JSX.Element;
 }) {
+  const router = useRouter();
   return (
-    <Drawer.Root setBackgroundColorOnScale={false} defaultOpen={true}>
+    <Drawer.Root
+      setBackgroundColorOnScale={false}
+      shouldScaleBackground={true}
+      defaultOpen={true}
+      onClose={() => router.back()}
+    >
       <Drawer.Portal>
         <StyledOverlay />
         <StyledContent>
