@@ -56,6 +56,10 @@ const CellWrapper = styled.div`
       border-bottom: none;
     }
   }
+
+  &:hover {
+    background-color: var(--foreground);
+  }
 `;
 
 const Wrapper = styled.div`
