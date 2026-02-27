@@ -1,7 +1,8 @@
 :root {
-  --background: #fcfbf7;
-  --foreground: #fbf8f4;
-  --border: 1px solid #ded8ce;
+  --background: #fbf8f4;
+  --foreground: #f6efe5;
+  --highlight: white;
+  --border: 1px solid #eee2ce;
   --accent: #137771;
   --accent-bg-text: #f6efe5;
   --text-dark: #363f3f;
@@ -63,36 +64,4 @@ a {
 svg {
   color: var(--svg-text);
   vertical-align: middle;
-}
-
-/* styles for react-responsive-modal */
-.react-responsive-modal-overlay {
-  /* background: var(--transparent) !important; */
-  visibility: hidden;
-}
-
-@media only screen and (min-width: 992px) {
-  .react-responsive-modal-overlay {
-    visibility: visible;
-  }
-}
-
-.react-responsive-modal-modal {
-  visibility: hidden;
-  box-shadow: none !important;
-  background-color: transparent !important;
-}
-
-@media only screen and (min-width: 992px) {
-  .react-responsive-modal-modal {
-    visibility: visible;
-  }
-}
-
-.react-responsive-modal-modal:focus {
-  outline: none;
-}
-
-.react-responsive-modal-closeButton {
-  display: none !important;
 }

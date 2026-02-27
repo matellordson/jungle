@@ -59,6 +59,7 @@ const Account = styled.div`
   height: 60px;
   width: 100%;
   border: var(--border);
+  background-color: var(--foreground);
   margin-top: 20px;
   border-radius: 5px;
   padding: 10px;

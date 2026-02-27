@@ -2,7 +2,7 @@
 
 import { JSX } from "react";
 import { Drawer } from "vaul";
-import styled, { keyframes } from "styled-components";
+import styled from "styled-components";
 
 const StyledOverlay = styled(Drawer.Overlay)`
   position: fixed;
@@ -23,7 +23,7 @@ const StyledContent = styled(Drawer.Content)`
 `;
 
 const StyledHandle = styled(Drawer.Handle)`
-  background-color: var(--accent) !important;
+  background-color: var(--foreground) !important;
   width: 200px !important;
   height: 8px !important;
   cursor: grab;
