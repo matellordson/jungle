@@ -29,20 +29,20 @@ const Trigger = styled.button`
   }
 `;
 
-const Content = styled.div`
+const Items = styled.div`
   background-color: var(--foreground);
-  padding: 10px;
+  padding: 5px;
   border-radius: 5px;
   border: var(--border);
   width: 300px;
 `;
 
-export function MenuItem({
-  name,
-  content,
+export function MenuTrigger({
+  title,
+  items,
 }: {
-  name: string;
-  content: JSX.Element;
+  title: string;
+  items: JSX.Element;
 }) {
   const [isOpen, setIsOpen] = useState(false);
 
@@ -73,17 +73,17 @@ export function MenuItem({
   return (
     <>
       <Trigger ref={refs.setReference} {...getReferenceProps()}>
-        {name}
+        {title}
       </Trigger>
       {isOpen && (
         <FloatingFocusManager context={context} modal={false}>
-          <Content
+          <Items
             ref={refs.setFloating}
             style={floatingStyles}
             {...getFloatingProps()}
           >
-            {content}
-          </Content>
+            {items}
+          </Items>
         </FloatingFocusManager>
       )}
     </>
