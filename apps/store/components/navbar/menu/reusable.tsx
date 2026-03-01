@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { JSX, useState } from "react";
 import {
   useFloating,
   autoUpdate,
@@ -12,6 +12,7 @@ import {
   useRole,
   useInteractions,
   FloatingFocusManager,
+  useHover,
 } from "@floating-ui/react";
 import styled from "styled-components";
 
@@ -36,8 +37,15 @@ const Content = styled.div`
   width: 300px;
 `;
 
-export function View() {
+export function MenuItem({
+  name,
+  content,
+}: {
+  name: string;
+  content: JSX.Element;
+}) {
   const [isOpen, setIsOpen] = useState(false);
+
   const { refs, floatingStyles, context } = useFloating({
     open: isOpen,
     onOpenChange: setIsOpen,
@@ -65,7 +73,7 @@ export function View() {
   return (
     <>
       <Trigger ref={refs.setReference} {...getReferenceProps()}>
-        View
+        {name}
       </Trigger>
       {isOpen && (
         <FloatingFocusManager context={context} modal={false}>
@@ -74,7 +82,7 @@ export function View() {
             style={floatingStyles}
             {...getFloatingProps()}
           >
-            Popover element
+            {content}
           </Content>
         </FloatingFocusManager>
       )}
