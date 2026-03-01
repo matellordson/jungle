@@ -1,14 +1,18 @@
 import styled from "styled-components";
 import { Products } from "../components/products";
-import { ProductList } from "../components/products/ProductList";
-import ProductGrid from "../components/products/ProductGrid";
 
-const Wrapper = styled.div``;
+const Wrapper = styled.div`
+  padding: 0px 15px;
+`;
 
-export default function ProductPage() {
+interface ProductsProps {
+  view: "list" | "details";
+}
+
+export default function ProductPage({ view }: ProductsProps) {
   return (
     <Wrapper>
-      <Products listView={<ProductList />} gridView={<ProductGrid />} />
+      <Products view={view == "list" ? "list" : "details"} />
     </Wrapper>
   );
 }

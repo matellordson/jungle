@@ -1,13 +1,10 @@
-import { Navbar } from "../../components/navbar";
 import styled from "styled-components";
 
 const Wrapper = styled.div`
   height: 100vh;
 `;
 
-const PageWrapper = styled.div`
-  padding: 0px 15px;
-`;
+const PageWrapper = styled.div``;
 
 export default function AuthenticatedLayout({
   children,
@@ -16,7 +13,6 @@ export default function AuthenticatedLayout({
 }) {
   return (
     <Wrapper>
-      <Navbar />
       <PageWrapper>{children}</PageWrapper>
     </Wrapper>
   );

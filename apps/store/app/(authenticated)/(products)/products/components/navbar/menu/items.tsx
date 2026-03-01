@@ -1,3 +1,4 @@
+import { MouseEventHandler } from "react";
 import styled from "styled-components";
 
 const Wrapper = styled.div`
@@ -13,10 +14,16 @@ const Wrapper = styled.div`
 
 const Title = styled.p``;
 
-export default function MenuItems({ title }: { title: string }) {
+export default function MenuItems({
+  title,
+  onClick,
+}: {
+  title: string;
+  onClick: MouseEventHandler;
+}) {
   return (
     <Wrapper>
-      <Title>{title}</Title>
+      <Title onClick={onClick}>{title}</Title>
     </Wrapper>
   );
 }
