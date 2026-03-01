@@ -34,7 +34,7 @@ const StyledHandle = styled(Drawer.Handle)`
   }
 `;
 
-export function ProductModal({
+export function DrawerEl({
   title,
   content,
 }: {

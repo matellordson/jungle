@@ -1,4 +1,4 @@
-import { ProductModal } from "./components/modal";
+import { DrawerEl as Drawer } from "../../../../../../../components/drawer";
 
 export default async function Details({
   params,
@@ -6,7 +6,5 @@ export default async function Details({
   params: Promise<{ id: string }>;
 }) {
   const { id } = await params;
-  return (
-    <ProductModal content={<p>{id}</p>} title={<p>Title</p>}></ProductModal>
-  );
+  return <Drawer content={<p>{id}</p>} title={<p>Title</p>}></Drawer>;
 }

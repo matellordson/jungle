@@ -2,7 +2,6 @@ import { cookies } from "next/headers";
 import Image from "next/image";
 import Link from "next/link";
 import styled from "styled-components";
-import { FailedToFetch } from "../../../../../../components/FailedToFetch";
 
 const Grid = styled.div`
   margin: auto;
@@ -164,7 +163,7 @@ export async function ProductList() {
                 </ProductImage>
                 <ProductNameAndType>
                   <ProductName>{product.name}</ProductName>
-                  <ProductType>Single</ProductType>
+                  <ProductType>$120</ProductType>
                 </ProductNameAndType>
               </ProductIdentity>
 
