@@ -1,11 +1,12 @@
 "use client";
 
 import { useState } from "react";
-import MenuItems from "../components/navbar/menu/items";
-import { MenuTrigger } from "../components/navbar/menu/reusable";
+import { MenuItemsCheck } from "../components/navbar/menu/check-items";
+import { MenuTrigger } from "../components/navbar/menu/trigger";
 import { NavIcons } from "../components/navbar/nav-icons";
 import ProductPage from "./page";
 import styled from "styled-components";
+import { MenuItemsLink } from "../components/navbar/menu/link-items";
 
 const Wrapper = styled.div``;
 
@@ -37,18 +38,25 @@ export default function InventoryLayout() {
       <NavWrapper>
         <NavIcons />
         <MenuWrapper>
-          <MenuTrigger title="Edit" items={<p>View menu element</p>} />
+          <MenuTrigger
+            title="Edit"
+            items={
+              <ItemWrapper>
+                <MenuItemsLink title="New..." link="#" />
+              </ItemWrapper>
+            }
+          />
 
           <MenuTrigger
             title="View"
             items={
               <ItemWrapper>
-                <MenuItems
+                <MenuItemsCheck
                   title="List"
                   onClick={() => setProductView("list")}
                   active={productView == "list"}
                 />
-                <MenuItems
+                <MenuItemsCheck
                   title="Detail"
                   onClick={() => setProductView("details")}
                   active={productView == "details"}

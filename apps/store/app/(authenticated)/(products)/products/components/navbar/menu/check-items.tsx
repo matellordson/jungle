@@ -30,7 +30,7 @@ const Wrapper = styled.div`
 
 const Title = styled.p``;
 
-export default function MenuItems({
+export function MenuItemsCheck({
   title,
   onClick,
   active,
