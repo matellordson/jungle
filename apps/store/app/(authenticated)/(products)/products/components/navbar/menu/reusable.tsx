@@ -12,7 +12,6 @@ import {
   useRole,
   useInteractions,
   FloatingFocusManager,
-  useHover,
 } from "@floating-ui/react";
 import styled from "styled-components";
 
@@ -34,7 +33,7 @@ const Items = styled.div`
   padding: 5px;
   border-radius: 5px;
   border: var(--border);
-  width: 300px;
+  width: 250px;
 `;
 
 export function MenuTrigger({
@@ -52,7 +51,7 @@ export function MenuTrigger({
     middleware: [
       offset({
         mainAxis: 10,
-        crossAxis: 120,
+        crossAxis: 100,
       }),
       flip(),
       shift(),

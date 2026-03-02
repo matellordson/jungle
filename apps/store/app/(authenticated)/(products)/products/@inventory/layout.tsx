@@ -37,6 +37,8 @@ export default function InventoryLayout() {
       <NavWrapper>
         <NavIcons />
         <MenuWrapper>
+          <MenuTrigger title="Edit" items={<p>View menu element</p>} />
+
           <MenuTrigger
             title="View"
             items={
@@ -44,14 +46,17 @@ export default function InventoryLayout() {
                 <MenuItems
                   title="List"
                   onClick={() => setProductView("list")}
+                  active={productView == "list"}
                 />
                 <MenuItems
                   title="Detail"
                   onClick={() => setProductView("details")}
+                  active={productView == "details"}
                 />
               </ItemWrapper>
             }
           />
+
           <MenuTrigger title="Filter" items={<p>View menu element</p>} />
         </MenuWrapper>
       </NavWrapper>
