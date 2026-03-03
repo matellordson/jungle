@@ -28,9 +28,15 @@ const Stage = styled.div`
   border-radius: 5px;
   display: flex;
   flex-direction: column;
-  background-color: var(--background);
+  background-color: var(--highlight);
   border: var(--border);
   gap: 3px;
+  box-shadow: var(--shadow);
+  filter: blur(15px);
+
+  &.active {
+    filter: blur(0px);
+  }
 `;
 
 const StageDetail = styled.div`
@@ -40,7 +46,7 @@ const StageDetail = styled.div`
 `;
 
 const StageTitle = styled.p`
-  font-size: 15px;
+  font-size: 16px;
   color: var(--text-dark);
 `;
 
@@ -48,7 +54,7 @@ const StageDesc = styled.p`
   font-size: 13px;
 `;
 
-export default function Map({ stage }: { stage: string }) {
+export default function Map({ currentStage }: { currentStage: string }) {
   const stages = [
     {
       title: "Identity",
@@ -67,7 +73,7 @@ export default function Map({ stage }: { stage: string }) {
       desc: "Set up sizes, colors, or styles. Skip if one version covers it all.",
     },
     {
-      title: "Pricing & Inventory",
+      title: "Logistics",
       desc: "Set what you're charging and how many you have on hand.",
     },
     {
@@ -87,7 +93,10 @@ export default function Map({ stage }: { stage: string }) {
 
       <StageWrapper>
         {stages.map((stage) => (
-          <Stage key={stage.title}>
+          <Stage
+            key={stage.title}
+            className={stage.title === currentStage ? "active" : ""}
+          >
             <StageDetail>
               <StageTitle>{stage.title}</StageTitle>
             </StageDetail>
