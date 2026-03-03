@@ -32,7 +32,7 @@ const Stage = styled.div`
   border: var(--border);
   gap: 3px;
   box-shadow: var(--shadow);
-  filter: blur(15px);
+  filter: blur(10px);
 
   &.active {
     filter: blur(0px);

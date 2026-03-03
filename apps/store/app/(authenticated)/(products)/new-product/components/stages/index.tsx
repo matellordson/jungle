@@ -8,6 +8,7 @@ const Wrapper = styled.div`
   height: 100vh;
   width: 100vw;
   display: flex;
+  position: fixed;
 `;
 
 const MapWrapper = styled.div`
@@ -53,7 +54,7 @@ type allStages =
   | "Publishing";
 
 export default function Stages() {
-  const stage: allStages = "Pricing & Inventory";
+  const stage: allStages = "Media";
   return (
     <Wrapper>
       <MapWrapper>
