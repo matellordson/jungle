@@ -28,7 +28,9 @@ const Wrapper = styled.div`
   }
 `;
 
-const Title = styled.p``;
+const Title = styled.p`
+  font-size: 14px;
+`;
 
 export function MenuItemsCheck({
   title,

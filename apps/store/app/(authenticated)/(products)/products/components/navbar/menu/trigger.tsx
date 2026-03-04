@@ -22,6 +22,7 @@ const Trigger = styled.button`
   color: var(--light-text);
   padding: 3px 10px;
   border-radius: 5px;
+  font-size: 15px;
 
   &:hover {
     background-color: var(--background);

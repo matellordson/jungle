@@ -1,110 +1,47 @@
 "use client";
 
 import styled from "styled-components";
-import Logo from "../logo";
+import { Toolkit } from "../../../../../../components/toolkit";
+import { CircleQuestionMark } from "lucide-react";
 
-const Wrapper = styled.div`
-  padding: 20px;
-  display: flex;
-  flex-direction: column;
-  gap: 50px;
-`;
+const Wrapper = styled.div``;
 
-const LogoWrapper = styled.div`
-  margin-top: 20px;
-`;
-
-const StageWrapper = styled.div`
-  border-radius: 5px;
-  height: 400px;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-`;
-
-const Stage = styled.div`
-  width: 100%;
-  padding: 5px 10px;
-  border-radius: 5px;
-  display: flex;
-  flex-direction: column;
-  background-color: var(--highlight);
-  border: var(--border);
-  gap: 3px;
-  box-shadow: var(--shadow);
-  filter: blur(10px);
-
-  &.active {
-    filter: blur(0px);
+const MapStage = styled.i`
+  font-size: 14px;
+  display: none;
+  @media only screen and (min-width: 1100px) {
+    display: block;
   }
 `;
 
-const StageDetail = styled.div`
-  display: flex;
-  align-items: center;
-  gap: 5px;
+const MapToolkit = styled.div`
+  @media only screen and (min-width: 1100px) {
+    display: none;
+  }
+
+  & svg:hover {
+    color: var(--text-light);
+    cursor: pointer;
+  }
 `;
 
-const StageTitle = styled.p`
-  font-size: 16px;
-  color: var(--text-dark);
-`;
+type allStages =
+  | "Identity"
+  | "Media"
+  | "Details & Attributes"
+  | "Variations"
+  | "Pricing & Inventory"
+  | "Logistics"
+  | "Publishing";
 
-const StageDesc = styled.p`
-  font-size: 13px;
-`;
-
-export default function Map({ currentStage }: { currentStage: string }) {
-  const stages = [
-    {
-      title: "Identity",
-      desc: "Name it, describe it, and categorize it.",
-    },
-    {
-      title: "Media",
-      desc: "Add photos, a video, or any documents buyers might need.",
-    },
-    {
-      title: " Details & Attributes",
-      desc: "Materials, dimensions, care instructions. Details that build trust",
-    },
-    {
-      title: "Variations",
-      desc: "Set up sizes, colors, or styles. Skip if one version covers it all.",
-    },
-    {
-      title: "Logistics",
-      desc: "Set what you're charging and how many you have on hand.",
-    },
-    {
-      title: "Pricing & Inventory",
-      desc: " Weight, packaging, lead time, and where it ships from.",
-    },
-    {
-      title: "Publishing",
-      desc: "Set visibility and go live — or save as a draft and come back.",
-    },
-  ];
+export default function Map({ currentStage }: { currentStage: allStages }) {
+  const stage = currentStage == "Identity" ? '"What is this product?"' : "";
   return (
     <Wrapper>
-      <LogoWrapper>
-        <Logo />
-      </LogoWrapper>
-
-      <StageWrapper>
-        {stages.map((stage) => (
-          <Stage
-            key={stage.title}
-            className={stage.title === currentStage ? "active" : ""}
-          >
-            <StageDetail>
-              <StageTitle>{stage.title}</StageTitle>
-            </StageDetail>
-
-            <StageDesc>{stage.desc}</StageDesc>
-          </Stage>
-        ))}
-      </StageWrapper>
+      <MapStage>{stage}</MapStage>
+      <MapToolkit>
+        <Toolkit trigger={<CircleQuestionMark size={20} />} content={stage} />
+      </MapToolkit>
     </Wrapper>
   );
 }

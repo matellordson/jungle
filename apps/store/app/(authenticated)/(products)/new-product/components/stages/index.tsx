@@ -2,47 +2,49 @@
 
 import styled from "styled-components";
 import Map from "./map";
-import { Button } from "@repo/ui/button";
+import { useState } from "react";
+import { Identity } from "./list/Identity";
+import Logo from "../logo";
+import { Button } from "../../../../../../components/button";
 
 const Wrapper = styled.div`
   height: 100vh;
   width: 100vw;
-  display: flex;
-  position: fixed;
+  margin: auto;
+  padding: 0 5px;
+
+  @media only screen and (min-width: 1500px) {
+    max-width: 1500px;
+  }
 `;
 
 const MapWrapper = styled.div`
-  background-color: var(--foreground);
-  height: 100vh;
-  width: 400px;
-  border-right: var(--border);
-`;
-
-const StageWrapper = styled.div`
-  background-color: var(--background);
-  height: 100vh;
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-`;
-
-const StageContent = styled.div`
-  height: 100%;
-  width: 100%;
-`;
-
-const StageCount = styled.p``;
-
-const StageControlWrapper = styled.div`
-  height: 50px;
-  width: 100%;
-  border-top: var(--border);
-  background-color: var(--foreground);
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 10px;
+  padding: 5px;
+
+  @media only screen and (min-width: 1500px) {
+    padding: 10px 0;
+  }
 `;
+
+const MapControl = styled.div`
+  display: flex;
+  gap: 10px;
+  align-items: center;
+`;
+
+const MapControlDivider = styled.div`
+  height: 30px;
+  width: 1px;
+  background-color: transparent;
+  border: var(--border);
+`;
+
+const StageWrapper = styled.div``;
+
+const StageContent = styled.div``;
 
 type allStages =
   | "Identity"
@@ -54,18 +56,20 @@ type allStages =
   | "Publishing";
 
 export default function Stages() {
-  const stage: allStages = "Media";
+  const [stage, setState] = useState<allStages>("Identity");
+
   return (
     <Wrapper>
       <MapWrapper>
-        <Map currentStage={stage!} />
+        <Logo />
+        <MapControl>
+          <Map currentStage={stage!} />
+          <MapControlDivider />
+          <Button>Continue</Button>
+        </MapControl>
       </MapWrapper>
       <StageWrapper>
-        <StageContent>{stage}</StageContent>
-        <StageControlWrapper>
-          <StageCount>1 of 7</StageCount>
-          <Button>Next</Button>
-        </StageControlWrapper>
+        <StageContent>{stage === "Identity" ? <Identity /> : ""}</StageContent>
       </StageWrapper>
     </Wrapper>
   );
