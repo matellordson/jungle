@@ -2,15 +2,27 @@
 import styled from "styled-components";
 
 const TextareaEl = styled.textarea`
-  max-width: 300px;
   border: var(--border);
-  background-color: var(--highlight);
-  padding: 5px 10px;
+  background-color: var(--foreground);
+  padding: 10px 10px;
   font: inherit;
   color: inherit;
   border-radius: 5px;
+  font-size: 15px;
+  height: 100px;
+  text-align: start;
+  vertical-align: top;
+  resize: none;
+
+  &:focus {
+    background-color: var(--highlight);
+  }
+
+  &::placeholder {
+    color: var(--mute-text);
+  }
 `;
 
-export function TextArea() {
-  return <TextareaEl />;
+export function TextArea({ placeholder }: { placeholder: string }) {
+  return <TextareaEl placeholder={placeholder} />;
 }

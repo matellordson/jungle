@@ -21,7 +21,6 @@ const MapToolkit = styled.div`
 
   & svg:hover {
     color: var(--text-light);
-    cursor: pointer;
   }
 `;
 

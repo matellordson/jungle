@@ -10,7 +10,6 @@ import {
   flip,
   shift,
 } from "@floating-ui/react";
-import { CircleQuestionMark } from "lucide-react";
 import { JSX, useRef, useState } from "react";
 import styled from "styled-components";
 

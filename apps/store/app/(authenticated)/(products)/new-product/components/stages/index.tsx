@@ -3,7 +3,7 @@
 import styled from "styled-components";
 import Map from "./map";
 import { useState } from "react";
-import { Identity } from "./list/Identity";
+import { Identity } from "./levels/Identity";
 import Logo from "../logo";
 import { Button } from "../../../../../../components/button";
 
@@ -36,13 +36,15 @@ const MapControl = styled.div`
 `;
 
 const MapControlDivider = styled.div`
-  height: 30px;
+  height: 20px;
   width: 1px;
   background-color: transparent;
   border: var(--border);
 `;
 
-const StageWrapper = styled.div``;
+const StageWrapper = styled.div`
+  margin-top: 100px;
+`;
 
 const StageContent = styled.div``;
 
