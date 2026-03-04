@@ -86,6 +86,8 @@ export function SelectInput({ options }: { options: optionsType[] }) {
       options={options}
       styles={selectStyles}
       components={{ DropdownIndicator }}
+      menuPlacement="auto"
+      menuPosition="fixed"
     />
   );
 }

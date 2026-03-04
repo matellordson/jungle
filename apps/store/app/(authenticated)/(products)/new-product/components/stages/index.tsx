@@ -4,7 +4,7 @@ import styled from "styled-components";
 import Map from "./map";
 import { useState } from "react";
 import { Identity } from "./levels/Identity";
-import Logo from "../logo";
+import TextLogo from "../text-logo";
 import { Button } from "../../../../../../components/button";
 
 const Wrapper = styled.div`
@@ -22,7 +22,7 @@ const MapWrapper = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 5px;
+  padding: 10px 5px;
 
   @media only screen and (min-width: 1500px) {
     padding: 10px 0;
@@ -63,7 +63,7 @@ export default function Stages() {
   return (
     <Wrapper>
       <MapWrapper>
-        <Logo />
+        <TextLogo />
         <MapControl>
           <Map currentStage={stage!} />
           <MapControlDivider />

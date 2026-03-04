@@ -1,0 +1,52 @@
+export default function TextLogo() {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="120"
+      viewBox="0 0 935.973 165.635"
+    >
+      <g
+        id="Group_1"
+        data-name="Group 1"
+        transform="translate(-286.671 -366.646)"
+      >
+        <path
+          id="Path_1"
+          data-name="Path 1"
+          d="M396.85,368.067V520.186H286.671V464.03h30.566v25.59h49.048V368.067Z"
+          fill="var(--text-dark)"
+        />
+        <path
+          id="Path_2"
+          data-name="Path 2"
+          d="M523.379,367.357V520.186H421.019V367.357h30.566V489.62h41.228V367.357Z"
+          fill="var(--text-dark)"
+        />
+        <path
+          id="Path_3"
+          data-name="Path 3"
+          d="M647.064,367.641V519.759H617.472l-.874.427-39.2-80.623v80.2H546.836V367.641H577.4v2l39.1,80.431V367.641Z"
+          fill="var(--text-dark)"
+        />
+        <path
+          id="Path_4"
+          data-name="Path 4"
+          d="M915.759,489.62v30.566H805.58V368.067h30.566V489.62Z"
+          fill="var(--text-dark)"
+        />
+        <path
+          id="Path_5"
+          data-name="Path 5"
+          d="M701.8,397.922v91.7h49.048v-26.3h-25.59V432.753h56.156v87.433H671.232V367.357H781.412v30.566Z"
+          fill="var(--text-dark)"
+        />
+        <path
+          id="Path_6"
+          data-name="Path 6"
+          d="M970.494,397.212v32.7h79.614v30.566H970.494V489.62h79.614v30.566H939.928V366.646h110.179v30.566Z"
+          fill="var(--text-dark)"
+        />
+      </g>
+    </svg>
+  );
+}
