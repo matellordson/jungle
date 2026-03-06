@@ -6,10 +6,9 @@ import styled from "styled-components";
 const ButtonEl = styled.button`
   background-color: var(--accent);
   border: none;
-  padding: 0px 10px;
-  height: 30px;
+  padding: 10px;
   border-radius: 5px;
-  font-size: 15px;
+  font-size: 17px;
   color: var(--accent-bg-text);
   font-family: inherit;
   cursor: pointer;

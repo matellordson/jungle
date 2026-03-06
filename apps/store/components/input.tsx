@@ -1,4 +1,5 @@
 "use client";
+import { ChangeEventHandler } from "react";
 import styled from "styled-components";
 
 const InputEl = styled.input`
@@ -21,17 +22,22 @@ const InputEl = styled.input`
 export function Input({
   type,
   placeholder,
+  value,
+  onChange,
   width,
 }: {
   type?: string;
   placeholder?: string;
-  height?: string;
+  value: string;
+  onChange: ChangeEventHandler<HTMLInputElement>;
   width?: string;
 }) {
   return (
     <InputEl
       type={type}
       placeholder={placeholder}
+      value={value}
+      onChange={onChange}
       style={{
         width: width,
       }}

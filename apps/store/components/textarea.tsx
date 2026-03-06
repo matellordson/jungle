@@ -1,4 +1,5 @@
 "use client";
+import { ChangeEventHandler } from "react";
 import styled from "styled-components";
 
 const TextareaEl = styled.textarea`
@@ -6,7 +7,7 @@ const TextareaEl = styled.textarea`
   background-color: var(--highlight);
   padding: 10px 10px;
   font: inherit;
-  color: inherit;
+  color: var(--text-dark);
   border-radius: 5px;
   height: 100px;
   text-align: start;
@@ -22,6 +23,16 @@ const TextareaEl = styled.textarea`
   }
 `;
 
-export function TextArea({ placeholder }: { placeholder: string }) {
-  return <TextareaEl placeholder={placeholder} />;
+export function TextArea({
+  placeholder,
+  value,
+  onChange,
+}: {
+  placeholder: string;
+  value: string;
+  onChange: ChangeEventHandler<HTMLTextAreaElement>;
+}) {
+  return (
+    <TextareaEl placeholder={placeholder} value={value} onChange={onChange} />
+  );
 }

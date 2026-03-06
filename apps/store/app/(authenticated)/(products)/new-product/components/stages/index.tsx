@@ -66,8 +66,8 @@ export default function Stages() {
         <TextLogo />
         <MapControl>
           <Map currentStage={stage!} />
-          <MapControlDivider />
-          <Button>Continue</Button>
+          {/* <MapControlDivider /> */}
+          {/* Have something like profile i think */}
         </MapControl>
       </MapWrapper>
       <StageWrapper>
