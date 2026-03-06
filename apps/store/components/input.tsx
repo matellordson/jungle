@@ -6,18 +6,11 @@ const InputEl = styled.input`
   background-color: var(--highlight);
   padding: 10px 10px;
   font: inherit;
-  color: inherit;
+  color: var(--text-dark);
   border-radius: 5px;
-
-  /* iOS Safari fixes */
-  -webkit-appearance: none;
-  appearance: none;
-  -webkit-text-size-adjust: 100%;
-  touch-action: manipulation;
 
   &:focus {
     background-color: var(--highlight);
-    outline: none;
   }
 
   &::placeholder {
