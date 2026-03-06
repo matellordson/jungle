@@ -48,7 +48,7 @@ const FormItem = styled.div`
 
 export function Identity() {
   const [productName, setProductName] = useState("");
-  const [tagLine, setTagLine] = useState("");
+  const [tagline, setTagline] = useState("");
   const [description, setDescription] = useState("");
 
   return (
@@ -62,7 +62,16 @@ export function Identity() {
           You can save your progress and come back at any point.
         </StageDesc>
       </StageIntro>
-      <Form>
+      <Form
+        onSubmit={(e) => {
+          e.preventDefault();
+          console.log({
+            productName: productName,
+            tagline: tagline,
+            description: description,
+          });
+        }}
+      >
         <FormItem>
           <Input
             placeholder="Product name"
@@ -75,8 +84,8 @@ export function Identity() {
           <Input
             placeholder="Tagline / short description"
             name="tagline"
-            value={tagLine}
-            onChange={(e) => setTagLine(e.target.value)}
+            value={tagline}
+            onChange={(e) => setTagline(e.target.value)}
           />
         </FormItem>
         <FormItem>
