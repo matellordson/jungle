@@ -9,8 +9,15 @@ const InputEl = styled.input`
   color: inherit;
   border-radius: 5px;
 
+  /* iOS Safari fixes */
+  -webkit-appearance: none;
+  appearance: none;
+  -webkit-text-size-adjust: 100%;
+  touch-action: manipulation;
+
   &:focus {
     background-color: var(--highlight);
+    outline: none;
   }
 
   &::placeholder {
