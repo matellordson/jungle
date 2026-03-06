@@ -27,12 +27,19 @@ export function TextArea({
   placeholder,
   value,
   onChange,
+  name,
 }: {
   placeholder: string;
   value: string;
   onChange: ChangeEventHandler<HTMLTextAreaElement>;
+  name: string;
 }) {
   return (
-    <TextareaEl placeholder={placeholder} value={value} onChange={onChange} />
+    <TextareaEl
+      placeholder={placeholder}
+      value={value}
+      onChange={onChange}
+      name={name}
+    />
   );
 }

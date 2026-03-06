@@ -24,11 +24,13 @@ export function Input({
   placeholder,
   value,
   onChange,
+  name,
   width,
 }: {
   type?: string;
   placeholder?: string;
   value: string;
+  name: string;
   onChange: ChangeEventHandler<HTMLInputElement>;
   width?: string;
 }) {
@@ -38,6 +40,7 @@ export function Input({
       placeholder={placeholder}
       value={value}
       onChange={onChange}
+      name={name}
       style={{
         width: width,
       }}

@@ -66,6 +66,7 @@ export function Identity() {
         <FormItem>
           <Input
             placeholder="Product name"
+            name="productName"
             value={productName}
             onChange={(e) => setProductName(e.target.value)}
           />
@@ -73,6 +74,7 @@ export function Identity() {
         <FormItem>
           <Input
             placeholder="Tagline / short description"
+            name="tagline"
             value={tagLine}
             onChange={(e) => setTagLine(e.target.value)}
           />
@@ -80,6 +82,7 @@ export function Identity() {
         <FormItem>
           <TextArea
             placeholder="Full description"
+            name="description"
             value={description}
             onChange={(e) => setDescription(e.target.value)}
           />
