@@ -66,12 +66,12 @@ export function Identity() {
         <FormItem>
           <TextArea placeholder="Full description" />
         </FormItem>
-        <FormItem>
+        {/* <FormItem>
           <SelectInput options={category} />
         </FormItem>
         <FormItem>
           <Tags />
-        </FormItem>
+        </FormItem> */}
       </Form>
     </Wrapper>
   );
