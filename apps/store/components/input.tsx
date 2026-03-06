@@ -8,7 +8,6 @@ const InputEl = styled.input`
   font: inherit;
   color: inherit;
   border-radius: 5px;
-  font-size: 15px;
 
   &:focus {
     background-color: var(--highlight);

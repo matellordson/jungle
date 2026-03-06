@@ -8,7 +8,6 @@ const TextareaEl = styled.textarea`
   font: inherit;
   color: inherit;
   border-radius: 5px;
-  font-size: 15px;
   height: 100px;
   text-align: start;
   vertical-align: top;
