@@ -5,13 +5,12 @@ import Map from "./map";
 import { useState } from "react";
 import { Identity } from "./levels/Identity";
 import TextLogo from "../text-logo";
-import { Button } from "../../../../../../components/button";
 
 const Wrapper = styled.div`
   height: 100vh;
   width: 100vw;
   margin: auto;
-  padding: 0 5px;
+  padding: 10px 5px;
 
   @media only screen and (min-width: 1500px) {
     max-width: 1500px;
