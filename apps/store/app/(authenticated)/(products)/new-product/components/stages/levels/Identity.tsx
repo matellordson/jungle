@@ -112,7 +112,7 @@ export function Identity() {
           Let's add your product
         </StageTitle>
         <StageDesc>
-          You can save your progress and come back at any point.
+          Progress is automatically saved as draft at any point.
         </StageDesc>
       </StageIntro>
       <Form
