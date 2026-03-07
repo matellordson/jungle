@@ -20,6 +20,7 @@ const TextareaEl = styled.textarea`
 
   &::placeholder {
     color: var(--mute-text);
+    font-weight: inherit;
   }
 `;
 

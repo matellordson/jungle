@@ -16,6 +16,7 @@ const InputEl = styled.input`
 
   &::placeholder {
     color: var(--mute-text);
+    font-weight: inherit;
   }
 `;
 

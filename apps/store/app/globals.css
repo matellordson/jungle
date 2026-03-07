@@ -2,7 +2,6 @@
   --background: #fbf8f4;
   --foreground: #f6efe5;
   --highlight: #ffffff;
-  --shadow: 0 1px 3px #b4a08240;
   --border: 1px solid #eae4d9;
   --accent: #137771;
   --accent-bg-text: #f6efe5;
@@ -27,7 +26,6 @@
     --background: #020e0e;
     --foreground: #041514;
     --highlight: #0b1e1e;
-    --shadow: 0 2px 5px rgba(0, 2, 2, 0.95);
     --border: 1px solid #052421;
     --input-bg: #13777013;
     --toolkit-bg: #1e1e1e;

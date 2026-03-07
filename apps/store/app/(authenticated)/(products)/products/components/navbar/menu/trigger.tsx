@@ -35,7 +35,6 @@ const Items = styled.div`
   border-radius: 5px;
   border: var(--border);
   width: 250px;
-  box-shadow: var(--shadow);
 `;
 
 export function MenuTrigger({

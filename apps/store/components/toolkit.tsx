@@ -19,7 +19,6 @@ const ToolkitContent = styled.i`
   font-size: 13px;
   color: var(--toolkit-text);
   border-radius: 5px;
-  box-shadow: var(--shadow);
 `;
 
 export function Toolkit({
