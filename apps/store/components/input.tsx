@@ -4,14 +4,14 @@ import styled from "styled-components";
 
 const InputEl = styled.input`
   border: var(--border);
-  background-color: var(--highlight);
+  background-color: var(--background);
   padding: 10px 10px;
   font: inherit;
   color: var(--text-dark);
   border-radius: 5px;
 
   &:focus {
-    background-color: var(--highlight);
+    background-color: var(--input-bg);
   }
 
   &::placeholder {

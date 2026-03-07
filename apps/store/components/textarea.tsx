@@ -4,7 +4,7 @@ import styled from "styled-components";
 
 const TextareaEl = styled.textarea`
   border: var(--border);
-  background-color: var(--highlight);
+  background-color: var(--background);
   padding: 10px 10px;
   font: inherit;
   color: var(--text-dark);
@@ -15,7 +15,7 @@ const TextareaEl = styled.textarea`
   resize: none;
 
   &:focus {
-    background-color: var(--highlight);
+    background-color: var(--input-bg);
   }
 
   &::placeholder {

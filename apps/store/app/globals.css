@@ -6,6 +6,7 @@
   --border: 1px solid #eae4d9;
   --accent: #137771;
   --accent-bg-text: #f6efe5;
+  --input-bg: #1377700b;
   --toolkit-bg: #000000;
   --toolkit-text: #ffffff;
   --text-dark: #363f3f;
@@ -28,6 +29,7 @@
     --highlight: #0b1e1e;
     --shadow: 0 2px 5px rgba(0, 2, 2, 0.95);
     --border: 1px solid #052421;
+    --input-bg: #13777013;
     --toolkit-bg: #1e1e1e;
     --toolkit-text: #dedede;
     --text-dark: #f4f6f5;
