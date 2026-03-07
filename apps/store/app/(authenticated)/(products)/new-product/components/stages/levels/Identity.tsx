@@ -103,7 +103,6 @@ export function Identity() {
         <FormItem>
           <Tags />
         </FormItem> */}
-        <Button>I'm ready</Button>
       </Form>
     </Wrapper>
   );
