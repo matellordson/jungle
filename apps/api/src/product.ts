@@ -33,7 +33,7 @@ product.get("/mine", async (c) => {
   const address = c.get("address");
 
   const myProducts = await withRLSContext(address, async (txn: any) => {
-    return await txn`SELECT * FROM product`;
+    return await txn`SELECT * FROM products`;
   });
 
   return c.json(myProducts);
@@ -53,7 +53,7 @@ product.get("/debug", async (c) => {
     `;
 
     const allProducts = await txn`
-      SELECT id, name, owner_address FROM product
+      SELECT id, name, owner FROM products
     `;
 
     const allUsers = await txn`
@@ -75,12 +75,21 @@ product.get("/debug", async (c) => {
 // Create product
 product.post("/create", async (c) => {
   const address = c.get("address");
-  const { name, cover_image } = await c.req.json();
+  const { store, name, tagline, categories, published } = await c.req.json();
 
   const newProduct = await withRLSContext(address, async (txn: any) => {
+    // Get current user's ID
+    const [user] = await txn`
+      SELECT id FROM users WHERE wallet_address = ${address}
+    `;
+
+    if (!user) {
+      throw new Error("User not found");
+    }
+
     const [product] = await txn`
-      INSERT INTO product (name, cover_image, owner_address)
-      VALUES (${name}, ${cover_image}, ${address})
+      INSERT INTO products (owner, store, name, tagline, categories, published)
+      VALUES (${user.id}, ${store}, ${name}, ${tagline}, ${categories}, ${published || false})
       RETURNING *
     `;
     return product;
@@ -93,12 +102,18 @@ product.post("/create", async (c) => {
 product.put("/:id", async (c) => {
   const address = c.get("address");
   const productId = c.req.param("id");
-  const { name, cover_image } = await c.req.json();
+  const { store, name, tagline, categories, published } = await c.req.json();
 
   const updatedProduct = await withRLSContext(address, async (txn: any) => {
     const [product] = await txn`
-      UPDATE product
-      SET name = ${name}, cover_image = ${cover_image}
+      UPDATE products
+      SET 
+        store = COALESCE(${store}, store),
+        name = COALESCE(${name}, name),
+        tagline = COALESCE(${tagline}, tagline),
+        categories = COALESCE(${categories}, categories),
+        published = COALESCE(${published}, published),
+        updated_at = NOW()
       WHERE id = ${productId}
       RETURNING *
     `;
@@ -119,7 +134,7 @@ product.delete("/:id", async (c) => {
 
   const deletedProduct = await withRLSContext(address, async (txn: any) => {
     const [product] = await txn`
-      DELETE FROM product
+      DELETE FROM products
       WHERE id = ${productId}
       RETURNING *
     `;

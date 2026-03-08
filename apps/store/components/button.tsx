@@ -1,7 +1,17 @@
 "use client";
 
+import { LoaderCircle } from "lucide-react";
 import React from "react";
 import styled from "styled-components";
+import { keyframes } from "styled-components";
+
+const spin = keyframes`
+from {
+  transform: rotate(0deg);
+} to {
+  transform: rotate(360deg);
+}
+`;
 
 const ButtonEl = styled.button`
   background-color: var(--accent);
@@ -13,6 +23,25 @@ const ButtonEl = styled.button`
   font-family: inherit;
   cursor: pointer;
   font-weight: 400;
+  display: flex;
+  justify-content: center;
+  transition: all 0.4s ease;
+
+  &.pending {
+    cursor: not-allowed;
+    opacity: 60%;
+  }
+`;
+
+const LoadingWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 5px;
+
+  & svg {
+    color: var(--accent-bg-text);
+    animation: ${spin} infinite 1s forwards linear;
+  }
 `;
 
 export function Button({
@@ -21,12 +50,14 @@ export function Button({
   onClick,
   disabled,
   onSubmit,
+  isPending,
 }: {
   children: React.ReactNode;
   style?: React.CSSProperties;
   onClick?: React.FormEventHandler;
   disabled?: boolean;
   onSubmit?: React.FormEventHandler<HTMLButtonElement>;
+  isPending?: boolean | false;
 }) {
   return (
     <ButtonEl
@@ -34,8 +65,15 @@ export function Button({
       onClick={onClick}
       disabled={disabled}
       onSubmit={onSubmit}
+      className={isPending ? "pending" : ""}
     >
-      {children}
+      {isPending ? (
+        <LoadingWrapper>
+          <LoaderCircle size={20} /> {children}
+        </LoadingWrapper>
+      ) : (
+        <>{children}</>
+      )}
     </ButtonEl>
   );
 }

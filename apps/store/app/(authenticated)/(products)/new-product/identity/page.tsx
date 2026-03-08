@@ -1,9 +1,11 @@
 "use client";
 import styled from "styled-components";
-import { Input } from "../../../../../../../components/input";
-import Logo from "../../logo";
-import { Button } from "../../../../../../../components/button";
-import { useEffect, useState } from "react";
+import { FormEvent, useEffect, useState } from "react";
+import { Input } from "../../../../../components/input";
+import { Button } from "../../../../../components/button";
+import Logo from "../components/logo";
+import { redirect } from "next/navigation";
+import { LoaderCircle } from "lucide-react";
 
 const Wrapper = styled.div`
   padding: 0px 3px;
@@ -46,7 +48,7 @@ const CategoryWrapper = styled.div`
   width: 100%;
   border-radius: 5px;
   padding: 10px;
-  border: var(--border, 1px solid #ccc);
+  border: var(--border);
 `;
 
 const CategoryItems = styled.div`
@@ -76,15 +78,35 @@ const CategoryItem = styled.div`
   }
 `;
 
-export function Identity() {
+export default function Identity() {
   const [productName, setProductName] = useState("");
   const [tagline, setTagline] = useState("");
   const [selectedCategory, setSelectedCategory] = useState<string[]>([]);
+  const [isPosting, setIsPosting] = useState(false);
 
   const handleToggle = (val: string) => {
     setSelectedCategory((prev) =>
       prev.includes(val) ? prev.filter((i) => i !== val) : [...prev, val],
     );
+  };
+
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setIsPosting(true);
+    await fetch(`${process.env.NEXT_PUBLIC_API_URL}/product/create`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        store: "",
+        name: productName,
+        tagline: tagline,
+        categories: selectedCategory,
+      }),
+      credentials: "include",
+    });
+    redirect("/new-product/media");
   };
 
   const category = [
@@ -115,16 +137,7 @@ export function Identity() {
           Progress is automatically saved as draft at any point.
         </StageDesc>
       </StageIntro>
-      <Form
-        onSubmit={(e) => {
-          e.preventDefault();
-          console.log({
-            productName: productName,
-            tagline: tagline,
-            category: selectedCategory,
-          });
-        }}
-      >
+      <Form onSubmit={handleSubmit}>
         <FormItem>
           <Input
             placeholder="Untitled product"
@@ -160,7 +173,7 @@ export function Identity() {
             </CategoryItems>
           </CategoryWrapper>
         </FormItem>
-        <Button>I'm ready</Button>
+        <Button isPending={isPosting == true}>I'm ready</Button>
       </Form>
     </Wrapper>
   );
