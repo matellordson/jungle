@@ -4,8 +4,6 @@ import styled from "styled-components";
 import TextLogo from "./components/text-logo";
 
 const Wrapper = styled.div`
-  height: 100vh;
-  width: 100vw;
   margin: auto;
   padding: 10px 5px;
 

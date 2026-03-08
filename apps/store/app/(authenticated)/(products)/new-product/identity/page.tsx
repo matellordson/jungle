@@ -1,11 +1,10 @@
 "use client";
 import styled from "styled-components";
-import { FormEvent, useEffect, useState } from "react";
+import { FormEvent, useState } from "react";
 import { Input } from "../../../../../components/input";
 import { Button } from "../../../../../components/button";
 import Logo from "../components/logo";
 import { redirect } from "next/navigation";
-import { LoaderCircle } from "lucide-react";
 
 const Wrapper = styled.div`
   padding: 0px 3px;
