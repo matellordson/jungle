@@ -41,6 +41,7 @@ const LoadingWrapper = styled.div`
   & svg {
     color: var(--accent-bg-text);
     animation: ${spin} infinite 1s forwards linear;
+    transform-origin: center;
   }
 `;
 

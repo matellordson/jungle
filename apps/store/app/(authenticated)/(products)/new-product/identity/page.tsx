@@ -172,7 +172,7 @@ export default function Identity() {
             </CategoryItems>
           </CategoryWrapper>
         </FormItem>
-        <Button isPending={isPosting == true}>I'm ready</Button>
+        <Button isPending={true}>I'm ready</Button>
       </Form>
     </Wrapper>
   );
