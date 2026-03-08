@@ -66,11 +66,6 @@ const CategoryItem = styled.div`
   transition: all 0.2s ease-in-out;
   user-select: none;
 
-  &:hover {
-    background-color: var(--foreground);
-    color: var(--text-light);
-  }
-
   &.active {
     background-color: var(--foreground);
     color: var(--text-light);
