@@ -3,6 +3,7 @@
   --foreground: #f6efe5;
   --highlight: #ffffff;
   --border: 1px solid #eae4d9;
+  --border-bg: #eae4d9;
   --accent: #137771;
   --accent-bg-text: #f6efe5;
   --input-bg: #1377700b;
@@ -27,6 +28,7 @@
     --foreground: #041514;
     --highlight: #0b1e1e;
     --border: 1px solid #052421;
+    --border-bg: #052421;
     --input-bg: #13777013;
     --toolkit-bg: #1e1e1e;
     --toolkit-text: #dedede;
@@ -62,6 +64,29 @@ body {
   padding: 0;
   margin: 0;
   user-select: none;
+
+  scrollbar-width: thin;
+  scrollbar-color: var(--border-bg) transparent;
+
+  &::-webkit-scrollbar {
+    width: 8px;
+    height: 5px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: var(--border-bg);
+    border-radius: 10px;
+    border: 1px solid transparent;
+    background-clip: content-box;
+  }
+
+  &::-webkit-scrollbar-thumb:hover {
+    background-color: var(--accent);
+  }
 }
 
 a {
