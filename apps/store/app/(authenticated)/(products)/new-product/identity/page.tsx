@@ -128,7 +128,7 @@ export default function Identity() {
           Let's add your product
         </StageTitle>
         <StageDesc>
-          Progress is automatically saved as draft at any point.
+          Continuing to the next step saves your progress as a draft.
         </StageDesc>
       </StageIntro>
       <Form onSubmit={handleSubmit}>

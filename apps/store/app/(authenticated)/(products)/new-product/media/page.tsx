@@ -27,6 +27,11 @@ const StageTitle = styled.div`
   justify-content: center;
 `;
 
+const StageDesc = styled.p`
+  font-size: 14px;
+  padding-top: 5px;
+`;
+
 const Form = styled.form`
   display: flex;
   flex-direction: column;
@@ -190,13 +195,14 @@ const VideoIndicator = styled.div`
   pointer-events: none;
   opacity: 0;
   transition: opacity 0.15s;
+  color: white;
 
   ${GalleryItem}:hover & {
     opacity: 1;
   }
 
   & svg {
-    color: var(--text-dark);
+    color: white;
   }
 `;
 
@@ -479,6 +485,7 @@ export default function Media() {
           <Logo />
           What does it look like?
         </StageTitle>
+        <StageDesc>The first item will be used as the cover image. </StageDesc>
       </StageIntro>
       <Form onSubmit={handleSubmit}>
         <input
