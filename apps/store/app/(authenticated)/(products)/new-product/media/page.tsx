@@ -208,13 +208,13 @@ const VideoIndicator = styled.div`
 
 const RemoveBtn = styled.button`
   position: absolute;
-  top: -6px;
-  right: -6px;
+  top: 1px;
+  right: 1px;
   width: 20px;
   height: 20px;
-  border-radius: 50%;
-  border: 1.5px solid var(--border-bg);
-  background: var(--background);
+  border-radius: 100%;
+  border: none;
+  background: rgba(0, 0, 0, 0.6);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -231,25 +231,12 @@ const RemoveBtn = styled.button`
 
   svg {
     pointer-events: none;
-    color: var(--text-dark);
-  }
-
-  svg:hover {
-    color: var(--red-bg-text);
+    color: white;
   }
 
   ${GalleryItem}:hover & {
     opacity: 1;
     transform: scale(1);
-  }
-
-  &:hover {
-    background: var(--red-bg);
-    border: none;
-  }
-
-  &:active {
-    transform: scale(0.9);
   }
 `;
 
@@ -301,6 +288,7 @@ export default function Media() {
   const dragIndexRef = useRef<number | null>(null);
   const [dragOverIndex, setDragOverIndex] = useState<number | null>(null);
   const [draggingIndex, setDraggingIndex] = useState<number | null>(null);
+  const touchStartPos = useRef<{ x: number; y: number } | null>(null);
 
   const validateVideo = (
     file: File,
@@ -445,10 +433,47 @@ export default function Media() {
     setDragOverIndex(null);
     setDraggingIndex(null);
   };
+
   const onItemDragEnd = () => {
     dragIndexRef.current = null;
     setDragOverIndex(null);
     setDraggingIndex(null);
+  };
+
+  const onItemTouchStart = (e: React.TouchEvent, index: number) => {
+    dragIndexRef.current = index;
+    setDraggingIndex(index);
+    const touch = e.touches[0]!;
+    touchStartPos.current = { x: touch.clientX, y: touch.clientY };
+  };
+
+  const onItemTouchMove = (e: React.TouchEvent) => {
+    e.preventDefault();
+    const touch = e.touches[0]!;
+    const el = document.elementFromPoint(touch.clientX, touch.clientY);
+    const item = el?.closest("[data-gallery-index]");
+    if (item) {
+      const overIndex = Number(item.getAttribute("data-gallery-index"));
+      if (overIndex !== dragIndexRef.current) setDragOverIndex(overIndex);
+    }
+  };
+
+  const onItemTouchEnd = () => {
+    if (dragIndexRef.current !== null && dragOverIndex !== null) {
+      const fromIndex = dragIndexRef.current;
+      const toIndex = dragOverIndex;
+      setUploadedFiles((prev) => {
+        const updated = [...prev];
+        const [moved] = updated.splice(fromIndex, 1);
+        if (moved === undefined) return prev;
+        updated.splice(toIndex, 0, moved);
+        return updated;
+      });
+    }
+    dragIndexRef.current = null;
+    setDragOverIndex(null);
+    setDraggingIndex(null);
+    touchStartPos.current = null;
   };
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
@@ -468,12 +493,12 @@ export default function Media() {
       formData.append(type === "video" ? "videos" : "media", file),
     );
     formData.append("mediaOrder", JSON.stringify(mediaPayload));
-    // await fetch(`${process.env.NEXT_PUBLIC_API_URL}/product/create`, {
-    //   method: "POST",
+
+    // await fetch(`${process.env.NEXT_PUBLIC_API_URL}/product/media`, {
+    //   method: "PUT",
     //   body: formData,
     //   credentials: "include",
     // });
-    // redirect("/new-product/media");
 
     setIsPosting(false);
   };
@@ -485,7 +510,7 @@ export default function Media() {
           <Logo />
           What does it look like?
         </StageTitle>
-        <StageDesc>The first item will be used as the cover image. </StageDesc>
+        <StageDesc>The first item will be used as the cover image.</StageDesc>
       </StageIntro>
       <Form onSubmit={handleSubmit}>
         <input
@@ -543,6 +568,7 @@ export default function Media() {
                 ({ id, preview, file, type, duration }, index) => (
                   <GalleryItem
                     key={id}
+                    data-gallery-index={index}
                     title={file.name}
                     draggable
                     $isDragging={draggingIndex === index}
@@ -551,6 +577,9 @@ export default function Media() {
                     onDragOver={(e) => onItemDragOver(e, index)}
                     onDrop={(e) => onItemDrop(e, index)}
                     onDragEnd={onItemDragEnd}
+                    onTouchStart={(e) => onItemTouchStart(e, index)}
+                    onTouchMove={onItemTouchMove}
+                    onTouchEnd={onItemTouchEnd}
                   >
                     {type === "image" ? (
                       <>
