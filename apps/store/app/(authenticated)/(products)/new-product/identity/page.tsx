@@ -5,6 +5,7 @@ import { Input } from "../../../../../components/input";
 import { Button } from "../../../../../components/button";
 import Logo from "../components/logo";
 import { redirect } from "next/navigation";
+import { v4 as uuidv4 } from "uuid";
 
 const Wrapper = styled.div`
   padding: 0px 3px;
@@ -63,12 +64,12 @@ const CategoryItem = styled.div`
   border: var(--border);
   cursor: pointer;
   color: var(--mute-text);
-  transition: all 0.2s ease-in-out;
+  transition: all 0.2s ease;
   user-select: none;
 
   &.active {
-    background-color: var(--foreground);
-    color: var(--text-light);
+    background-color: var(--accent);
+    color: var(--accent-bg-text);
   }
 `;
 
@@ -77,6 +78,8 @@ export default function Identity() {
   const [tagline, setTagline] = useState("");
   const [selectedCategory, setSelectedCategory] = useState<string[]>([]);
   const [isPosting, setIsPosting] = useState(false);
+
+  const newProductId = uuidv4();
 
   const handleToggle = (val: string) => {
     setSelectedCategory((prev) =>
@@ -93,6 +96,7 @@ export default function Identity() {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
+        id: newProductId,
         store: "",
         name: productName,
         tagline: tagline,
@@ -100,7 +104,7 @@ export default function Identity() {
       }),
       credentials: "include",
     });
-    redirect("/new-product/media");
+    redirect(`/new-product/${newProductId}/media`);
   };
 
   const category = [
@@ -112,21 +116,11 @@ export default function Identity() {
     { value: "jewellery", label: "Jewellery" },
     { value: "watches", label: "Watches" },
     { value: "sunglasses-eyewear", label: "Sunglasses & Eyewear" },
-    { value: "activewear", label: "Activewear" },
-    { value: "swimwear", label: "Swimwear" },
-    { value: "outerwear", label: "Outerwear & Coats" },
-    { value: "lingerie-underwear", label: "Lingerie & Underwear" },
-    { value: "socks-hosiery", label: "Socks & Hosiery" },
-    { value: "hats-caps", label: "Hats & Caps" },
-    { value: "scarves-belts", label: "Scarves & Belts" },
   ];
   return (
     <Wrapper>
       <StageIntro>
-        <StageTitle>
-          <Logo />
-          Let's add your product
-        </StageTitle>
+        <StageTitle>Let's add your product</StageTitle>
         <StageDesc>
           Your progress is saved as a draft until you publish.
         </StageDesc>

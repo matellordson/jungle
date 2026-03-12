@@ -49,14 +49,12 @@ export function Button({
   children,
   style,
   onClick,
-  disabled,
   onSubmit,
   isPending,
 }: {
   children: React.ReactNode;
   style?: React.CSSProperties;
   onClick?: React.FormEventHandler;
-  disabled?: boolean;
   onSubmit?: React.FormEventHandler<HTMLButtonElement>;
   isPending?: boolean | false;
 }) {
@@ -64,7 +62,7 @@ export function Button({
     <ButtonEl
       style={style}
       onClick={onClick}
-      disabled={disabled}
+      disabled={isPending}
       onSubmit={onSubmit}
       className={isPending ? "pending" : ""}
     >

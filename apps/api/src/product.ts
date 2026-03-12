@@ -75,7 +75,8 @@ product.get("/debug", async (c) => {
 // Create product
 product.post("/create", async (c) => {
   const address = c.get("address");
-  const { store, name, tagline, categories, published } = await c.req.json();
+  const { id, store, name, tagline, categories, published } =
+    await c.req.json();
 
   const newProduct = await withRLSContext(address, async (txn: any) => {
     // Get current user's ID
@@ -88,8 +89,8 @@ product.post("/create", async (c) => {
     }
 
     const [product] = await txn`
-      INSERT INTO products (owner, store, name, tagline, categories, published)
-      VALUES (${user.id}, ${store}, ${name}, ${tagline}, ${categories}, ${published || false})
+      INSERT INTO products (id, owner, store, name, tagline, categories, published)
+      VALUES (${id}, ${user.id}, ${store}, ${name}, ${tagline}, ${categories}, ${published || false})
       RETURNING *
     `;
     return product;
@@ -102,22 +103,28 @@ product.post("/create", async (c) => {
 product.put("/:id", async (c) => {
   const address = c.get("address");
   const productId = c.req.param("id");
-  const { store, name, tagline, categories, published } = await c.req.json();
+  const { store, name, tagline, categories, published, image_url, details } =
+    await c.req.json();
 
   const updatedProduct = await withRLSContext(address, async (txn: any) => {
     const [product] = await txn`
-      UPDATE products
-      SET 
-        store = COALESCE(${store}, store),
-        name = COALESCE(${name}, name),
-        tagline = COALESCE(${tagline}, tagline),
-        categories = COALESCE(${categories}, categories),
-        published = COALESCE(${published}, published),
-        updated_at = NOW()
-      WHERE id = ${productId}
-      RETURNING *
-    `;
+    UPDATE products
+    SET 
+      store = COALESCE(${store ?? null}, store),
+      name = COALESCE(${name ?? null}, name),
+      tagline = COALESCE(${tagline ?? null}, tagline),
+      categories = COALESCE(${categories ?? null}, categories),
+      published = COALESCE(${published ?? null}, published),
+      updated_at = NOW(),
+      image_url = COALESCE(${image_url ?? null}, image_url),
+      details = COALESCE(${details ?? null}, details)
+    WHERE id = ${productId}::uuid
+    RETURNING *
+  `;
     return product;
+  }).catch((err) => {
+    console.error("RLS/DB error:", err);
+    return null;
   });
 
   if (!updatedProduct) {

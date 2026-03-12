@@ -1,9 +1,10 @@
 "use client";
 import styled, { css, keyframes } from "styled-components";
 import { FormEvent, useState, useRef, useCallback } from "react";
-import { Button } from "../../../../../components/button";
-import Logo from "../components/logo";
+import { Button } from "../../../../../../components/button";
+import Logo from "../../components/logo";
 import { ImagePlus, X, Video, GripVertical } from "lucide-react";
+import { redirect } from "next/navigation";
 
 const fadeIn = keyframes`from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: translateY(0); }`;
 
@@ -278,7 +279,7 @@ function formatDuration(sec: number) {
   return `${m}:${s.toString().padStart(2, "0")}`;
 }
 
-export default function Media() {
+export default function MediaComponent({ productId }: { productId: string }) {
   const [isPosting, setIsPosting] = useState(false);
   const [uploadedFiles, setUploadedFiles] = useState<UploadedFile[]>([]);
   const [isDragging, setIsDragging] = useState(false);
@@ -477,39 +478,48 @@ export default function Media() {
   };
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    setIsPosting(true);
-
-    const mediaPayload = uploadedFiles.map((f, index) => ({
-      order: index,
-      type: f.type,
-      filename: f.file.name,
-      size: f.file.size,
-      ...(f.duration !== undefined && { duration: Math.round(f.duration) }),
-    }));
-
-    const formData = new FormData();
-    uploadedFiles.forEach(({ file, type }) =>
-      formData.append(type === "video" ? "videos" : "media", file),
-    );
-    formData.append("mediaOrder", JSON.stringify(mediaPayload));
-
+    // e.preventDefault();
+    // setIsPosting(true);
+    // const mediaPayload = uploadedFiles.map((f, index) => ({
+    //   order: index,
+    //   type: f.type,
+    //   filename: f.file.name,
+    //   size: f.file.size,
+    //   ...(f.duration !== undefined && { duration: Math.round(f.duration) }),
+    // }));
+    // const formData = new FormData();
+    // uploadedFiles.forEach(({ file, type }) =>
+    //   formData.append(type === "video" ? "videos" : "media", file),
+    // );
+    // formData.append("mediaOrder", JSON.stringify(mediaPayload));
     // await fetch(`${process.env.NEXT_PUBLIC_API_URL}/product/media`, {
     //   method: "PUT",
     //   body: formData,
     //   credentials: "include",
     // });
+    // setIsPosting(false);
 
+    e.preventDefault();
+    setIsPosting(true);
+
+    await fetch(`${process.env.NEXT_PUBLIC_API_URL}/product/${productId}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        image_url: "inserted",
+      }),
+      credentials: "include",
+    });
     setIsPosting(false);
+    redirect(`/new-product/${productId}/details`);
   };
 
   return (
     <Wrapper>
       <StageIntro>
-        <StageTitle>
-          <Logo />
-          What does it look like?
-        </StageTitle>
+        <StageTitle>What does it look like?</StageTitle>
         <StageDesc>The first item will be used as the cover image.</StageDesc>
       </StageIntro>
       <Form onSubmit={handleSubmit}>
