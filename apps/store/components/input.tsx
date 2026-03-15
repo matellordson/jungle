@@ -28,7 +28,7 @@ export function Input({
   name,
   width,
 }: {
-  type?: "text";
+  type?: string;
   placeholder?: string;
   value: string;
   name: string;

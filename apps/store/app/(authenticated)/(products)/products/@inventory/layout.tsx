@@ -42,7 +42,10 @@ export default function InventoryLayout() {
             title="Edit"
             items={
               <ItemWrapper>
-                <MenuItemsLink title="New..." link="/new-product/identity" />
+                <MenuItemsLink
+                  title="New product"
+                  link="/new-product/identity"
+                />
               </ItemWrapper>
             }
           />

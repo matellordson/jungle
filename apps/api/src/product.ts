@@ -103,8 +103,17 @@ product.post("/create", async (c) => {
 product.put("/:id", async (c) => {
   const address = c.get("address");
   const productId = c.req.param("id");
-  const { store, name, tagline, categories, published, image_url, details } =
-    await c.req.json();
+  const {
+    store,
+    name,
+    tagline,
+    categories,
+    published,
+    image_url,
+    details,
+    variant,
+    variantPrices,
+  } = await c.req.json();
 
   const updatedProduct = await withRLSContext(address, async (txn: any) => {
     const [product] = await txn`
@@ -117,7 +126,9 @@ product.put("/:id", async (c) => {
       published = COALESCE(${published ?? null}, published),
       updated_at = NOW(),
       image_url = COALESCE(${image_url ?? null}, image_url),
-      details = COALESCE(${details ?? null}, details)
+      details = COALESCE(${details ?? null}, details),
+      variant = COALESCE(${variant ?? null}, variant),
+      variant_prices = COALESCE(${variantPrices ?? null}, variant_prices)
     WHERE id = ${productId}::uuid
     RETURNING *
   `;
@@ -132,6 +143,24 @@ product.put("/:id", async (c) => {
   }
 
   return c.json({ success: true, product: updatedProduct });
+});
+
+product.get("/:id/variant", async (c) => {
+  const address = c.get("address");
+  const productId = c.req.param("id");
+
+  const getProductVariants = await withRLSContext(address, async (txn: any) => {
+    const [variant] = await txn`
+    SELECT variant FROM products WHERE id = ${productId}`;
+    console.log(variant);
+    return variant;
+  });
+
+  if (!getProductVariants) {
+    return c.json({ error: "Product not found or unauthorized" }, 404);
+  }
+
+  return c.json({ success: true, variant: getProductVariants.variant });
 });
 
 // Delete product - RLS blocks if not owner

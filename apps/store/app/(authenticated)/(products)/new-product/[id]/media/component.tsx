@@ -512,7 +512,6 @@ export default function MediaComponent({ productId }: { productId: string }) {
       }),
       credentials: "include",
     });
-    setIsPosting(false);
     redirect(`/new-product/${productId}/details`);
   };
 

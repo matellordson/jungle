@@ -427,8 +427,7 @@ export default function DetailsComponent({ productId }: { productId: string }) {
       credentials: "include",
     });
 
-    setIsPosting(false);
-    // redirect(`/new-product/${productId}/details`);
+    redirect(`/new-product/${productId}/variant`);
   };
 
   return (
@@ -520,7 +519,7 @@ export default function DetailsComponent({ productId }: { productId: string }) {
           </GalleryBox>
         )}
 
-        <Button isPending={isPosting}>Look's good</Button>
+        <Button isPending={isPosting}>Complete</Button>
       </Form>
     </Wrapper>
   );

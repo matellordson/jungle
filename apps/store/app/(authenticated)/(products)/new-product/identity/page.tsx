@@ -49,6 +49,7 @@ const CategoryWrapper = styled.div`
   border-radius: 5px;
   padding: 10px;
   border: var(--border);
+  background-color: var(--foreground);
 `;
 
 const CategoryItems = styled.div`
@@ -66,6 +67,7 @@ const CategoryItem = styled.div`
   color: var(--mute-text);
   transition: all 0.2s ease;
   user-select: none;
+  background-color: var(--background);
 
   &.active {
     background-color: var(--accent);
