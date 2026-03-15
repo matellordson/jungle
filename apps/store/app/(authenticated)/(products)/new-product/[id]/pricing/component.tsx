@@ -158,7 +158,7 @@ export default function VariantPricingComponent({
     await fetch(`${process.env.NEXT_PUBLIC_API_URL}/product/${productId}`, {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ variantPrices: prices }),
+      body: JSON.stringify({ variantPrices: prices, published: true }),
       credentials: "include",
     });
     redirect(`/products`);

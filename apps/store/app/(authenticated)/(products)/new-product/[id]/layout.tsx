@@ -20,7 +20,7 @@ export default async function Layout({
   });
   const data = await res.json();
 
-  const products = data.products ?? data ?? [];
+  const products = data ?? [];
   const exists = products.some((product: { id: string }) => product.id === id);
 
   if (!exists) {

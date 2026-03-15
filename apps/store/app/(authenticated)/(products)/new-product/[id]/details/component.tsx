@@ -406,25 +406,33 @@ export default function DetailsComponent({ productId }: { productId: string }) {
     e.preventDefault();
     setIsPosting(true);
 
-    const formData = new FormData();
-    uploadedFiles.forEach(({ file }) => formData.append("pdfs", file));
-    formData.append(
-      "pdfOrder",
-      JSON.stringify(
-        uploadedFiles.map(({ file }, index) => ({
-          order: index,
-          filename: file.name,
-          size: file.size,
-        })),
-      ),
-    );
+    const orderedUrls: string[] = [];
+
+    for (const { file } of uploadedFiles) {
+      const formData = new FormData();
+      formData.append("network", "public");
+      formData.append("file", file);
+
+      const res = await fetch("https://uploads.pinata.cloud/v3/files", {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${process.env.NEXT_PUBLIC_PINATA_JWT}`,
+        },
+        body: formData,
+      });
+
+      const data = await res.json();
+      const cid = data.data.cid;
+      orderedUrls.push(
+        `https://${process.env.NEXT_PUBLIC_PINATA_GATEWAY}/ipfs/${cid}`,
+      );
+    }
 
     await fetch(`${process.env.NEXT_PUBLIC_API_URL}/product/${productId}`, {
       method: "PUT",
-      body: JSON.stringify({
-        details: "inserted",
-      }),
+      headers: { "Content-Type": "application/json" },
       credentials: "include",
+      body: JSON.stringify({ details: orderedUrls }),
     });
 
     redirect(`/new-product/${productId}/variant`);

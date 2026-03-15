@@ -5,6 +5,7 @@ import { Button } from "../../../../../../components/button";
 import Logo from "../../components/logo";
 import { ImagePlus, X, Video, GripVertical } from "lucide-react";
 import { redirect } from "next/navigation";
+import { PinataSDK } from "pinata";
 
 const fadeIn = keyframes`from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: translateY(0); }`;
 
@@ -280,6 +281,11 @@ function formatDuration(sec: number) {
 }
 
 export default function MediaComponent({ productId }: { productId: string }) {
+  const pinata = new PinataSDK({
+    pinataJwt: "",
+    pinataGateway: process.env.NEXT_PUBLIC_PINATA_GATEWAY!,
+  });
+
   const [isPosting, setIsPosting] = useState(false);
   const [uploadedFiles, setUploadedFiles] = useState<UploadedFile[]>([]);
   const [isDragging, setIsDragging] = useState(false);
@@ -478,43 +484,41 @@ export default function MediaComponent({ productId }: { productId: string }) {
   };
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
-    // e.preventDefault();
-    // setIsPosting(true);
-    // const mediaPayload = uploadedFiles.map((f, index) => ({
-    //   order: index,
-    //   type: f.type,
-    //   filename: f.file.name,
-    //   size: f.file.size,
-    //   ...(f.duration !== undefined && { duration: Math.round(f.duration) }),
-    // }));
-    // const formData = new FormData();
-    // uploadedFiles.forEach(({ file, type }) =>
-    //   formData.append(type === "video" ? "videos" : "media", file),
-    // );
-    // formData.append("mediaOrder", JSON.stringify(mediaPayload));
-    // await fetch(`${process.env.NEXT_PUBLIC_API_URL}/product/media`, {
-    //   method: "PUT",
-    //   body: formData,
-    //   credentials: "include",
-    // });
-    // setIsPosting(false);
-
     e.preventDefault();
     setIsPosting(true);
 
+    const orderedUrls: string[] = [];
+
+    for (const { file } of uploadedFiles) {
+      const formData = new FormData();
+      formData.append("network", "public");
+      formData.append("file", file);
+
+      const res = await fetch("https://uploads.pinata.cloud/v3/files", {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${process.env.NEXT_PUBLIC_PINATA_JWT}`,
+        },
+        body: formData,
+      });
+
+      const data = await res.json();
+
+      const cid = data.data.cid;
+      const fileUrl = `https://${process.env.NEXT_PUBLIC_PINATA_GATEWAY}/ipfs/${cid}`;
+      orderedUrls.push(fileUrl);
+    }
+
     await fetch(`${process.env.NEXT_PUBLIC_API_URL}/product/${productId}`, {
       method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        image_url: "inserted",
-      }),
+      headers: { "Content-Type": "application/json" },
       credentials: "include",
+      body: JSON.stringify({ image_url: orderedUrls }),
     });
+
+    setIsPosting(false);
     redirect(`/new-product/${productId}/details`);
   };
-
   return (
     <Wrapper>
       <StageIntro>
