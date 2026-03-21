@@ -4,14 +4,13 @@ import styled from "styled-components";
 const Wrapper = styled.div``;
 
 export const metadata: Metadata = {
-  title: "Products",
+  title: "Inventory",
 };
 
 export default function ProductLayout({
   children,
 }: {
   children: React.ReactNode;
-  product_modal: React.ReactNode;
 }) {
   return <Wrapper>{children}</Wrapper>;
 }
