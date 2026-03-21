@@ -1,3 +1,3 @@
 export default function Product() {
-  return null;
+  return <p>Product Page</p>;
 }
