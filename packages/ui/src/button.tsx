@@ -1,3 +1,4 @@
+import { MouseEventHandler } from "react";
 import styled from "styled-components";
 
 const ButtonEl = styled.button`
@@ -31,14 +32,18 @@ export function Button({
   type,
   disabled,
   loading,
+  onClick,
+  style,
 }: {
   children: React.ReactNode;
   type?: "button" | "submit" | "reset" | undefined;
   disabled?: boolean;
   loading?: boolean;
+  onClick?: MouseEventHandler<HTMLButtonElement> | undefined;
+  style?: any;
 }) {
   return (
-    <ButtonEl type={type} disabled={disabled}>
+    <ButtonEl type={type} disabled={disabled} onClick={onClick} style={style}>
       {loading ? (
         <Icon className="material-symbols-sharp">clock_loader_20</Icon>
       ) : (
