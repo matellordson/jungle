@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
-import "./globals.css";
+import "@repo/ui/styles/global.css";
 import "react-responsive-modal/styles.css";
 import { WagmiProvider } from "./providers";
 
@@ -20,6 +20,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
+      <head></head>
       <body data-vaul-drawer-wrapper className={`${rubik.variable}`}>
         <WagmiProvider>{children}</WagmiProvider>
       </body>

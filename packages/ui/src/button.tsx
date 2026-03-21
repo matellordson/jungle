@@ -1,33 +1,49 @@
-"use client";
-
-import React from "react";
 import styled from "styled-components";
 
 const ButtonEl = styled.button`
-  background-color: var(--accent);
-  border: none;
-  font-size: 17px;
-  padding: 10px 15px;
-  border-radius: 5px;
-  color: var(--accent-bg-text);
+  background-color: var(--foreground);
+  color: var(--background);
   font-family: inherit;
-  font-weight: 450;
+  font-size: 15px;
+  text-transform: uppercase;
+  height: 40px;
+  width: fit-content;
+  padding: 0 30px;
   cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+
+  &:disabled {
+    cursor: not-allowed;
+  }
+`;
+
+const Icon = styled.span`
+  font-size: 18px;
+  line-height: 1;
+  display: flex;
+  align-items: center;
 `;
 
 export function Button({
   children,
-  style,
-  onClick,
+  type,
   disabled,
+  loading,
 }: {
   children: React.ReactNode;
-  style?: React.CSSProperties;
-  onClick?: React.FormEventHandler;
+  type?: "button" | "submit" | "reset" | undefined;
   disabled?: boolean;
+  loading?: boolean;
 }) {
   return (
-    <ButtonEl style={style} onClick={onClick} disabled={disabled}>
+    <ButtonEl type={type} disabled={disabled}>
+      {loading ? (
+        <Icon className="material-symbols-sharp">clock_loader_20</Icon>
+      ) : (
+        ""
+      )}
       {children}
     </ButtonEl>
   );
