@@ -9,6 +9,8 @@ const InputEl = styled.input`
   font-family: inherit;
   outline: none;
   padding: 0 10px;
+  appearance: none;
+  -webkit-appearance: none;
 `;
 
 export function Input({

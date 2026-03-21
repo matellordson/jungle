@@ -14,6 +14,8 @@ const ButtonEl = styled.button`
   display: flex;
   align-items: center;
   gap: 5px;
+  appearance: none;
+  -webkit-appearance: none;
 
   &:disabled {
     cursor: not-allowed;
