@@ -1,7 +1,7 @@
 "use client";
 
 import styled from "styled-components";
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { Card } from "@repo/ui/card";
 import { Input } from "@repo/ui/input";
 import { Label } from "@repo/ui/label";
@@ -80,7 +80,7 @@ const CategoryItem = styled.div`
   gap: 5px;
 `;
 
-const CheckBox = styled.div`
+const CheckBox = styled.button`
   height: 20px;
   width: 20px;
   background-color: var(--background);
@@ -90,6 +90,10 @@ const CheckBox = styled.div`
   &.active {
     background-color: var(--accent);
   }
+
+  &:disabled {
+    cursor: not-allowed;
+  }
 `;
 
 export default function IdentityPage() {
@@ -97,6 +101,9 @@ export default function IdentityPage() {
   const [productTagline, setProductTagline] = useState("");
   const [selectedCategory, setSelectedCategory] = useState<string[]>([]);
   const [submitted, setSubmitted] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+
+  const newProductId = useRef(uuidv4()).current;
 
   const handleToggle = (val: string) => {
     setSelectedCategory((prev) =>
@@ -123,8 +130,6 @@ export default function IdentityPage() {
     { value: "espadrilles", label: "Espadrilles" },
   ];
 
-  const newProductId = uuidv4();
-
   const categoryError = selectedCategory.length === 0 ? "Required" : null;
 
   const nameError = !productName.trim()
@@ -144,6 +149,7 @@ export default function IdentityPage() {
     setSubmitted(true);
     if (categoryError || nameError || taglineError) return;
 
+    setIsLoading(true);
     await fetch(`${process.env.NEXT_PUBLIC_API_URL}/product/create`, {
       method: "POST",
       headers: {
@@ -182,6 +188,7 @@ export default function IdentityPage() {
                       <CheckBox
                         className={isActive ? "active" : ""}
                         onClick={() => handleToggle(item.value)}
+                        disabled={isLoading}
                       />
                       {item.label}
                     </CategoryItem>
@@ -206,6 +213,7 @@ export default function IdentityPage() {
                 id="productName"
                 value={productName}
                 onChange={(e) => setProductName(e.target.value)}
+                disabled={isLoading}
               />
             </FormItem>
 
@@ -222,16 +230,11 @@ export default function IdentityPage() {
                 id="productTagline"
                 value={productTagline}
                 onChange={(e) => setProductTagline(e.target.value)}
+                disabled={isLoading}
               />
             </FormItem>
 
-            <Button
-              type="submit"
-              disabled={
-                categoryError || nameError || taglineError ? true : false
-              }
-              loading={submitted}
-            >
+            <Button type="submit" disabled={isLoading} loading={isLoading}>
               submit
             </Button>
           </Form>

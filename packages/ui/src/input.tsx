@@ -11,16 +11,24 @@ const InputEl = styled.input`
   padding: 0 10px;
   appearance: none;
   -webkit-appearance: none;
+
+  &:disabled {
+    cursor: not-allowed;
+  }
 `;
 
 export function Input({
   id,
   value,
   onChange,
+  disabled,
 }: {
   id?: string | undefined;
   value?: string | number | readonly string[] | undefined;
   onChange?: ChangeEventHandler<HTMLInputElement> | undefined;
+  disabled?: boolean;
 }) {
-  return <InputEl id={id} value={value} onChange={onChange} />;
+  return (
+    <InputEl id={id} value={value} onChange={onChange} disabled={disabled} />
+  );
 }
