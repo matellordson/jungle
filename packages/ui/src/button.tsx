@@ -30,12 +30,6 @@ const Icon = styled.span`
   align-items: center;
 `;
 
-const PreloadIcon = styled(Icon)`
-  position: absolute;
-  opacity: 0;
-  pointer-events: none;
-`;
-
 export function Button({
   children,
   type,
@@ -53,9 +47,6 @@ export function Button({
 }) {
   return (
     <ButtonEl type={type} disabled={disabled} onClick={onClick} style={style}>
-      <PreloadIcon className="material-symbols-sharp">
-        clock_loader_20
-      </PreloadIcon>
       {loading ? (
         <Icon className="material-symbols-sharp">clock_loader_20</Icon>
       ) : (

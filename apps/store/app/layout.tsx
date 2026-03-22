@@ -20,7 +20,15 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <head></head>
+      <head>
+        <link
+          rel="preload"
+          href="https://fonts.gstatic.com/s/materialsymbolssharp/..."
+          as="font"
+          type="font/woff2"
+          crossOrigin="anonymous"
+        />
+      </head>
       <body data-vaul-drawer-wrapper className={`${rubik.variable}`}>
         <WagmiProvider>{children}</WagmiProvider>
       </body>
