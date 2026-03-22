@@ -147,6 +147,9 @@ button {
   color: inherit;
   background: transparent;
   border: none;
+  /* Allow text selection/typing — overrides the user-select: none on * */
+  user-select: auto;
+  -webkit-user-select: auto;
 }
 
 input,

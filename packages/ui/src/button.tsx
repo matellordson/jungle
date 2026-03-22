@@ -4,6 +4,7 @@ import styled from "styled-components";
 const ButtonEl = styled.button`
   background-color: var(--foreground);
   color: var(--background);
+  font-weight: inherit;
   font-family: inherit;
   font-size: 15px;
   text-transform: uppercase;
