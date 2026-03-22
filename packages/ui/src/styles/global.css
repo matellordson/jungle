@@ -47,6 +47,12 @@
   }
 } */
 
+html {
+  /* Safari auto-inflates font sizes in landscape — disable it */
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
 html,
 body {
   max-width: 1200px;
@@ -62,6 +68,8 @@ body {
   font-family: var(--font-Rubik);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  /* Disable iOS long-press callout menu on non-interactive elements */
+  -webkit-touch-callout: none;
 }
 
 * {
@@ -69,9 +77,10 @@ body {
   padding: 0;
   margin: 0;
   user-select: none;
-
   scrollbar-width: thin;
   scrollbar-color: var(--border-bg) transparent;
+  /* Remove iOS blue tap flash on everything */
+  -webkit-tap-highlight-color: transparent;
 
   &::-webkit-scrollbar {
     width: 8px;
@@ -98,6 +107,10 @@ a {
   color: var(--link-color);
   text-decoration: none;
   font-weight: 430;
+  /* Re-enable long-press callout on links */
+  -webkit-touch-callout: default;
+  /* Remove 300ms tap delay */
+  touch-action: manipulation;
 }
 
 svg {
@@ -111,10 +124,124 @@ svg {
   outline-width: 3px;
 } */
 
+/* Remove Safari focus outline (use :focus-visible above when ready) */
+:focus {
+  outline: none;
+}
+
+input,
+textarea,
+select,
+button {
+  /* Strip all iOS/Safari native styling */
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  /* iOS rounds corners on form elements — override */
+  border-radius: 0;
+  /* iOS adds an inner inset shadow to inputs — remove it */
+  box-shadow: none;
+  /* Safari doesn't inherit these from body unlike other browsers */
+  font-family: inherit;
+  font-size: inherit;
+  color: inherit;
+  background: transparent;
+  border: none;
+}
+
 input,
 textarea,
 select {
-  font-size: 16px !important;
-  appearance: none;
+  font-size: 16px !important; /* prevents iOS auto-zoom on focus (must be ≥16px) */
+}
+
+/* Remove iOS inner shadow specifically on text inputs */
+input[type="text"],
+input[type="email"],
+input[type="password"],
+input[type="search"],
+input[type="number"],
+input[type="tel"],
+input[type="url"],
+input[type="date"],
+input[type="time"],
+input[type="datetime-local"],
+textarea {
+  -webkit-appearance: none;
+  box-shadow: none;
+  outline: none;
+}
+
+/* Safari search input — remove the built-in X button and rounding */
+input[type="search"] {
+  -webkit-appearance: textfield;
+  outline-offset: -2px;
+}
+input[type="search"]::-webkit-search-decoration,
+input[type="search"]::-webkit-search-cancel-button,
+input[type="search"]::-webkit-search-results-button,
+input[type="search"]::-webkit-search-results-decoration {
+  -webkit-appearance: none;
+  display: none;
+}
+
+/* Remove spin buttons on number inputs */
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button,
+input[type="date"]::-webkit-inner-spin-button,
+input[type="time"]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+input[type="number"] {
+  -moz-appearance: textfield;
+}
+
+/* Remove IE/Edge select arrow */
+select::-ms-expand {
+  display: none;
+}
+
+button,
+[role="button"] {
+  cursor: pointer;
+  /* Remove 300ms tap delay */
+  touch-action: manipulation;
+}
+
+/* Safari headings sometimes get bold/size overrides */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-weight: inherit;
+  font-size: inherit;
+}
+
+ul,
+ol {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+
+img {
+  display: block;
+  max-width: 100%;
+  border: none;
+  -webkit-user-drag: none;
+  /* Re-enable long-press callout on images */
+  -webkit-touch-callout: default;
+}
+
+[contenteditable] {
+  -webkit-user-modify: read-write;
   -webkit-appearance: none;
 }

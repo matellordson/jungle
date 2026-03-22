@@ -16,6 +16,7 @@ const Wrapper = styled.div`
 
 const Heading = styled.p`
   text-transform: uppercase;
+  font-weight: 500;
 
   @media only screen and (min-width: 992px) {
     text-align: center;
@@ -23,7 +24,7 @@ const Heading = styled.p`
 `;
 
 const Main = styled.div`
-  margin-top: 80px;
+  margin-top: 50px;
   display: flex;
   flex-direction: column;
   gap: 30px;
@@ -51,6 +52,7 @@ const FormItem = styled.div`
   display: flex;
   flex-direction: column;
   gap: 8px;
+  font-size: 15px;
 `;
 
 const Icon = styled.span`
