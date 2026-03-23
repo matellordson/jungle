@@ -262,6 +262,7 @@ export default function ConnectWallet() {
                         authorizeWallet();
                       }
                     }}
+                    variant="default"
                   >
                     {isConnected ? "Authorize" : "Connect Wallet"}
                   </Button>
