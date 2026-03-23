@@ -1,10 +1,13 @@
 import { MouseEventHandler } from "react";
 import styled from "styled-components";
 
-const ButtonEl = styled.button`
-  background-color: var(--foreground);
-  color: var(--background);
-  font-weight: inherit;
+const ButtonEl = styled.button<{ variant: "default" | "outline" }>`
+  background-color: ${(props) =>
+    props.variant == "default" ? "var(--foreground)" : "var(--background)"};
+  color: ${(props) =>
+    props.variant == "default" ? "var(--background)" : "var(--foreground)"};
+  border: ${(props) => (props.variant == "default" ? "none" : "var(--border)")};
+  font-weight: 500;
   font-family: inherit;
   font-size: 15px;
   text-transform: uppercase;
@@ -37,6 +40,7 @@ export function Button({
   loading,
   onClick,
   style,
+  variant,
 }: {
   children: React.ReactNode;
   type?: "button" | "submit" | "reset" | undefined;
@@ -44,9 +48,16 @@ export function Button({
   loading?: boolean;
   onClick?: MouseEventHandler<HTMLButtonElement> | undefined;
   style?: any;
+  variant: "default" | "outline";
 }) {
   return (
-    <ButtonEl type={type} disabled={disabled} onClick={onClick} style={style}>
+    <ButtonEl
+      type={type}
+      disabled={disabled}
+      onClick={onClick}
+      style={style}
+      variant={variant}
+    >
       {loading ? (
         <Icon className="material-symbols-sharp">clock_loader_20</Icon>
       ) : (

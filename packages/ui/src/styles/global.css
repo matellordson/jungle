@@ -1,6 +1,7 @@
 :root {
   --background: #ffffff;
   --foreground: #000000;
+  --highlight: #f5f5f5;
   /* --foreground: #f6efe5;
   --highlight: #ffffff; */
   --border: 1px solid #000000;
