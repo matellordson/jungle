@@ -234,7 +234,12 @@ export default function IdentityPage() {
               />
             </FormItem>
 
-            <Button type="submit" disabled={isLoading} loading={isLoading}>
+            <Button
+              variant="default"
+              type="submit"
+              disabled={isLoading}
+              loading={isLoading}
+            >
               submit
             </Button>
           </Form>

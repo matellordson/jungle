@@ -13,19 +13,19 @@ export default async function Layout({
   const cookieStore = await cookies();
   const allCookies = cookieStore.toString();
 
-  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/product/mine`, {
-    headers: {
-      Cookie: allCookies,
-    },
-  });
-  const data = await res.json();
+  // const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/product/mine`, {
+  //   headers: {
+  //     Cookie: allCookies,
+  //   },
+  // });
+  // const data = await res.json();
 
-  const products = data ?? [];
-  const exists = products.some((product: { id: string }) => product.id === id);
+  // const products = data ?? [];
+  // const exists = products.some((product: { id: string }) => product.id === id);
 
-  if (!exists) {
-    notFound();
-  }
+  // if (!exists) {
+  //   notFound();
+  // }
 
   return <>{children}</>;
 }
