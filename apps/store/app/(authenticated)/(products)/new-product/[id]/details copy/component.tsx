@@ -3,9 +3,8 @@ import styled, { css, keyframes } from "styled-components";
 import { FormEvent, useState, useRef, useCallback } from "react";
 import { Button } from "../../../../../../components/button";
 import Logo from "../../components/logo";
-import { ImagePlus, X, Video, GripVertical } from "lucide-react";
+import { FileText, X, GripVertical } from "lucide-react";
 import { redirect } from "next/navigation";
-import { PinataSDK } from "pinata";
 
 const fadeIn = keyframes`from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: translateY(0); }`;
 
@@ -63,11 +62,6 @@ const UploadBoxTitle = styled.div`
   }
 `;
 
-const UploadBoxTitleDivider = styled.span`
-  color: var(--border-bg);
-  font-size: 18px;
-`;
-
 const UploadBoxPara = styled.div`
   display: flex;
   align-items: center;
@@ -112,11 +106,29 @@ const GalleryBox = styled.div`
 `;
 
 const GalleryItems = styled.div`
-  height: 100%;
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   gap: 10px;
   flex-wrap: nowrap;
+`;
+
+const GalleryItemWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+  flex-shrink: 0;
+`;
+
+const FileName = styled.p`
+  font-size: 10px;
+  color: var(--text-muted);
+  width: 80px;
+  text-align: center;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin: 0;
 `;
 
 const GalleryItem = styled.div<{
@@ -180,32 +192,16 @@ const DragHandle = styled.div`
   }
 `;
 
-const VideoIndicator = styled.div`
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  border-radius: 0 0 5px 5px;
-  padding: 3px 5px;
-  background: linear-gradient(transparent, rgba(0, 0, 0, 0.6));
+const PdfThumb = styled.div`
+  width: 100%;
+  height: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 3px;
-  color: var(--text-dark);
-  font-size: 10px;
+  border-radius: 5px;
+  background-color: var(--foreground);
+  color: var(--text-muted);
   pointer-events: none;
-  opacity: 0;
-  transition: opacity 0.15s;
-  color: white;
-
-  ${GalleryItem}:hover & {
-    opacity: 1;
-  }
-
-  & svg {
-    color: white;
-  }
 `;
 
 const RemoveBtn = styled.button`
@@ -258,34 +254,12 @@ const ErrorList = styled.ul`
 interface UploadedFile {
   id: string;
   file: File;
-  preview: string;
-  type: "image" | "video";
-  duration?: number;
 }
 
-const ACCEPTED_IMAGE_TYPES = [
-  "image/jpeg",
-  "image/jpg",
-  "image/png",
-  "image/webp",
-];
-const ACCEPTED_VIDEO_TYPES = ["video/mp4", "video/webm", "video/quicktime"];
-const MAX_IMAGE_SIZE_MB = 20;
-const MAX_VIDEO_SIZE_MB = 100;
-const MAX_VIDEO_DURATION_SEC = 60;
+const ACCEPTED_PDF_TYPES = ["application/pdf"];
+const MAX_PDF_SIZE_MB = 50;
 
-function formatDuration(sec: number) {
-  const m = Math.floor(sec / 60);
-  const s = Math.floor(sec % 60);
-  return `${m}:${s.toString().padStart(2, "0")}`;
-}
-
-export default function MediaComponent({ productId }: { productId: string }) {
-  const pinata = new PinataSDK({
-    pinataJwt: "",
-    pinataGateway: process.env.NEXT_PUBLIC_PINATA_GATEWAY!,
-  });
-
+export default function DetailsComponent({ productId }: { productId: string }) {
   const [isPosting, setIsPosting] = useState(false);
   const [uploadedFiles, setUploadedFiles] = useState<UploadedFile[]>([]);
   const [isDragging, setIsDragging] = useState(false);
@@ -297,79 +271,28 @@ export default function MediaComponent({ productId }: { productId: string }) {
   const [draggingIndex, setDraggingIndex] = useState<number | null>(null);
   const touchStartPos = useRef<{ x: number; y: number } | null>(null);
 
-  const validateVideo = (
-    file: File,
-  ): Promise<{ ok: boolean; reason?: string; duration?: number }> =>
-    new Promise((resolve) => {
-      if (file.size > MAX_VIDEO_SIZE_MB * 1024 * 1024) {
-        resolve({
-          ok: false,
-          reason: `"${file.name}" exceeds the ${MAX_VIDEO_SIZE_MB}MB video limit.`,
-        });
-        return;
-      }
-      const url = URL.createObjectURL(file);
-      const vid = document.createElement("video");
-      vid.preload = "metadata";
-      vid.onloadedmetadata = () => {
-        URL.revokeObjectURL(url);
-        if (vid.duration > MAX_VIDEO_DURATION_SEC) {
-          resolve({
-            ok: false,
-            reason: `"${file.name}" is ${formatDuration(vid.duration)} — max is ${MAX_VIDEO_DURATION_SEC}s.`,
-          });
-        } else {
-          resolve({ ok: true, duration: vid.duration });
-        }
-      };
-      vid.onerror = () => {
-        URL.revokeObjectURL(url);
-        resolve({ ok: false, reason: `"${file.name}" could not be read.` });
-      };
-      vid.src = url;
-    });
-
   const processFiles = useCallback(async (files: FileList | File[]) => {
     const fileArray = Array.from(files);
     const newErrors: string[] = [];
     const newFiles: UploadedFile[] = [];
 
     for (const file of fileArray) {
-      const isImage = ACCEPTED_IMAGE_TYPES.includes(file.type);
-      const isVideo = ACCEPTED_VIDEO_TYPES.includes(file.type);
+      const isPdf = ACCEPTED_PDF_TYPES.includes(file.type);
 
-      if (!isImage && !isVideo) {
+      if (!isPdf) {
         newErrors.push(`"${file.name}" is not a supported type.`);
         continue;
       }
 
-      if (isImage) {
-        if (file.size > MAX_IMAGE_SIZE_MB * 1024 * 1024) {
-          newErrors.push(`"${file.name}" exceeds ${MAX_IMAGE_SIZE_MB}MB.`);
-          continue;
-        }
-        newFiles.push({
-          id: crypto.randomUUID(),
-          file,
-          preview: URL.createObjectURL(file),
-          type: "image",
-        });
+      if (file.size > MAX_PDF_SIZE_MB * 1024 * 1024) {
+        newErrors.push(`"${file.name}" exceeds ${MAX_PDF_SIZE_MB}MB.`);
+        continue;
       }
 
-      if (isVideo) {
-        const result = await validateVideo(file);
-        if (!result.ok) {
-          newErrors.push(result.reason!);
-          continue;
-        }
-        newFiles.push({
-          id: crypto.randomUUID(),
-          file,
-          preview: URL.createObjectURL(file),
-          type: "video",
-          duration: result.duration,
-        });
-      }
+      newFiles.push({
+        id: crypto.randomUUID(),
+        file,
+      });
     }
 
     setErrors(newErrors);
@@ -398,11 +321,7 @@ export default function MediaComponent({ productId }: { productId: string }) {
   const handleDragLeave = () => setIsDragging(false);
 
   const removeFile = (id: string) => {
-    setUploadedFiles((prev) => {
-      const f = prev.find((f) => f.id === id);
-      if (f !== undefined) URL.revokeObjectURL(f.preview);
-      return prev.filter((f) => f.id !== id);
-    });
+    setUploadedFiles((prev) => prev.filter((f) => f.id !== id));
   };
 
   const onItemDragStart = (e: React.DragEvent, index: number) => {
@@ -503,33 +422,33 @@ export default function MediaComponent({ productId }: { productId: string }) {
       });
 
       const data = await res.json();
-
       const cid = data.data.cid;
-      const fileUrl = `https://${process.env.NEXT_PUBLIC_PINATA_GATEWAY}/ipfs/${cid}`;
-      orderedUrls.push(fileUrl);
+      orderedUrls.push(
+        `https://${process.env.NEXT_PUBLIC_PINATA_GATEWAY}/ipfs/${cid}`,
+      );
     }
 
     await fetch(`${process.env.NEXT_PUBLIC_API_URL}/product/${productId}`, {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
       credentials: "include",
-      body: JSON.stringify({ image_url: orderedUrls }),
+      body: JSON.stringify({ details: orderedUrls }),
     });
 
-    setIsPosting(false);
-    redirect(`/new-product/${productId}/details`);
+    redirect(`/new-product/${productId}/variant`);
   };
+
   return (
     <Wrapper>
       <StageIntro>
-        <StageTitle>What does it look like?</StageTitle>
-        <StageDesc>The first item will be used as the cover image.</StageDesc>
+        <StageTitle>Details & Attributes</StageTitle>
+        <StageDesc>What exactly is it made of and how does it work?</StageDesc>
       </StageIntro>
       <Form onSubmit={handleSubmit}>
         <input
           ref={fileInputRef}
           type="file"
-          accept=".jpg,.jpeg,.png,.webp,.mp4,.webm,.mov"
+          accept=".pdf,application/pdf"
           multiple
           style={{ display: "none" }}
           onChange={handleFileChange}
@@ -542,11 +461,8 @@ export default function MediaComponent({ productId }: { productId: string }) {
           onDragLeave={handleDragLeave}
         >
           <UploadBoxTitle>
-            <ImagePlus size={18} />
-            <p>Image</p>
-            <UploadBoxTitleDivider>|</UploadBoxTitleDivider>
-            <Video size={18} />
-            <p>Video</p>
+            <FileText size={18} />
+            <p>PDF</p>
           </UploadBoxTitle>
           <UploadBoxPara>
             <p>
@@ -559,10 +475,7 @@ export default function MediaComponent({ productId }: { productId: string }) {
               </button>
               .
             </p>
-            <UploadBoxHint>Images: JPG, PNG, WEBP — max 20MB</UploadBoxHint>
-            <UploadBoxHint>
-              Videos: MP4, WEBM, MOV — max 60s & 100MB
-            </UploadBoxHint>
+            <UploadBoxHint>PDF — max {MAX_PDF_SIZE_MB}MB</UploadBoxHint>
           </UploadBoxPara>
         </UploadBox>
 
@@ -577,10 +490,9 @@ export default function MediaComponent({ productId }: { productId: string }) {
         {uploadedFiles.length > 0 && (
           <GalleryBox>
             <GalleryItems>
-              {uploadedFiles.map(
-                ({ id, preview, file, type, duration }, index) => (
+              {uploadedFiles.map(({ id, file }, index) => (
+                <GalleryItemWrapper key={id}>
                   <GalleryItem
-                    key={id}
                     data-gallery-index={index}
                     title={file.name}
                     draggable
@@ -594,44 +506,12 @@ export default function MediaComponent({ productId }: { productId: string }) {
                     onTouchMove={onItemTouchMove}
                     onTouchEnd={onItemTouchEnd}
                   >
-                    {type === "image" ? (
-                      <>
-                        <img
-                          src={preview}
-                          alt={file.name}
-                          draggable={false}
-                          style={{
-                            width: "100%",
-                            height: "100%",
-                            objectFit: "cover",
-                            borderRadius: "5px",
-                            pointerEvents: "none",
-                          }}
-                        />
-                        <DragHandle>
-                          <GripVertical size={12} />
-                        </DragHandle>
-                      </>
-                    ) : (
-                      <>
-                        <video
-                          src={preview}
-                          draggable={false}
-                          style={{
-                            width: "100%",
-                            height: "100%",
-                            objectFit: "cover",
-                            borderRadius: "5px",
-                            pointerEvents: "none",
-                          }}
-                        />
-                        <VideoIndicator>
-                          <Video size={14} />
-                          {duration ? formatDuration(duration) : ""}
-                        </VideoIndicator>
-                      </>
-                    )}
-
+                    <PdfThumb>
+                      <FileText size={28} />
+                    </PdfThumb>
+                    <DragHandle>
+                      <GripVertical size={12} />
+                    </DragHandle>
                     <RemoveBtn
                       type="button"
                       onClick={() => removeFile(id)}
@@ -640,13 +520,14 @@ export default function MediaComponent({ productId }: { productId: string }) {
                       <X size={10} strokeWidth={2.5} />
                     </RemoveBtn>
                   </GalleryItem>
-                ),
-              )}
+                  <FileName title={file.name}>{file.name}</FileName>
+                </GalleryItemWrapper>
+              ))}
             </GalleryItems>
           </GalleryBox>
         )}
 
-        <Button isPending={isPosting}>Look's good</Button>
+        <Button isPending={isPosting}>Complete</Button>
       </Form>
     </Wrapper>
   );

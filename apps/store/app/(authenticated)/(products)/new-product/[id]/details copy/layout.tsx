@@ -1,10 +1,10 @@
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "New Product | Media",
+  title: "New Product | Details",
 };
 
-export default function MediaLayout({
+export default function DetailsLayout({
   children,
 }: {
   children: React.ReactNode;

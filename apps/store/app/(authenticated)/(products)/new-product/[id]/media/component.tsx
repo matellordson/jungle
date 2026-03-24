@@ -43,6 +43,7 @@ const ImageItem = styled.div`
   aspect-ratio: 1 / 1;
   width: 100%;
   position: relative;
+  border: var(--border);
 
   & img,
   & video {

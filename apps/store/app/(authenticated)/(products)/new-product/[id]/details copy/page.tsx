@@ -1,4 +1,4 @@
-import { DetailsComponent } from "./component";
+import DetailsComponent from "./component";
 
 export default async function DetailsPage({
   params,
