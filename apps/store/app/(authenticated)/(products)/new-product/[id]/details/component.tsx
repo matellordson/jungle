@@ -1,9 +1,11 @@
 "use client";
 import { Button } from "@repo/ui/button";
 import { Card } from "@repo/ui/card";
-import { useRef, useState, useCallback, useEffect } from "react";
+import { useRef, useState, useCallback, useEffect, FormEvent } from "react";
 import styled from "styled-components";
 import * as pdfjsLib from "pdfjs-dist";
+import { redirect } from "next/navigation";
+import "material-symbols";
 
 pdfjsLib.GlobalWorkerOptions.workerSrc = new URL(
   "pdfjs-dist/build/pdf.worker.min.mjs",
@@ -102,7 +104,6 @@ const RemoveBtn = styled.button`
   cursor: pointer;
   padding: 0;
   color: white;
-  z-index: 2;
 
   &:hover {
     background: rgba(0, 0, 0, 0.85);
@@ -171,10 +172,12 @@ interface UploadedFile {
   id: string;
   name: string;
   url: string;
+  file: File;
 }
 
 export function DetailsComponent({ productId }: { productId: string }) {
   const [files, setFiles] = useState<UploadedFile[]>([]);
+  const [isPosting, setIsPosting] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
 
   const handleFiles = useCallback((selected: FileList | null) => {
@@ -186,6 +189,7 @@ export function DetailsComponent({ productId }: { productId: string }) {
       id: `${f.name}-${Date.now()}-${Math.random()}`,
       name: f.name,
       url: URL.createObjectURL(f),
+      file: f,
     }));
     setFiles((prev) => [...prev, ...newEntries]);
   }, []);
@@ -197,6 +201,42 @@ export function DetailsComponent({ productId }: { productId: string }) {
       return prev.filter((f) => f.id !== id);
     });
   }, []);
+
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setIsPosting(true);
+
+    const orderedUrls: string[] = [];
+
+    for (const { file } of files) {
+      const formData = new FormData();
+      formData.append("network", "public");
+      formData.append("file", file);
+
+      const res = await fetch("https://uploads.pinata.cloud/v3/files", {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${process.env.NEXT_PUBLIC_PINATA_JWT}`,
+        },
+        body: formData,
+      });
+
+      const data = await res.json();
+      const cid = data.data.cid;
+      orderedUrls.push(
+        `https://${process.env.NEXT_PUBLIC_PINATA_GATEWAY}/ipfs/${cid}`,
+      );
+    }
+
+    await fetch(`${process.env.NEXT_PUBLIC_API_URL}/product/${productId}`, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      credentials: "include",
+      body: JSON.stringify({ details: orderedUrls }),
+    });
+
+    redirect(`/new-product/${productId}/variant`);
+  };
 
   return (
     <Wrapper>
@@ -217,9 +257,11 @@ export function DetailsComponent({ productId }: { productId: string }) {
           >
             Choose a file
           </Button>
-          <Button type="submit" variant="default">
-            Submit
-          </Button>
+          <form onSubmit={handleSubmit}>
+            <Button type="submit" variant="default" loading={isPosting}>
+              Submit
+            </Button>
+          </form>
         </ButtonWrapper>
 
         <Card height="330px">

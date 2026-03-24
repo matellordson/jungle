@@ -4,6 +4,7 @@ import { Card } from "@repo/ui/card";
 import styled from "styled-components";
 import { useRef, useState, FormEvent } from "react";
 import { redirect } from "next/navigation";
+import "material-symbols";
 
 const Wrapper = styled.div`
   padding: 0 5px;
