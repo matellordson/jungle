@@ -83,10 +83,16 @@ const EmptyState = styled.div`
   align-items: center;
 `;
 
+const GroupBlockWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+`;
+
 const GroupBlock = styled.div`
   display: flex;
   flex-direction: column;
-  padding: 10px;
+  padding: 0px;
 `;
 
 const GroupHeader = styled.div`
@@ -241,33 +247,43 @@ export function VariantComponent({ productId }: { productId: string }) {
                 <Label>Current Variants</Label>
               </LabelRow>
               <Card height="250px">
-                {!hasVariants ? (
-                  <EmptyState>No variants</EmptyState>
-                ) : (
-                  groupOrder.map((group) => (
-                    <GroupBlock key={group}>
-                      <GroupHeader>
-                        <GroupLabel>{group}</GroupLabel>
-                        <IconButton
-                          title={`Delete ${group} group`}
-                          onClick={() => handleDeleteGroup(group)}
-                        >
-                          <span className="material-symbols-sharp">remove</span>
-                        </IconButton>
-                      </GroupHeader>
-                      <VariantItems>
-                        {(variants[group] ?? []).map((v) => (
-                          <VariantItem
-                            key={v}
-                            onClick={() => handleDeleteValue(group, v)}
+                <GroupBlockWrapper>
+                  {!hasVariants ? (
+                    <EmptyState>No variants</EmptyState>
+                  ) : (
+                    groupOrder.map((group) => (
+                      <GroupBlock key={group}>
+                        <GroupHeader>
+                          <GroupLabel>{group}</GroupLabel>
+                          <IconButton
+                            title={`Delete ${group} group`}
+                            onClick={() => handleDeleteGroup(group)}
                           >
-                            {v}
-                          </VariantItem>
-                        ))}
-                      </VariantItems>
-                    </GroupBlock>
-                  ))
-                )}
+                            <span className="material-symbols-sharp">
+                              remove
+                            </span>
+                          </IconButton>
+                        </GroupHeader>
+                        <VariantItems>
+                          {(variants[group] ?? []).map((v) => (
+                            <VariantItem
+                              key={v}
+                              onClick={() => {
+                                if (isLoading) {
+                                  return;
+                                } else {
+                                  handleDeleteValue(group, v);
+                                }
+                              }}
+                            >
+                              {v}
+                            </VariantItem>
+                          ))}
+                        </VariantItems>
+                      </GroupBlock>
+                    ))
+                  )}
+                </GroupBlockWrapper>
               </Card>
             </FormItem>
           </ProductVariantWrapper>
