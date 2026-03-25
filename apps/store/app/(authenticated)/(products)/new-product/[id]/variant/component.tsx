@@ -1,99 +1,103 @@
 "use client";
+
 import styled from "styled-components";
-import { FormEvent, useState } from "react";
+import { useState, FormEvent } from "react";
+import { Card } from "@repo/ui/card";
+import { Input } from "@repo/ui/input";
+import { Label } from "@repo/ui/label";
+import { Button } from "@repo/ui/button";
+import "material-symbols";
 import { redirect } from "next/navigation";
-import { Input } from "../../../../../../components/input";
-import { Button } from "../../../../../../components/button";
 
 const Wrapper = styled.div`
-  padding: 0px 3px;
-  max-width: 500px;
-  margin: auto;
+  padding: 0 5px;
 `;
 
-const StageIntro = styled.div`
-  margin-bottom: 40px;
-  text-align: center;
+const Heading = styled.p`
+  text-transform: uppercase;
+  font-weight: 500;
+
+  @media only screen and (min-width: 992px) {
+    text-align: center;
+  }
 `;
 
-const StageTitle = styled.div`
-  font-size: 30px;
-  color: var(--text-dark);
+const Main = styled.div`
+  margin-top: 50px;
+  @media only screen and (min-width: 992px) {
+    flex-direction: row;
+  }
+`;
+
+const VariantWrapper = styled.div`
   display: flex;
-  align-items: start;
-  gap: 10px;
-  justify-content: center;
+  width: 100%;
+  margin-top: 30px;
+  gap: 30px;
+  flex-direction: column;
+
+  @media only screen and (min-width: 992px) {
+    flex-direction: row;
+  }
 `;
 
-const StageDesc = styled.p`
-  font-size: 14px;
-  padding-top: 5px;
+const ProductVariantWrapper = styled.div`
+  width: 100%;
+`;
+
+const ProductVariants = styled.div`
+  width: 100%;
 `;
 
 const Form = styled.form`
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 30px;
 `;
 
 const FormItem = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 5px;
+  gap: 8px;
+  font-size: 15px;
 `;
 
-const VariantWrapper = styled.div`
-  width: 100%;
-  border-radius: 5px;
-  padding: 10px;
-  border: var(--border);
-  margin-bottom: 10px;
-  background-color: var(--foreground);
+const Icon = styled.span`
+  font-size: 18px;
+  line-height: 1;
   display: flex;
-  flex-direction: column;
-  gap: 12px;
+  align-items: center;
+`;
+
+const LabelRow = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 4px;
 `;
 
 const EmptyState = styled.div`
-  font-size: 13px;
-  color: var(--mute-text);
-  text-align: center;
-  padding: 10px 0px;
+  font-size: 20px;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 `;
 
-const GroupBlock = styled.div<{ $isDraggingOver?: boolean }>`
+const GroupBlock = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 8px;
-  padding: 8px;
-  border-radius: 5px;
-  border: 1px solid
-    ${({ $isDraggingOver }) =>
-      $isDraggingOver ? "var(--primary, #6366f1)" : "transparent"};
-  background-color: ${({ $isDraggingOver }) =>
-    $isDraggingOver ? "var(--primary-subtle, #f0f0ff)" : "transparent"};
-  transition: all 0.15s ease;
+  padding: 10px;
 `;
 
 const GroupHeader = styled.div`
   display: flex;
   align-items: center;
   gap: 8px;
+  justify-content: space-between;
 `;
 
 const GroupLabel = styled.div`
-  font-size: 11px;
-  font-weight: 600;
-  color: var(--mute-text);
   text-transform: uppercase;
-  letter-spacing: 0.08em;
-  flex-shrink: 0;
-`;
-
-const GroupDivider = styled.div`
-  flex: 1;
-  height: 1px;
-  background-color: var(--border-color, #e5e7eb);
 `;
 
 const IconButton = styled.button`
@@ -107,45 +111,23 @@ const IconButton = styled.button`
   border-radius: 3px;
   transition: all 0.15s ease;
   flex-shrink: 0;
-
-  &:hover {
-    color: #ef4444;
-    background-color: #fef2f2;
-  }
-`;
-
-const DragHandle = styled.button`
-  background: none;
-  border: none;
-  padding: 2px 4px;
-  cursor: grab;
-  color: var(--mute-text);
-  display: flex;
-  align-items: center;
-  border-radius: 3px;
-  transition: all 0.15s ease;
-  flex-shrink: 0;
-
-  &:active {
-    cursor: grabbing;
-  }
-
-  &:hover {
-    color: var(--text-dark);
-    background-color: var(--foreground);
-  }
 `;
 
 const VariantItems = styled.div`
   display: flex;
   flex-wrap: wrap;
-  gap: 6px;
+  gap: 10px;
+`;
+
+const ButtonWrapper = styled.div`
+  display: flex;
+  gap: 20px;
+  width: 100%;
+  justify-content: center;
 `;
 
 const VariantItem = styled.div`
-  padding: 4px 6px 4px 10px;
-  font-size: 13px;
-  border-radius: 4px;
+  padding: 5px 10px;
   border: var(--border);
   color: var(--mute-text);
   background-color: var(--background);
@@ -153,45 +135,29 @@ const VariantItem = styled.div`
   align-items: center;
   gap: 4px;
   user-select: none;
-`;
-
-const VariantItemText = styled.span`
-  line-height: 1;
-`;
-
-const VariantDeleteBtn = styled.button`
-  background: none;
-  border: none;
-  padding: 0;
+  text-transform: uppercase;
   cursor: pointer;
-  color: var(--mute-text);
-  display: flex;
-  align-items: center;
-  border-radius: 2px;
-  line-height: 1;
-  transition: all 0.15s ease;
-
-  &:hover {
-    color: #ef4444;
-  }
 `;
 
 interface VariantsType {
   [group: string]: string[];
 }
 
-export default function VariantComponent({ productId }: { productId: string }) {
+export function VariantComponent({ productId }: { productId: string }) {
   const [groupName, setGroupName] = useState("");
   const [variantValue, setVariantValue] = useState("");
-  const [isPosting, setIsPosting] = useState(false);
   const [variants, setVariants] = useState<VariantsType>({});
   const [groupOrder, setGroupOrder] = useState<string[]>([]);
-  const [draggingGroup, setDraggingGroup] = useState<string | null>(null);
-  const [dragOverGroup, setDragOverGroup] = useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
+  const [addSubmitted, setAddSubmitted] = useState(false);
+
+  const groupNameError = !groupName.trim() ? "Required" : null;
+  const variantValueError = !variantValue.trim() ? "Required" : null;
 
   const handleAddVariant = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (!groupName.trim() || !variantValue.trim()) return;
+    setAddSubmitted(true);
+    if (groupNameError || variantValueError) return;
 
     const key = groupName.trim();
 
@@ -205,20 +171,17 @@ export default function VariantComponent({ productId }: { productId: string }) {
     }
 
     setVariantValue("");
+    setAddSubmitted(false);
   };
 
   const handleDeleteValue = (group: string, value: string) => {
     setVariants((prev) => {
-      const existing = prev[group] ?? [];
-      const filtered = existing.filter((v) => v !== value);
-
+      const filtered = (prev[group] ?? []).filter((v) => v !== value);
       const updated = { ...prev, [group]: filtered };
-
       if (filtered.length === 0) {
         delete updated[group];
         setGroupOrder((prev) => prev.filter((g) => g !== group));
       }
-
       return updated;
     });
   };
@@ -232,38 +195,9 @@ export default function VariantComponent({ productId }: { productId: string }) {
     setGroupOrder((prev) => prev.filter((g) => g !== group));
   };
 
-  const handleDragStart = (group: string) => {
-    setDraggingGroup(group);
-  };
-
-  const handleDragOver = (e: React.DragEvent, group: string) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (group !== draggingGroup) setDragOverGroup(group);
-  };
-
-  const handleDrop = (targetGroup: string) => {
-    if (!draggingGroup || draggingGroup === targetGroup) return;
-
-    setGroupOrder((prev) => {
-      const updated = [...prev];
-      const fromIdx = updated.indexOf(draggingGroup);
-      const toIdx = updated.indexOf(targetGroup);
-      updated.splice(fromIdx, 1);
-      updated.splice(toIdx, 0, draggingGroup);
-      return updated;
-    });
-
-    setDraggingGroup(null);
-    setDragOverGroup(null);
-  };
-
-  const handleDragEnd = () => {
-    setDraggingGroup(null);
-    setDragOverGroup(null);
-  };
-
-  const handleDone = async () => {
-    setIsPosting(true);
+    setIsLoading(true);
     await fetch(`${process.env.NEXT_PUBLIC_API_URL}/product/${productId}`, {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
@@ -277,119 +211,106 @@ export default function VariantComponent({ productId }: { productId: string }) {
 
   return (
     <Wrapper>
-      <StageIntro>
-        <StageTitle>Does it have variants?</StageTitle>
-        <StageDesc>Does it come in different options.</StageDesc>
-      </StageIntro>
-
-      <VariantWrapper>
-        {!hasVariants ? (
-          <EmptyState>No variants added yet.</EmptyState>
-        ) : (
-          groupOrder.map((group) => (
-            <GroupBlock
-              key={group}
-              draggable
-              $isDraggingOver={dragOverGroup === group}
-              onDragStart={() => handleDragStart(group)}
-              onDragOver={(e) => handleDragOver(e, group)}
-              onDrop={() => handleDrop(group)}
-              onDragEnd={handleDragEnd}
+      <Heading>Does this product have variant?</Heading>
+      <Main>
+        <ButtonWrapper>
+          <Button
+            type="button"
+            variant="outline"
+            onClick={() => redirect(`/new-product/${productId}/pricing`)}
+            disabled={isLoading}
+          >
+            skip
+          </Button>
+          <Form onSubmit={handleSubmit}>
+            <Button
+              variant="default"
+              type="submit"
+              disabled={isLoading || !hasVariants}
+              loading={isLoading}
             >
-              <GroupHeader>
-                <DragHandle
-                  title="Drag to reorder"
-                  onMouseDown={(e) => e.stopPropagation()}
-                >
-                  <svg
-                    width="12"
-                    height="12"
-                    viewBox="0 0 12 12"
-                    fill="currentColor"
-                  >
-                    <circle cx="4" cy="3" r="1.2" />
-                    <circle cx="8" cy="3" r="1.2" />
-                    <circle cx="4" cy="6" r="1.2" />
-                    <circle cx="8" cy="6" r="1.2" />
-                    <circle cx="4" cy="9" r="1.2" />
-                    <circle cx="8" cy="9" r="1.2" />
-                  </svg>
-                </DragHandle>
-                <GroupLabel>{group}</GroupLabel>
-                <GroupDivider />
-                <IconButton
-                  title={`Delete ${group} group`}
-                  onClick={() => handleDeleteGroup(group)}
-                >
-                  <svg
-                    width="13"
-                    height="13"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  >
-                    <polyline points="3 6 5 6 21 6" />
-                    <path d="M19 6l-1 14H6L5 6" />
-                    <path d="M10 11v6M14 11v6" />
-                    <path d="M9 6V4h6v2" />
-                  </svg>
-                </IconButton>
-              </GroupHeader>
-              <VariantItems>
-                {(variants[group] ?? []).map((v) => (
-                  <VariantItem key={v}>
-                    <VariantItemText>{v}</VariantItemText>
-                    <VariantDeleteBtn
-                      title={`Remove ${v}`}
-                      onClick={() => handleDeleteValue(group, v)}
-                    >
-                      <svg
-                        width="11"
-                        height="11"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="currentColor"
-                        strokeWidth="2.5"
-                        strokeLinecap="round"
-                      >
-                        <line x1="18" y1="6" x2="6" y2="18" />
-                        <line x1="6" y1="6" x2="18" y2="18" />
-                      </svg>
-                    </VariantDeleteBtn>
-                  </VariantItem>
-                ))}
-              </VariantItems>
-            </GroupBlock>
-          ))
-        )}
-      </VariantWrapper>
+              Submit
+            </Button>
+          </Form>
+        </ButtonWrapper>
 
-      <Form onSubmit={handleAddVariant}>
-        <FormItem>
-          <Input
-            name="group"
-            placeholder="Group name (e.g. Size, Color)"
-            value={groupName}
-            onChange={(e) => setGroupName(e.target.value)}
-          />
-        </FormItem>
-        <FormItem>
-          <Input
-            name="value"
-            placeholder="Variant value (e.g. Red, XL)"
-            value={variantValue}
-            onChange={(e) => setVariantValue(e.target.value)}
-          />
-        </FormItem>
-        <Button isPending={false}>Add variant</Button>
-      </Form>
+        <VariantWrapper>
+          <ProductVariantWrapper>
+            <FormItem>
+              <LabelRow>
+                <Label>Current Variants</Label>
+              </LabelRow>
+              <Card height="250px">
+                {!hasVariants ? (
+                  <EmptyState>No variants</EmptyState>
+                ) : (
+                  groupOrder.map((group) => (
+                    <GroupBlock key={group}>
+                      <GroupHeader>
+                        <GroupLabel>{group}</GroupLabel>
+                        <IconButton
+                          title={`Delete ${group} group`}
+                          onClick={() => handleDeleteGroup(group)}
+                        >
+                          <span className="material-symbols-sharp">remove</span>
+                        </IconButton>
+                      </GroupHeader>
+                      <VariantItems>
+                        {(variants[group] ?? []).map((v) => (
+                          <VariantItem
+                            key={v}
+                            onClick={() => handleDeleteValue(group, v)}
+                          >
+                            {v}
+                          </VariantItem>
+                        ))}
+                      </VariantItems>
+                    </GroupBlock>
+                  ))
+                )}
+              </Card>
+            </FormItem>
+          </ProductVariantWrapper>
 
-      <Button isPending={isPosting} onClick={handleDone}>
-        All done
-      </Button>
+          <ProductVariants>
+            <Form onSubmit={handleAddVariant}>
+              <FormItem>
+                <LabelRow>
+                  <Label htmlFor="groupName">Group</Label>
+                  {addSubmitted && groupNameError && (
+                    <Icon className="material-symbols-outlined">asterisk</Icon>
+                  )}
+                </LabelRow>
+                <Input
+                  id="groupName"
+                  placeholder="e.g. Size, Color"
+                  value={groupName}
+                  onChange={(e) => setGroupName(e.target.value)}
+                  disabled={isLoading}
+                />
+              </FormItem>
+              <FormItem>
+                <LabelRow>
+                  <Label htmlFor="variantValue">Value</Label>
+                  {addSubmitted && variantValueError && (
+                    <Icon className="material-symbols-outlined">asterisk</Icon>
+                  )}
+                </LabelRow>
+                <Input
+                  id="variantValue"
+                  placeholder="e.g. Red, XL"
+                  value={variantValue}
+                  onChange={(e) => setVariantValue(e.target.value)}
+                  disabled={isLoading}
+                />
+              </FormItem>
+              <Button variant="outline" type="submit" disabled={isLoading}>
+                Add variant
+              </Button>
+            </Form>
+          </ProductVariants>
+        </VariantWrapper>
+      </Main>
     </Wrapper>
   );
 }

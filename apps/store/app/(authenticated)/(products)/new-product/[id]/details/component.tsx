@@ -264,7 +264,7 @@ export function DetailsComponent({ productId }: { productId: string }) {
           </form>
         </ButtonWrapper>
 
-        <Card height="330px">
+        <Card height="340px">
           <FileWrapper>
             {files.length === 0 ? (
               <EmptyState>No PDF file</EmptyState>

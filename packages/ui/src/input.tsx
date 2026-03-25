@@ -22,13 +22,21 @@ export function Input({
   value,
   onChange,
   disabled,
+  placeholder,
 }: {
   id?: string | undefined;
   value?: string | number | readonly string[] | undefined;
   onChange?: ChangeEventHandler<HTMLInputElement> | undefined;
   disabled?: boolean;
+  placeholder?: string | undefined;
 }) {
   return (
-    <InputEl id={id} value={value} onChange={onChange} disabled={disabled} />
+    <InputEl
+      id={id}
+      value={value}
+      onChange={onChange}
+      disabled={disabled}
+      placeholder={placeholder}
+    />
   );
 }

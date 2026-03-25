@@ -1,4 +1,4 @@
-import { MouseEventHandler } from "react";
+import { FormEventHandler, MouseEventHandler } from "react";
 import styled from "styled-components";
 
 const ButtonEl = styled.button<{ variant: "default" | "outline" }>`
@@ -41,6 +41,7 @@ export function Button({
   onClick,
   style,
   variant,
+  onSubmit,
 }: {
   children: React.ReactNode;
   type?: "button" | "submit" | "reset" | undefined;
@@ -49,6 +50,7 @@ export function Button({
   onClick?: MouseEventHandler<HTMLButtonElement> | undefined;
   style?: any;
   variant: "default" | "outline";
+  onSubmit?: FormEventHandler<HTMLButtonElement> | undefined;
 }) {
   return (
     <ButtonEl
@@ -57,6 +59,7 @@ export function Button({
       onClick={onClick}
       style={style}
       variant={variant}
+      onSubmit={onSubmit}
     >
       {loading ? (
         <Icon className="material-symbols-sharp">clock_loader_20</Icon>

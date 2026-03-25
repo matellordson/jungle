@@ -1,4 +1,4 @@
-import { VariantComponent } from "./component";
+import VariantComponent from "./component";
 
 export default async function VariantPage({
   params,
