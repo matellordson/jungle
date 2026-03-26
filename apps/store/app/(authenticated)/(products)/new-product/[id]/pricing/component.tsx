@@ -1,101 +1,68 @@
 "use client";
-import styled from "styled-components";
-import { useEffect, useState } from "react";
+
+import { Button } from "@repo/ui/button";
+import { Card } from "@repo/ui/card";
+import { Input } from "@repo/ui/input";
 import { redirect } from "next/navigation";
-import { Input } from "../../../../../../components/input";
-import { Button } from "../../../../../../components/button";
+import { useEffect, useState } from "react";
+import styled from "styled-components";
+import "material-symbols";
 
 const Wrapper = styled.div`
-  padding: 0px 3px;
-  max-width: 500px;
-  margin: auto;
+  padding: 0 5px;
 `;
 
-const StageIntro = styled.div`
-  margin-bottom: 40px;
-  text-align: center;
+const Heading = styled.p`
+  text-transform: uppercase;
+  font-weight: 500;
+
+  @media only screen and (min-width: 992px) {
+    text-align: center;
+  }
 `;
 
-const StageTitle = styled.div`
-  font-size: 30px;
-  color: var(--text-dark);
-  display: flex;
-  align-items: start;
-  gap: 10px;
-  justify-content: center;
-`;
-
-const StageDesc = styled.p`
-  font-size: 14px;
-  padding-top: 5px;
-`;
-
-const GroupBlock = styled.div`
+const Main = styled.div`
+  margin-top: 50px;
   display: flex;
   flex-direction: column;
-  gap: 10px;
-  margin-bottom: 20px;
-`;
-
-const GroupHeader = styled.div`
-  display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 30px;
 `;
 
-const GroupLabel = styled.div`
-  font-size: 11px;
-  font-weight: 600;
-  color: var(--mute-text);
+const GroupWrapper = styled.div`
+  padding-top: 20px;
+
+  &:first-child {
+    padding-top: 0px;
+  }
+`;
+
+const GroupName = styled.p`
   text-transform: uppercase;
-  letter-spacing: 0.08em;
-  flex-shrink: 0;
+  padding-bottom: 10px;
 `;
 
-const GroupDivider = styled.div`
-  flex: 1;
-  height: 1px;
-  background-color: var(--border-color, #e5e7eb);
+const GroupItemWrapper = styled.div`
+  display: flex;
+  gap: 5px;
 `;
 
-const VariantRow = styled.div`
+const GroupItem = styled.div`
+  padding: 5px 10px;
+  border: var(--border);
+  background-color: var(--background);
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 4px;
+  user-select: none;
+  text-transform: uppercase;
+  cursor: pointer;
+  width: fit-content;
 `;
 
-const VariantLabel = styled.div`
-  font-size: 13px;
-  color: var(--text-dark);
-  min-width: 80px;
-  flex-shrink: 0;
-  padding: 6px 10px;
-  border-radius: 4px;
-  border: var(--border);
-  background-color: var(--foreground);
-`;
-
-const PricePrefix = styled.span`
-  font-size: 13px;
-  color: var(--mute-text);
-  flex-shrink: 0;
-`;
-
-const EmptyState = styled.div`
-  font-size: 13px;
-  color: var(--mute-text);
-  text-align: center;
-  padding: 30px 0px;
-  border: var(--border);
-  border-radius: 5px;
-  background-color: var(--foreground);
-`;
-
-const LoadingState = styled.div`
-  font-size: 13px;
-  color: var(--mute-text);
-  text-align: center;
-  padding: 30px 0px;
+const GroupRow = styled.div`
+  display: flex;
+  gap: 20px;
 `;
 
 interface VariantsType {
@@ -108,11 +75,7 @@ interface PricesType {
   };
 }
 
-export default function VariantPricingComponent({
-  productId,
-}: {
-  productId: string;
-}) {
+export function PricingComponent({ productId }: { productId: string }) {
   const [variants, setVariants] = useState<VariantsType>({});
   const [groupOrder, setGroupOrder] = useState<string[]>([]);
   const [prices, setPrices] = useState<PricesType>({});
@@ -161,50 +124,58 @@ export default function VariantPricingComponent({
       body: JSON.stringify({ variantPrices: prices, published: true }),
       credentials: "include",
     });
-    redirect(`/products`);
+    redirect("/inventory");
   };
 
   const hasVariants = groupOrder.length > 0;
 
   return (
     <Wrapper>
-      <StageIntro>
-        <StageTitle>Set variant prices</StageTitle>
-        <StageDesc>Add a price for each variant option.</StageDesc>
-      </StageIntro>
-
-      {isLoading ? (
-        <LoadingState>Loading variants...</LoadingState>
-      ) : !hasVariants ? (
-        <EmptyState>No variants found for this product.</EmptyState>
-      ) : (
-        groupOrder.map((group) => (
-          <GroupBlock key={group}>
-            <GroupHeader>
-              <GroupLabel>{group}</GroupLabel>
-              <GroupDivider />
-            </GroupHeader>
-            {(variants[group] ?? []).map((v) => (
-              <VariantRow key={v}>
-                <VariantLabel>{v}</VariantLabel>
-                <PricePrefix>$</PricePrefix>
-                <Input
-                  type="number"
-                  name="prices"
-                  // min="0"
-                  // step="0.01"
-                  placeholder="0.00"
-                  value={prices[group]?.[v] ?? ""}
-                  onChange={(e) => handlePriceChange(group, v, e.target.value)}
-                />
-              </VariantRow>
-            ))}
-          </GroupBlock>
-        ))
-      )}
-
-      <Button isPending={isPosting} onClick={handleDone}>
-        All done
+      <Heading>how will you price each variant?</Heading>
+      <Main>
+        <Card>
+          {isLoading ? (
+            <div>Loading variants...</div>
+          ) : !hasVariants ? (
+            <div>No variants found for this product.</div>
+          ) : (
+            groupOrder.map((group) => (
+              <GroupWrapper key={group}>
+                <GroupName>{group}</GroupName>
+                <GroupRow>
+                  {(variants[group] ?? []).map((v) => (
+                    <GroupItemWrapper key={v}>
+                      <GroupItem>{v}</GroupItem>
+                      <Input
+                        type="number"
+                        name="prices"
+                        height="40px"
+                        width="80px"
+                        // min="0"
+                        // step="0.01"
+                        value={prices[group]?.[v] ?? ""}
+                        onChange={(e) =>
+                          handlePriceChange(group, v, e.target.value)
+                        }
+                      />
+                    </GroupItemWrapper>
+                  ))}
+                </GroupRow>
+              </GroupWrapper>
+            ))
+          )}
+        </Card>
+      </Main>
+      <Button
+        variant="default"
+        loading={isPosting}
+        disabled={isPosting}
+        onClick={handleDone}
+        style={{
+          marginTop: "30px",
+        }}
+      >
+        submit
       </Button>
     </Wrapper>
   );

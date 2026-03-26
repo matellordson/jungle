@@ -1,4 +1,5 @@
-import { ChangeEventHandler } from "react";
+import { StripTypeScriptTypesOptions } from "module";
+import { ChangeEventHandler, HTMLInputTypeAttribute } from "react";
 import styled from "styled-components";
 
 const InputEl = styled.input`
@@ -23,12 +24,20 @@ export function Input({
   onChange,
   disabled,
   placeholder,
+  type,
+  name,
+  height,
+  width,
 }: {
   id?: string | undefined;
   value?: string | number | readonly string[] | undefined;
   onChange?: ChangeEventHandler<HTMLInputElement> | undefined;
   disabled?: boolean;
   placeholder?: string | undefined;
+  type?: HTMLInputTypeAttribute | undefined;
+  name?: string | undefined;
+  height?: string | undefined;
+  width?: string | undefined;
 }) {
   return (
     <InputEl
@@ -37,6 +46,9 @@ export function Input({
       onChange={onChange}
       disabled={disabled}
       placeholder={placeholder}
+      type={type}
+      name={name}
+      style={{ height: `${height}`, width: `${width}` }}
     />
   );
 }

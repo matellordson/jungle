@@ -1,4 +1,4 @@
-import PricingComponent from "./component";
+import { PricingComponent } from "./component";
 
 export default async function PricingPage({
   params,

@@ -112,7 +112,6 @@ const IconButton = styled.button`
   border: none;
   padding: 2px 4px;
   cursor: pointer;
-  color: var(--mute-text);
   display: flex;
   align-items: center;
   border-radius: 3px;
@@ -136,7 +135,6 @@ const ButtonWrapper = styled.div`
 const VariantItem = styled.div`
   padding: 5px 10px;
   border: var(--border);
-  color: var(--mute-text);
   background-color: var(--background);
   display: flex;
   align-items: center;
