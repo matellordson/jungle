@@ -3,6 +3,7 @@
 import { Metadata } from "next";
 import { useState } from "react";
 import styled from "styled-components";
+import "material-symbols";
 
 const Wrapper = styled.div`
   height: 500px;

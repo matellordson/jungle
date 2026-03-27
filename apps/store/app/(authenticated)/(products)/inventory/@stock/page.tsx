@@ -4,6 +4,7 @@ import styled from "styled-components";
 import "material-symbols";
 import { useState } from "react";
 import { Input } from "@repo/ui/input";
+import "material-symbols";
 
 const Wrapper = styled.div``;
 
