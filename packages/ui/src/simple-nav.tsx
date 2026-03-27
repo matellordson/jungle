@@ -15,7 +15,7 @@ const Profile = styled.div`
   background-color: #000000;
 `;
 
-export function SimpleNavbar() {
+export function Navbar() {
   return (
     <Wrapper>
       <TextLogo height={20} width={100} />

@@ -1,3 +1,4 @@
+import { Navbar } from "@repo/ui/simple-nav";
 import styled from "styled-components";
 
 const Wrapper = styled.div``;
@@ -11,6 +12,7 @@ export default function AuthenticatedLayout({
 }) {
   return (
     <Wrapper>
+      <Navbar />
       <PageWrapper>{children}</PageWrapper>
     </Wrapper>
   );

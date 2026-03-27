@@ -28,6 +28,7 @@ export function Input({
   name,
   height,
   width,
+  maxWidth,
 }: {
   id?: string | undefined;
   value?: string | number | readonly string[] | undefined;
@@ -38,6 +39,7 @@ export function Input({
   name?: string | undefined;
   height?: string | undefined;
   width?: string | undefined;
+  maxWidth?: string | undefined;
 }) {
   return (
     <InputEl
@@ -48,7 +50,11 @@ export function Input({
       placeholder={placeholder}
       type={type}
       name={name}
-      style={{ height: `${height}`, width: `${width}` }}
+      style={{
+        height: `${height}`,
+        width: `${width}`,
+        maxWidth: `${maxWidth}`,
+      }}
     />
   );
 }
