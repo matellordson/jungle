@@ -22,11 +22,12 @@ const TableSide = styled.div`
   }
 `;
 
-const AlertSide = styled.div`
+const PreviewSide = styled.div`
   border: var(--border);
   height: 100%;
   width: 40%;
   display: none;
+  position: static;
 
   @media only screen and (min-width: 992px) {
     display: block;
@@ -45,6 +46,7 @@ const TabItem = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+  gap: 5px;
 
   &:not(:first-child) {
     border-left: var(--border);
@@ -53,6 +55,7 @@ const TabItem = styled.div`
   &.active {
     background-color: var(--foreground);
     color: var(--background);
+    font-weight: 430;
   }
 `;
 
@@ -101,7 +104,7 @@ export default function ProductLayout({
           <TabContent>{rank}</TabContent>
         ) : null}
       </TableSide>
-      <AlertSide></AlertSide>
+      <PreviewSide></PreviewSide>
     </Wrapper>
   );
 }

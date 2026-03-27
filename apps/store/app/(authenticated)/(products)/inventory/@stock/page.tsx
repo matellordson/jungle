@@ -5,6 +5,7 @@ import "material-symbols";
 import { useState } from "react";
 import { Input } from "@repo/ui/input";
 import "material-symbols";
+import { product } from "../product";
 
 const Wrapper = styled.div``;
 
@@ -37,6 +38,42 @@ const FilterItem = styled.div`
     background-color: var(--foreground);
     color: var(--background);
   }
+`;
+
+const StockWrapper = styled.div`
+  margin-top: 30px;
+`;
+
+const StockItem = styled.div`
+  display: flex;
+  justify-content: space-between;
+  border-bottom: var(--border);
+  align-items: center;
+  padding: 10px 5px;
+
+  &:last-child {
+    border: none;
+  }
+`;
+
+const StockName = styled.p``;
+
+const StockCountWrapper = styled.div`
+  display: flex;
+`;
+
+const StockCount = styled.div`
+  border: var(--border);
+  padding: 3px 8px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+
+const StockColor = styled.div`
+  height: 30px;
+  width: 30px;
+  border: var(--border);
 `;
 
 export default function Stocks() {
@@ -78,7 +115,18 @@ export default function Stocks() {
           ))}
         </FilterWrapper>
       </Action>
-      {/* stocks page */}
+
+      <StockWrapper>
+        {product.map((item) => (
+          <StockItem>
+            <StockName>{item.name}</StockName>
+            <StockCountWrapper>
+              <StockCount>{item.stock}</StockCount>
+              <StockColor style={{ backgroundColor: `${item.color}` }} />
+            </StockCountWrapper>
+          </StockItem>
+        ))}
+      </StockWrapper>
     </Wrapper>
   );
 }
