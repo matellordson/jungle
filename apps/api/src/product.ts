@@ -75,7 +75,7 @@ product.get("/debug", async (c) => {
 // Create product
 product.post("/create", async (c) => {
   const address = c.get("address");
-  const { id, store, name, tagline, categories, published } =
+  const { id, store, name, summary, categories, published } =
     await c.req.json();
 
   const newProduct = await withRLSContext(address, async (txn: any) => {
@@ -89,8 +89,8 @@ product.post("/create", async (c) => {
     }
 
     const [product] = await txn`
-      INSERT INTO products (id, owner, store, name, tagline, categories, published)
-      VALUES (${id}, ${user.id}, ${store}, ${name}, ${tagline}, ${categories}, ${published || false})
+      INSERT INTO products (id, owner, store, name, summary, categories, published)
+      VALUES (${id}, ${user.id}, ${store}, ${name}, ${summary}, ${categories}, ${published || false})
       RETURNING *
     `;
     return product;
@@ -106,7 +106,7 @@ product.put("/:id", async (c) => {
   const {
     store,
     name,
-    tagline,
+    summary,
     categories,
     published,
     image_url,
@@ -121,7 +121,7 @@ product.put("/:id", async (c) => {
     SET 
       store = COALESCE(${store ?? null}, store),
       name = COALESCE(${name ?? null}, name),
-      tagline = COALESCE(${tagline ?? null}, tagline),
+      summary = COALESCE(${summary ?? null}, summary),
       categories = COALESCE(${categories ?? null}, categories),
       published = COALESCE(${published ?? null}, published),
       updated_at = NOW(),

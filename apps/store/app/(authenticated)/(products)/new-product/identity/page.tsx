@@ -4,6 +4,7 @@ import styled from "styled-components";
 import { useState, useRef } from "react";
 import { Card } from "@repo/ui/card";
 import { Input } from "@repo/ui/input";
+import { Textarea } from "@repo/ui/textarea";
 import { Label } from "@repo/ui/label";
 import { Button } from "@repo/ui/button";
 import "material-symbols";
@@ -98,7 +99,7 @@ const CheckBox = styled.button`
 
 export default function IdentityPage() {
   const [productName, setProductName] = useState("");
-  const [productTagline, setProductTagline] = useState("");
+  const [productSummary, setProductSummary] = useState("");
   const [selectedCategory, setSelectedCategory] = useState<string[]>([]);
   const [submitted, setSubmitted] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -138,16 +139,16 @@ export default function IdentityPage() {
       ? "Product name must not exceed 50 characters"
       : null;
 
-  const taglineError = !productTagline.trim()
+  const summaryError = !productSummary.trim()
     ? "Required"
-    : productTagline.length > 100
+    : productSummary.length > 100
       ? "Tagline must not exceed 100 characters"
       : null;
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setSubmitted(true);
-    if (categoryError || nameError || taglineError) return;
+    if (categoryError || nameError || summaryError) return;
 
     setIsLoading(true);
     await fetch(`${process.env.NEXT_PUBLIC_API_URL}/product/create`, {
@@ -159,7 +160,7 @@ export default function IdentityPage() {
         id: newProductId,
         store: "",
         name: productName,
-        tagline: productTagline,
+        summary: productSummary,
         categories: selectedCategory,
       }),
       credentials: "include",
@@ -219,17 +220,17 @@ export default function IdentityPage() {
 
             <FormItem>
               <LabelRow>
-                <Label htmlFor="productTagline">product tagline</Label>
-                {submitted && taglineError && (
+                <Label htmlFor="productSummary">product summary</Label>
+                {submitted && summaryError && (
                   <Icon className="material-symbols-outlined">
-                    {productTagline.length > 100 ? "block" : "asterisk"}
+                    {productSummary.length > 100 ? "block" : "asterisk"}
                   </Icon>
                 )}
               </LabelRow>
-              <Input
-                id="productTagline"
-                value={productTagline}
-                onChange={(e) => setProductTagline(e.target.value)}
+              <Textarea
+                id="productSummary"
+                value={productSummary}
+                onChange={(e) => setProductSummary(e.target.value)}
                 disabled={isLoading}
               />
             </FormItem>
