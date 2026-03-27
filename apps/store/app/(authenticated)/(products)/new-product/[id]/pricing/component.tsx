@@ -45,6 +45,7 @@ const GroupName = styled.p`
 const GroupItemWrapper = styled.div`
   display: flex;
   gap: 5px;
+  align-items: center;
 `;
 
 const GroupItem = styled.div`
@@ -63,6 +64,33 @@ const GroupItem = styled.div`
 const GroupRow = styled.div`
   display: flex;
   gap: 20px;
+  row-gap: 10px;
+  flex-wrap: wrap;
+`;
+
+const Icon = styled.span`
+  font-size: 18px;
+  line-height: 1;
+  display: flex;
+  align-items: center;
+`;
+
+const LoadingVariant = styled.div`
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  font-size: 20px;
+`;
+
+const NoVariant = styled.div`
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  font-size: 20px;
 `;
 
 interface VariantsType {
@@ -81,6 +109,7 @@ export function PricingComponent({ productId }: { productId: string }) {
   const [prices, setPrices] = useState<PricesType>({});
   const [isLoading, setIsLoading] = useState(true);
   const [isPosting, setIsPosting] = useState(false);
+  const [submitted, setSubmitted] = useState(false);
 
   useEffect(() => {
     const fetchVariants = async () => {
@@ -116,7 +145,19 @@ export function PricingComponent({ productId }: { productId: string }) {
     }));
   };
 
+  const isPriceInvalid = (group: string, value: string) =>
+    !prices[group]?.[value]?.trim();
+
+  const hasAnyMissingPrice = () =>
+    groupOrder.some((group) =>
+      (variants[group] ?? []).some((v) => isPriceInvalid(group, v)),
+    );
+
   const handleDone = async () => {
+    setSubmitted(true);
+
+    if (hasAnyMissingPrice()) return;
+
     setIsPosting(true);
     await fetch(`${process.env.NEXT_PUBLIC_API_URL}/product/${productId}`, {
       method: "PUT",
@@ -133,11 +174,27 @@ export function PricingComponent({ productId }: { productId: string }) {
     <Wrapper>
       <Heading>how will you price each variant?</Heading>
       <Main>
-        <Card>
+        <Card height="400px">
           {isLoading ? (
-            <div>Loading variants...</div>
+            <LoadingVariant>
+              <Icon
+                className="material-symbols-sharp"
+                style={{ fontSize: "20px" }}
+              >
+                clock_loader_20
+              </Icon>
+              Loading variants
+            </LoadingVariant>
           ) : !hasVariants ? (
-            <div>No variants found for this product.</div>
+            <NoVariant>
+              <Icon
+                className="material-symbols-sharp"
+                style={{ fontSize: "20px" }}
+              >
+                error
+              </Icon>
+              No variants
+            </NoVariant>
           ) : (
             groupOrder.map((group) => (
               <GroupWrapper key={group}>
@@ -149,15 +206,18 @@ export function PricingComponent({ productId }: { productId: string }) {
                       <Input
                         type="number"
                         name="prices"
-                        height="40px"
+                        height="33px"
                         width="80px"
-                        // min="0"
-                        // step="0.01"
                         value={prices[group]?.[v] ?? ""}
                         onChange={(e) =>
                           handlePriceChange(group, v, e.target.value)
                         }
                       />
+                      {submitted && isPriceInvalid(group, v) && (
+                        <Icon className="material-symbols-outlined">
+                          asterisk
+                        </Icon>
+                      )}
                     </GroupItemWrapper>
                   ))}
                 </GroupRow>
