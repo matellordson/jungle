@@ -15,7 +15,6 @@ const Action = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 5px 0;
   width: 100%;
 `;
 
@@ -49,6 +48,10 @@ const FilterItem = styled.div`
   }
 `;
 
+const StockWrapper = styled.div`
+  margin-top: 10px;
+`;
+
 const TableHeader = styled.div`
   display: flex;
   justify-content: space-between;
@@ -59,12 +62,7 @@ const TableHeader = styled.div`
 
 const TableHeaderItem = styled.div`
   color: var(--paragraph-color);
-`;
-
-const StockWrapper = styled.div`
-  margin-top: 10px;
-  height: 500px;
-  overflow: auto;
+  font-size: 15px;
 `;
 
 const StockItem = styled.div`
@@ -119,7 +117,7 @@ export default function Stocks() {
         <Input
           placeholder="Search"
           width="100%"
-          height="35px"
+          height="40px"
           maxWidth="220px"
         />
         <FilterWrapper>
@@ -136,11 +134,11 @@ export default function Stocks() {
         </FilterWrapper>
       </Action>
 
-      <TableHeader>
-        <TableHeaderItem>Product </TableHeaderItem>
-        <TableHeaderItem>stock</TableHeaderItem>
-      </TableHeader>
       <StockWrapper>
+        <TableHeader>
+          <TableHeaderItem>Product </TableHeaderItem>
+          <TableHeaderItem>stock</TableHeaderItem>
+        </TableHeader>
         {product.map((item) => (
           <StockItem>
             <StockName>{item.name}</StockName>
