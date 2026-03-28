@@ -69,7 +69,7 @@ export default function ProductLayout({
   return (
     <Wrapper>
       <Table>
-        <TableTabWrapper>
+        {/* <TableTabWrapper>
           {tabs.map((item) => (
             <TabItem
               key={item}
@@ -79,7 +79,7 @@ export default function ProductLayout({
               {item}
             </TabItem>
           ))}
-        </TableTabWrapper>
+        </TableTabWrapper> */}
 
         <TabContent>
           {activeTab === "Stock" && stock}

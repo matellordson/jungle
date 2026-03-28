@@ -7,6 +7,9 @@
   --accent: #137771;
   --text-color: #363f3f;
   --paragraph-color: #53605f;
+  --green-bg: #86efac;
+  --yellow-bg: #fde047;
+  --red-bg: #fca5a5;
 }
 
 @media (prefers-color-scheme: dark) {
