@@ -49,8 +49,22 @@ const FilterItem = styled.div`
   }
 `;
 
+const TableHeader = styled.div`
+  display: flex;
+  justify-content: space-between;
+  padding: 10px 10px;
+  border-bottom: var(--border);
+  text-transform: uppercase;
+`;
+
+const TableHeaderItem = styled.div`
+  color: var(--paragraph-color);
+`;
+
 const StockWrapper = styled.div`
   margin-top: 10px;
+  height: 500px;
+  overflow: auto;
 `;
 
 const StockItem = styled.div`
@@ -102,7 +116,12 @@ export default function Stocks() {
   return (
     <Wrapper>
       <Action>
-        <Input placeholder="Search" width="100%" maxWidth="220px" />
+        <Input
+          placeholder="Search"
+          width="100%"
+          height="35px"
+          maxWidth="220px"
+        />
         <FilterWrapper>
           {filters.map((item) => (
             <FilterItem
@@ -117,6 +136,10 @@ export default function Stocks() {
         </FilterWrapper>
       </Action>
 
+      <TableHeader>
+        <TableHeaderItem>Product </TableHeaderItem>
+        <TableHeaderItem>stock</TableHeaderItem>
+      </TableHeader>
       <StockWrapper>
         {product.map((item) => (
           <StockItem>
