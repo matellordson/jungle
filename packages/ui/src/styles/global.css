@@ -1,52 +1,26 @@
 :root {
-  --background: #ffffff;
-  --foreground: #000000;
-  --highlight: #f5f5f5;
-  /* --foreground: #f6efe5;
-  --highlight: #ffffff; */
-  --border: 1px solid #000000;
-  /* --border-bg: #eae4d9; */
+  --background: #f4f6f5;
+  --foreground: #363f3f;
+  --foreground-text: #f4f6f5;
+  --highlight: #e9ecec;
+  --border: 1px solid #8d9d9c;
   --accent: #137771;
-  --text-color: #000000;
-  /* --accent-bg-text: #f6efe5;
-  --input-bg: #1377700b;
-  --toolkit-bg: #000000;
-  --toolkit-text: #ffffff;
-  --text-dark: #363f3f;
-  --text-light: #53605f;
-  --link-color: var(--accent);
-  --mute-text: #bac4c3;
-  --svg-text: #9ba3a2;
-  --red-bg: #c82020;
-  --red-bg-text: #ffffff;
-  --green-bg: #2e7d52;
-  --green-bg-text: #ffffff;
-  --yellow-bg: #c89200;
-  --yellow-bg-text: #ffffff; */
+  --text-color: #363f3f;
+  --paragraph-color: #53605f;
 }
 
-/* @media (prefers-color-scheme: dark) {
+@media (prefers-color-scheme: dark) {
   :root {
-    --background: #020e0e;
-    --foreground: #041514;
-    --highlight: #0b1e1e;
-    --border: 1px solid #052421;
-    --border-bg: #052421;
-    --input-bg: #13777013;
-    --toolkit-bg: #1e1e1e;
-    --toolkit-text: #dedede;
-    --text-dark: #f4f6f5;
-    --text-light: #bac4c3;
-    --mute-text: #53605f;
-    --svg-text: #677170;
-    --red-bg: #e03030;
-    --red-bg-text: #e8f6f3;
-    --green-bg: #30714f;
-    --green-bg-text: #c8ddd2;
-    --yellow-bg: #f0c040;
-    --yellow-bg-text: #3b3107;
+    --background: #0e1010;
+    --foreground: #e9ecec;
+    --foreground-text: #1c2121;
+    --highlight: #1c2121;
+    --border: 1px solid #363f3f;
+    --accent: #137771;
+    --text-color: #e9ecec;
+    --paragraph-color: #a4b1b0;
   }
-} */
+}
 
 html {
   /* Safari auto-inflates font sizes in landscape — disable it */

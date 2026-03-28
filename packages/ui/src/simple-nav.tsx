@@ -12,7 +12,7 @@ const Wrapper = styled.div`
 const Profile = styled.div`
   height: 40px;
   width: 40px;
-  background-color: #000000;
+  background-color: var(--foreground);
 `;
 
 export function Navbar() {

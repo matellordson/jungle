@@ -180,7 +180,7 @@ export default function IdentityPage() {
                 <Icon className="material-symbols-outlined">asterisk</Icon>
               )}
             </LabelRow>
-            <Card height="250px">
+            <Card height="300px">
               <Category>
                 {clothingCategory.map((item) => {
                   const isActive = selectedCategory.includes(item.value);

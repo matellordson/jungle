@@ -43,8 +43,7 @@ const TabItem = styled.div`
 
   &.active {
     background-color: var(--foreground);
-    color: var(--background);
-    font-weight: 430;
+    color: var(--foreground-text);
   }
 `;
 

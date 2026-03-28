@@ -5,7 +5,7 @@ const ButtonEl = styled.button<{ variant: "default" | "outline" }>`
   background-color: ${(props) =>
     props.variant == "default" ? "var(--foreground)" : "var(--background)"};
   color: ${(props) =>
-    props.variant == "default" ? "var(--background)" : "var(--foreground)"};
+    props.variant == "default" ? "var(--foreground-text)" : ""};
   border: ${(props) => (props.variant == "default" ? "none" : "var(--border)")};
   font-weight: 500;
   font-family: inherit;

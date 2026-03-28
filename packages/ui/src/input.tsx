@@ -54,6 +54,7 @@ export function Input({
         height: `${height}`,
         width: `${width}`,
         maxWidth: `${maxWidth}`,
+        color: "var(--paragraph-color)",
       }}
     />
   );
