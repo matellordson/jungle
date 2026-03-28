@@ -59,6 +59,7 @@ const GroupItem = styled.div`
   text-transform: uppercase;
   cursor: pointer;
   width: fit-content;
+  color: var(--paragraph-color);
 `;
 
 const GroupRow = styled.div`

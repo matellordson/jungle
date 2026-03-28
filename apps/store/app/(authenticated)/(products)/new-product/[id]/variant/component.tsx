@@ -123,6 +123,7 @@ const VariantItems = styled.div`
   display: flex;
   flex-wrap: wrap;
   gap: 10px;
+  color: var(--paragraph-color);
 `;
 
 const ButtonWrapper = styled.div`
