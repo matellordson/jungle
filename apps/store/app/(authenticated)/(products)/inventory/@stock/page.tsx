@@ -7,12 +7,17 @@ import { Input } from "@repo/ui/input";
 import "material-symbols";
 import { product } from "../product";
 
-const Wrapper = styled.div``;
+const Wrapper = styled.div`
+  width: 100%;
+  position: sticky;
+  top: 50px;
+`;
 
 const Action = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
+  padding: 5px 0;
   width: 100%;
 `;
 
@@ -29,9 +34,14 @@ const FilterItem = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+  background-color: var(--background);
 
   &:not(:first-child) {
     border-left: var(--border);
+  }
+
+  &:hover {
+    background-color: var(--highlight);
   }
 
   &.active {
@@ -41,18 +51,17 @@ const FilterItem = styled.div`
 `;
 
 const StockWrapper = styled.div`
-  margin-top: 30px;
+  margin-top: 10px;
 `;
 
 const StockItem = styled.div`
   display: flex;
   justify-content: space-between;
-  border-bottom: var(--border);
   align-items: center;
-  padding: 10px 5px;
+  padding: 10px;
 
-  &:last-child {
-    border: none;
+  &:hover {
+    background-color: var(--highlight);
   }
 `;
 
@@ -72,8 +81,10 @@ const StockCount = styled.div`
 
 const StockColor = styled.div`
   height: 30px;
-  width: 30px;
-  border: var(--border);
+  width: 15px;
+  border-right: var(--border);
+  border-top: var(--border);
+  border-bottom: var(--border);
 `;
 
 export default function Stocks() {

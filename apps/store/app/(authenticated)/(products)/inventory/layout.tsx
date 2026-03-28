@@ -13,35 +13,20 @@ const Wrapper = styled.div`
   padding: 0 5px;
 `;
 
-const TableSide = styled.div`
+const Table = styled.div`
   height: 100%;
   width: 100%;
-
-  @media only screen and (min-width: 992px) {
-    width: 60%;
-  }
-`;
-
-const PreviewSide = styled.div`
-  border: var(--border);
-  height: 100%;
-  width: 40%;
-  display: none;
-  position: static;
-
-  @media only screen and (min-width: 992px) {
-    display: block;
-  }
 `;
 
 const TableTabWrapper = styled.div`
-  border: var(--border);
   display: flex;
   width: fit-content;
+  border: var(--border);
+  background-color: var(--background);
 `;
 
 const TabItem = styled.div`
-  padding: 3px 10px;
+  padding: 5px 10px;
   cursor: pointer;
   display: flex;
   justify-content: center;
@@ -50,6 +35,10 @@ const TabItem = styled.div`
 
   &:not(:first-child) {
     border-left: var(--border);
+  }
+
+  &:hover {
+    background-color: var(--highlight);
   }
 
   &.active {
@@ -83,7 +72,7 @@ export default function ProductLayout({
   return (
     <Wrapper>
       {/* {children} */}
-      <TableSide>
+      <Table>
         <TableTabWrapper>
           {tabs.map((item) => (
             <TabItem
@@ -103,8 +92,7 @@ export default function ProductLayout({
         ) : activeTab === "Rank" ? (
           <TabContent>{rank}</TabContent>
         ) : null}
-      </TableSide>
-      <PreviewSide></PreviewSide>
+      </Table>
     </Wrapper>
   );
 }
