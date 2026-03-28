@@ -92,7 +92,6 @@ const SortWrapper = styled.div`
 
 const SortItem = styled.div`
   width: fit-content;
-  padding: 3px 5px;
   cursor: pointer;
   display: flex;
   justify-content: center;
