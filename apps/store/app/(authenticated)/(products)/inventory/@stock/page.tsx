@@ -9,8 +9,6 @@ import { product } from "../product";
 
 const Wrapper = styled.div`
   width: 100%;
-  position: sticky;
-  top: 50px;
 `;
 
 const Action = styled.div`
@@ -25,6 +23,7 @@ const FilterWrapper = styled.div`
   border: var(--border);
   display: flex;
   width: fit-content;
+  padding: 5px;
 `;
 
 const FilterItem = styled.div`
@@ -103,12 +102,7 @@ export default function Stocks() {
   return (
     <Wrapper>
       <Action>
-        <Input
-          placeholder="Search"
-          width="100%"
-          height="35px"
-          maxWidth="220px"
-        />
+        <Input placeholder="Search" width="100%" maxWidth="220px" />
         <FilterWrapper>
           {filters.map((item) => (
             <FilterItem

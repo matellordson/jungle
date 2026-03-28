@@ -1,12 +1,10 @@
 "use client";
 
-import { Metadata } from "next";
 import { useState } from "react";
 import styled from "styled-components";
 import "material-symbols";
 
 const Wrapper = styled.div`
-  height: 500px;
   width: 100%;
   display: flex;
   gap: 20px;
@@ -23,6 +21,7 @@ const TableTabWrapper = styled.div`
   width: fit-content;
   border: var(--border);
   background-color: var(--background);
+  padding: 5px;
 `;
 
 const TabItem = styled.div`
@@ -49,11 +48,9 @@ const TabItem = styled.div`
 
 const TabContent = styled.div`
   margin-top: 20px;
+  /* max-height: 700px; */
+  overflow-y: auto;
 `;
-
-// export const metadata: Metadata = {
-//   title: "Inventory",
-// };
 
 export default function ProductLayout({
   children,
@@ -68,29 +65,27 @@ export default function ProductLayout({
 }) {
   const tabs = ["Stock", "Profit", "Rank"];
   const [activeTab, setActiveTab] = useState("Stock");
+
   return (
     <Wrapper>
-      {/* {children} */}
       <Table>
         <TableTabWrapper>
           {tabs.map((item) => (
             <TabItem
+              key={item}
               className={activeTab === item ? "active" : ""}
-              onClick={() => {
-                setActiveTab(item);
-              }}
+              onClick={() => setActiveTab(item)}
             >
               {item}
             </TabItem>
           ))}
         </TableTabWrapper>
-        {activeTab === "Stock" ? (
-          <TabContent>{stock}</TabContent>
-        ) : activeTab === "Profit" ? (
-          <TabContent>{profit}</TabContent>
-        ) : activeTab === "Rank" ? (
-          <TabContent>{rank}</TabContent>
-        ) : null}
+
+        <TabContent>
+          {activeTab === "Stock" && stock}
+          {activeTab === "Profit" && profit}
+          {activeTab === "Rank" && rank}
+        </TabContent>
       </Table>
     </Wrapper>
   );

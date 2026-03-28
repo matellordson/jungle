@@ -7,6 +7,12 @@ const Wrapper = styled.div`
   align-items: center;
   padding: 10px 5px;
   margin-bottom: 60px;
+  background-color: var(--background);
+  border-bottom: var(--border);
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
 `;
 
 const Profile = styled.div`
