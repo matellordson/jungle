@@ -11,6 +11,7 @@ import {
   offset,
   flip,
   autoUpdate,
+  FloatingPortal,
 } from "@floating-ui/react";
 import { product } from "../product";
 
@@ -49,7 +50,7 @@ const FilterWrapper = styled.div`
 `;
 
 const DropdownMenu = styled.div`
-  position: absolute;
+  position: fixed;
   top: 0;
   left: 0;
   border: var(--border);
@@ -190,6 +191,14 @@ const FILTER_OPTIONS: { label: string; value: StockStatus; color: string }[] = [
 
 const ITEMS_PER_PAGE = 10;
 
+const bodyShift = {
+  name: "bodyShift",
+  fn({ x, y }: { x: number; y: number }) {
+    const bodyLeft = document.body.getBoundingClientRect().left;
+    return { x: x + bodyLeft, y };
+  },
+};
+
 export default function Stocks() {
   const [activeSort, setActiveSort] = useState("asc");
   const [activeFilter, setActiveFilter] = useState<StockStatus>("");
@@ -199,10 +208,10 @@ export default function Stocks() {
   const { refs, floatingStyles, context } = useFloating({
     open: isOpen,
     onOpenChange: setIsOpen,
-    middleware: [offset(4), flip()],
+    middleware: [offset(4), flip(), bodyShift],
     whileElementsMounted: autoUpdate,
     placement: "bottom-start",
-    strategy: "absolute",
+    strategy: "fixed",
   });
 
   const click = useClick(context);
@@ -287,22 +296,24 @@ export default function Stocks() {
         </FilterWrapper>
 
         {isOpen && (
-          <DropdownMenu
-            ref={refs.setFloating}
-            style={floatingStyles}
-            {...getFloatingProps()}
-          >
-            {FILTER_OPTIONS.map((option) => (
-              <DropdownItem
-                key={option.value}
-                className={activeFilter === option.value ? "active" : ""}
-                onClick={() => handleFilterChange(option.value)}
-              >
-                <StatusDot color={option.color} />
-                {option.label}
-              </DropdownItem>
-            ))}
-          </DropdownMenu>
+          <FloatingPortal>
+            <DropdownMenu
+              ref={refs.setFloating}
+              style={floatingStyles}
+              {...getFloatingProps()}
+            >
+              {FILTER_OPTIONS.map((option) => (
+                <DropdownItem
+                  key={option.value}
+                  className={activeFilter === option.value ? "active" : ""}
+                  onClick={() => handleFilterChange(option.value)}
+                >
+                  <StatusDot color={option.color} />
+                  {option.label}
+                </DropdownItem>
+              ))}
+            </DropdownMenu>
+          </FloatingPortal>
         )}
 
         <SortWrapper>
