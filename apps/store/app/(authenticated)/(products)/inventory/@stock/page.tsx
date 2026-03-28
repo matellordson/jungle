@@ -88,13 +88,9 @@ const StockColor = styled.div`
 `;
 
 export default function Stocks() {
-  const [activeFilter, setActiveFilter] = useState("no-filter");
+  const [activeFilter, setActiveFilter] = useState("asc");
 
   const filters = [
-    {
-      name: "no-filter",
-      icon: "filter_alt_off",
-    },
     {
       name: "asc",
       icon: "arrow_upward",

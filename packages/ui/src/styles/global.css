@@ -1,6 +1,6 @@
 :root {
   --background: #f4f6f5;
-  --foreground: #363f3f;
+  --foreground: #000000;
   --foreground-text: #f4f6f5;
   --highlight: #e9ecec;
   --border: 1px solid #8d9d9c;
@@ -12,7 +12,7 @@
 @media (prefers-color-scheme: dark) {
   :root {
     --background: #0e1010;
-    --foreground: #e9ecec;
+    --foreground: #ffffff;
     --foreground-text: #1c2121;
     --highlight: #1c2121;
     --border: 1px solid #363f3f;
