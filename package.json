@@ -22,6 +22,7 @@
     "packages/*"
   ],
   "dependencies": {
+    "@floating-ui/react": "^0.27.19",
     "material-symbols": "^0.42.3",
     "styled-components": "^6.3.8"
   }

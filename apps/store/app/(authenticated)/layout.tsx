@@ -4,7 +4,7 @@ import styled from "styled-components";
 const Wrapper = styled.div``;
 
 const PageWrapper = styled.div`
-  margin-top: 100px;
+  margin: 100px 0;
 `;
 
 export default function AuthenticatedLayout({
@@ -15,6 +15,7 @@ export default function AuthenticatedLayout({
   return (
     <Wrapper>
       <Navbar />
+
       <PageWrapper>{children}</PageWrapper>
     </Wrapper>
   );

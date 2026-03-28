@@ -10,9 +10,7 @@ import {
   useInteractions,
   offset,
   flip,
-  shift,
   autoUpdate,
-  FloatingPortal,
 } from "@floating-ui/react";
 import { product } from "../product";
 
@@ -26,6 +24,8 @@ const Action = styled.div`
   align-items: center;
   width: 100%;
   height: 100%;
+  position: relative;
+  z-index: 1;
 `;
 
 const FilterWrapper = styled.div`
@@ -35,6 +35,7 @@ const FilterWrapper = styled.div`
   align-items: center;
   gap: 6px;
   user-select: none;
+  width: fit-content;
 
   &:hover {
     background-color: var(--highlight);
@@ -48,7 +49,7 @@ const FilterWrapper = styled.div`
 `;
 
 const DropdownMenu = styled.div`
-  position: fixed;
+  position: absolute;
   top: 0;
   left: 0;
   border: var(--border);
@@ -92,6 +93,7 @@ const SortWrapper = styled.div`
 
 const SortItem = styled.div`
   width: fit-content;
+  padding: 3px 5px;
   cursor: pointer;
   display: flex;
   justify-content: center;
@@ -145,6 +147,39 @@ const StockColor = styled.div`
   border-bottom: var(--border);
 `;
 
+const PaginationWrapper = styled.div`
+  display: flex;
+  justify-content: end;
+  align-items: center;
+  gap: 10px;
+  margin-top: 10px;
+  border-top: var(--border);
+  padding: 10px 0;
+`;
+
+const PaginationButton = styled.div`
+  border: var(--border);
+  padding: 5px 10px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+
+  &:hover {
+    background-color: var(--highlight);
+  }
+
+  &.disabled {
+    opacity: 0.3;
+    pointer-events: none;
+  }
+`;
+
+const PaginationInfo = styled.p`
+  font-size: 0.85rem;
+  color: var(--paragraph-color);
+`;
+
 type StockStatus = "low" | "ok" | "high" | "";
 
 const FILTER_OPTIONS: { label: string; value: StockStatus; color: string }[] = [
@@ -153,18 +188,21 @@ const FILTER_OPTIONS: { label: string; value: StockStatus; color: string }[] = [
   { label: "High stock", value: "high", color: "var(--green-bg)" },
 ];
 
+const ITEMS_PER_PAGE = 10;
+
 export default function Stocks() {
   const [activeSort, setActiveSort] = useState("asc");
   const [activeFilter, setActiveFilter] = useState<StockStatus>("");
   const [isOpen, setIsOpen] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1);
 
   const { refs, floatingStyles, context } = useFloating({
     open: isOpen,
     onOpenChange: setIsOpen,
-    middleware: [offset(4), flip(), shift({ padding: 8 })],
+    middleware: [offset(4), flip()],
     whileElementsMounted: autoUpdate,
     placement: "bottom-start",
-    strategy: "fixed",
+    strategy: "absolute",
   });
 
   const click = useClick(context);
@@ -200,9 +238,26 @@ export default function Stocks() {
       : b.current_stock_count - a.current_stock_count,
   );
 
+  const totalPages = Math.ceil(sortedProducts.length / ITEMS_PER_PAGE);
+  const paginatedProducts = sortedProducts.slice(
+    (currentPage - 1) * ITEMS_PER_PAGE,
+    currentPage * ITEMS_PER_PAGE,
+  );
+
   const activeFilterLabel = FILTER_OPTIONS.find(
     (o) => o.value === activeFilter,
   )?.label;
+
+  const handleFilterChange = (value: StockStatus) => {
+    setActiveFilter(value);
+    setCurrentPage(1);
+    setIsOpen(false);
+  };
+
+  const handleSortChange = (name: string) => {
+    setActiveSort(name);
+    setCurrentPage(1);
+  };
 
   return (
     <Wrapper>
@@ -215,7 +270,7 @@ export default function Stocks() {
           <span className="material-symbols-sharp" style={{ fontSize: "16px" }}>
             filter_list
           </span>
-          {activeFilterLabel ?? "filter"}
+          {activeFilterLabel ?? "Filter"}
           {activeFilter && (
             <span
               className="material-symbols-sharp"
@@ -223,6 +278,7 @@ export default function Stocks() {
               onClick={(e) => {
                 e.stopPropagation();
                 setActiveFilter("");
+                setCurrentPage(1);
               }}
             >
               close
@@ -231,27 +287,22 @@ export default function Stocks() {
         </FilterWrapper>
 
         {isOpen && (
-          <FloatingPortal>
-            <DropdownMenu
-              ref={refs.setFloating}
-              style={floatingStyles}
-              {...getFloatingProps()}
-            >
-              {FILTER_OPTIONS.map((option) => (
-                <DropdownItem
-                  key={option.value}
-                  className={activeFilter === option.value ? "active" : ""}
-                  onClick={() => {
-                    setActiveFilter(option.value);
-                    setIsOpen(false);
-                  }}
-                >
-                  <StatusDot color={option.color} />
-                  {option.label}
-                </DropdownItem>
-              ))}
-            </DropdownMenu>
-          </FloatingPortal>
+          <DropdownMenu
+            ref={refs.setFloating}
+            style={floatingStyles}
+            {...getFloatingProps()}
+          >
+            {FILTER_OPTIONS.map((option) => (
+              <DropdownItem
+                key={option.value}
+                className={activeFilter === option.value ? "active" : ""}
+                onClick={() => handleFilterChange(option.value)}
+              >
+                <StatusDot color={option.color} />
+                {option.label}
+              </DropdownItem>
+            ))}
+          </DropdownMenu>
         )}
 
         <SortWrapper>
@@ -259,21 +310,26 @@ export default function Stocks() {
             <SortItem
               key={item.name}
               className={activeSort === item.name ? "active" : ""}
-              onClick={() => setActiveSort(item.name)}
+              onClick={() => handleSortChange(item.name)}
             >
-              <span className="material-symbols-sharp">{item.icon}</span>
+              <span
+                className="material-symbols-sharp"
+                style={{ fontSize: "16px" }}
+              >
+                {item.icon}
+              </span>
             </SortItem>
           ))}
         </SortWrapper>
       </Action>
 
       <StockWrapper>
-        {sortedProducts.length === 0 ? (
+        {paginatedProducts.length === 0 ? (
           <StockItem>
             <StockName>No products found</StockName>
           </StockItem>
         ) : (
-          sortedProducts.map((item) => (
+          paginatedProducts.map((item) => (
             <StockItem key={item.name}>
               <StockName>{item.name}</StockName>
               <StockCountWrapper>
@@ -294,6 +350,38 @@ export default function Stocks() {
           ))
         )}
       </StockWrapper>
+
+      {totalPages > 1 && (
+        <PaginationWrapper>
+          <PaginationInfo>
+            {currentPage} / {totalPages}
+          </PaginationInfo>
+          <PaginationButton
+            className={currentPage === 1 ? "disabled" : ""}
+            onClick={() => setCurrentPage((p) => p - 1)}
+          >
+            <span
+              className="material-symbols-sharp"
+              style={{ fontSize: "16px" }}
+            >
+              arrow_back
+            </span>
+            prev
+          </PaginationButton>
+          <PaginationButton
+            className={currentPage === totalPages ? "disabled" : ""}
+            onClick={() => setCurrentPage((p) => p + 1)}
+          >
+            next
+            <span
+              className="material-symbols-sharp"
+              style={{ fontSize: "16px" }}
+            >
+              arrow_forward
+            </span>
+          </PaginationButton>
+        </PaginationWrapper>
+      )}
     </Wrapper>
   );
 }

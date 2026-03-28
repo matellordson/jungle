@@ -53,4 +53,16 @@ export const product = [
     low_stock_count: 15,
     high_stock_count: 90,
   },
+  {
+    name: "Salomon",
+    current_stock_count: 95,
+    low_stock_count: 15,
+    high_stock_count: 90,
+  },
+  {
+    name: "Brooks Ghost",
+    current_stock_count: 240,
+    low_stock_count: 25,
+    high_stock_count: 180,
+  },
 ];
