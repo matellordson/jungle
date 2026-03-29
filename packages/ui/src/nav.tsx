@@ -9,7 +9,6 @@ import {
   useInteractions,
   offset,
   flip,
-  shift,
   autoUpdate,
 } from "@floating-ui/react";
 import { useState } from "react";
@@ -60,7 +59,7 @@ export function Navbar() {
   const { refs, floatingStyles, context } = useFloating({
     open: isOpen,
     onOpenChange: setIsOpen,
-    middleware: [offset(1), flip(), shift({ padding: 8 })],
+    middleware: [offset(1), flip()],
     whileElementsMounted: autoUpdate,
     placement: "bottom-end",
     strategy: "absolute",
