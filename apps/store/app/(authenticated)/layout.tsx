@@ -15,7 +15,6 @@ export default function AuthenticatedLayout({
   return (
     <Wrapper>
       <Navbar />
-
       <PageWrapper>{children}</PageWrapper>
     </Wrapper>
   );

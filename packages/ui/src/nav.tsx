@@ -13,6 +13,8 @@ import {
   autoUpdate,
 } from "@floating-ui/react";
 import { useState } from "react";
+import { AccountSection } from "./nav-items/account";
+import { ProductNavItems } from "../../../apps/store/app/(authenticated)/(products)/nav-item";
 
 const Wrapper = styled.div`
   display: flex;
@@ -47,9 +49,10 @@ const DropdownMenu = styled.div`
   border: var(--border);
   background-color: var(--background);
   z-index: 9999;
-  min-width: 200px;
-  height: 300px;
+  min-width: 250px;
 `;
+
+const DropDownItemsWrapper = styled.div``;
 
 export function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
@@ -57,7 +60,7 @@ export function Navbar() {
   const { refs, floatingStyles, context } = useFloating({
     open: isOpen,
     onOpenChange: setIsOpen,
-    middleware: [offset(4), flip(), shift({ padding: 8 })],
+    middleware: [offset(5), flip(), shift({ padding: 8 })],
     whileElementsMounted: autoUpdate,
     placement: "bottom-end",
     strategy: "absolute",
@@ -80,7 +83,12 @@ export function Navbar() {
           ref={refs.setFloating}
           style={floatingStyles}
           {...getFloatingProps()}
-        />
+        >
+          <DropDownItemsWrapper>
+            <AccountSection />
+            <ProductNavItems />
+          </DropDownItemsWrapper>
+        </DropdownMenu>
       )}
     </Wrapper>
   );
