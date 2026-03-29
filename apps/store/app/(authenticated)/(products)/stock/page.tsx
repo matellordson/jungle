@@ -3,6 +3,7 @@
 import styled from "styled-components";
 import "material-symbols";
 import { useState } from "react";
+import Image from "next/image";
 import {
   useFloating,
   useClick,
@@ -23,10 +24,6 @@ const PageName = styled.p`
   text-transform: uppercase;
   font-weight: 500;
   padding-bottom: 20px;
-
-  @media only screen and (min-width: 992px) {
-    /* text-align: center; */
-  }
 `;
 
 const Action = styled.div`
@@ -121,6 +118,12 @@ const SortItem = styled.div`
   }
 `;
 
+const FilterCount = styled.p`
+  font-size: 0.85rem;
+  color: var(--paragraph-color);
+  margin-top: 8px;
+`;
+
 const StockWrapper = styled.div`
   margin-top: 10px;
 `;
@@ -136,7 +139,14 @@ const StockItem = styled.div`
   }
 `;
 
-const StockName = styled.p``;
+const StockName = styled.p`
+  cursor: pointer;
+  user-select: none;
+
+  &:hover {
+    text-decoration: underline;
+  }
+`;
 
 const StockCountWrapper = styled.div`
   display: flex;
@@ -191,6 +201,53 @@ const PaginationInfo = styled.p`
   color: var(--paragraph-color);
 `;
 
+const StockItemMenu = styled.div`
+  position: fixed;
+  top: 0;
+  left: 0;
+  border: var(--border);
+  background-color: var(--background);
+  z-index: 9999;
+  min-width: 200px;
+`;
+
+const StockItemMenuImage = styled.div`
+  width: 100%;
+  height: 120px;
+  position: relative;
+  border-bottom: var(--border);
+  overflow: hidden;
+`;
+
+const StockItemMenuInfo = styled.div`
+  padding: 8px 12px;
+  border-bottom: var(--border);
+`;
+
+const StockItemMenuName = styled.p`
+  font-size: 0.9rem;
+  font-weight: 500;
+`;
+
+const StockItemMenuStatus = styled.p`
+  font-size: 0.8rem;
+  color: var(--paragraph-color);
+  margin-top: 2px;
+`;
+
+const StockItemMenuItem = styled.div`
+  padding: 8px 12px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  font-size: 0.9rem;
+
+  &:hover {
+    background-color: var(--highlight);
+  }
+`;
+
 type StockStatus = "low" | "ok" | "high" | "";
 
 const FILTER_OPTIONS: { label: string; value: StockStatus; color: string }[] = [
@@ -208,6 +265,133 @@ const bodyShift = {
     return { x: x + bodyLeft, y };
   },
 };
+
+type Product = (typeof product)[number];
+
+function StockRow({ item }: { item: Product }) {
+  const [isOpen, setIsOpen] = useState(false);
+
+  const getStockColor = () => {
+    if (item.current_stock_count <= item.low_stock_count)
+      return "var(--red-bg)";
+    if (
+      item.current_stock_count <= item.high_stock_count &&
+      item.current_stock_count >= item.low_stock_count
+    )
+      return "var(--yellow-bg)";
+    return "var(--green-bg)";
+  };
+
+  const getStockLabel = () => {
+    if (item.current_stock_count <= item.low_stock_count) return "Low stock";
+    if (
+      item.current_stock_count <= item.high_stock_count &&
+      item.current_stock_count >= item.low_stock_count
+    )
+      return "OK stock";
+    return "High stock";
+  };
+
+  const { refs, floatingStyles, context } = useFloating({
+    open: isOpen,
+    onOpenChange: setIsOpen,
+    middleware: [offset(4), flip(), bodyShift],
+    whileElementsMounted: autoUpdate,
+    placement: "bottom-start",
+    strategy: "fixed",
+  });
+
+  const click = useClick(context);
+  const dismiss = useDismiss(context);
+
+  const { getReferenceProps, getFloatingProps } = useInteractions([
+    click,
+    dismiss,
+  ]);
+
+  return (
+    <StockItem>
+      <StockName ref={refs.setReference} {...getReferenceProps()}>
+        {item.name}
+      </StockName>
+
+      {isOpen && (
+        <FloatingPortal>
+          <StockItemMenu
+            ref={refs.setFloating}
+            style={floatingStyles}
+            {...getFloatingProps()}
+          >
+            <StockItemMenuImage>
+              <Image
+                src={item.cover_image}
+                alt={item.name}
+                fill
+                style={{ objectFit: "cover" }}
+              />
+            </StockItemMenuImage>
+
+            <StockItemMenuInfo>
+              <StockItemMenuName>{item.name}</StockItemMenuName>
+              <StockItemMenuStatus>
+                {item.current_stock_count} units ·{" "}
+                <span style={{ color: getStockColor() }}>
+                  {getStockLabel()}
+                </span>
+              </StockItemMenuStatus>
+            </StockItemMenuInfo>
+
+            <StockItemMenuItem onClick={() => console.log("View", item.name)}>
+              <span
+                className="material-symbols-sharp"
+                style={{ fontSize: "16px" }}
+              >
+                visibility
+              </span>
+              View details
+            </StockItemMenuItem>
+            <StockItemMenuItem onClick={() => console.log("Edit", item.name)}>
+              <span
+                className="material-symbols-sharp"
+                style={{ fontSize: "16px" }}
+              >
+                edit
+              </span>
+              Edit product
+            </StockItemMenuItem>
+            <StockItemMenuItem
+              onClick={() => console.log("Restock", item.name)}
+            >
+              <span
+                className="material-symbols-sharp"
+                style={{ fontSize: "16px" }}
+              >
+                add_circle
+              </span>
+              Restock
+            </StockItemMenuItem>
+            <StockItemMenuItem
+              onClick={() => console.log("History", item.name)}
+            >
+              <span
+                className="material-symbols-sharp"
+                style={{ fontSize: "16px" }}
+              >
+                history
+              </span>
+              Stock history
+            </StockItemMenuItem>
+          </StockItemMenu>
+        </FloatingPortal>
+      )}
+
+      <StockCountWrapper>
+        <StockCount>{item.current_stock_count}</StockCount>
+        <StockColor style={{ backgroundColor: getStockColor() }} />
+      </StockCountWrapper>
+    </StockItem>
+  );
+}
 
 export default function Stocks() {
   const [activeSort, setActiveSort] = useState("asc");
@@ -345,6 +529,13 @@ export default function Stocks() {
         </SortWrapper>
       </Action>
 
+      {activeFilter && (
+        <FilterCount>
+          {filteredProducts.length} product
+          {filteredProducts.length !== 1 ? "s" : ""} — {activeFilterLabel}
+        </FilterCount>
+      )}
+
       <StockWrapper>
         {paginatedProducts.length === 0 ? (
           <StockItem>
@@ -352,23 +543,7 @@ export default function Stocks() {
           </StockItem>
         ) : (
           paginatedProducts.map((item) => (
-            <StockItem key={item.name}>
-              <StockName>{item.name}</StockName>
-              <StockCountWrapper>
-                <StockCount>{item.current_stock_count}</StockCount>
-                <StockColor
-                  style={{
-                    backgroundColor:
-                      item.current_stock_count <= item.low_stock_count
-                        ? "var(--red-bg)"
-                        : item.current_stock_count <= item.high_stock_count &&
-                            item.current_stock_count >= item.low_stock_count
-                          ? "var(--yellow-bg)"
-                          : "var(--green-bg)",
-                  }}
-                />
-              </StockCountWrapper>
-            </StockItem>
+            <StockRow key={item.name} item={item} />
           ))
         )}
       </StockWrapper>
