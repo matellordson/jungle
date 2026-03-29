@@ -17,7 +17,6 @@ const MenuItem = styled.div`
 `;
 
 const MenuItemTitle = styled.p`
-  font-weight: 480;
   text-transform: capitalize;
 `;
 

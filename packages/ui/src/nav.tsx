@@ -60,7 +60,7 @@ export function Navbar() {
   const { refs, floatingStyles, context } = useFloating({
     open: isOpen,
     onOpenChange: setIsOpen,
-    middleware: [offset(5), flip(), shift({ padding: 8 })],
+    middleware: [offset(1), flip(), shift({ padding: 8 })],
     whileElementsMounted: autoUpdate,
     placement: "bottom-end",
     strategy: "absolute",
