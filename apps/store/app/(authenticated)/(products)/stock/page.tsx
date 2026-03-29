@@ -335,10 +335,6 @@ function StockRow({ item }: { item: Product }) {
               />
             </StockItemMenuImage>
 
-            <StockItemMenuInfo>
-              <StockItemMenuName>{item.name}</StockItemMenuName>
-            </StockItemMenuInfo>
-
             <StockItemMenuItem onClick={() => console.log("View", item.name)}>
               <span
                 className="material-symbols-sharp"
