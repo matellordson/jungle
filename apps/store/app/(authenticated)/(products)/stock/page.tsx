@@ -271,7 +271,7 @@ type Product = (typeof product)[number];
 function StockRow({ item }: { item: Product }) {
   const [isOpen, setIsOpen] = useState(false);
 
-  const getStockColor = () => {
+  const getStockBg = () => {
     if (item.current_stock_count <= item.low_stock_count)
       return "var(--red-bg)";
     if (
@@ -280,6 +280,17 @@ function StockRow({ item }: { item: Product }) {
     )
       return "var(--yellow-bg)";
     return "var(--green-bg)";
+  };
+
+  const getStockTextColor = () => {
+    if (item.current_stock_count <= item.low_stock_count)
+      return "var(--red-text)";
+    if (
+      item.current_stock_count <= item.high_stock_count &&
+      item.current_stock_count >= item.low_stock_count
+    )
+      return "var(--yellow-text)";
+    return "var(--green-text)";
   };
 
   const getStockLabel = () => {
@@ -335,7 +346,7 @@ function StockRow({ item }: { item: Product }) {
               <StockItemMenuName>{item.name}</StockItemMenuName>
               <StockItemMenuStatus>
                 {item.current_stock_count} units ·{" "}
-                <span style={{ color: getStockColor() }}>
+                <span style={{ color: getStockTextColor() }}>
                   {getStockLabel()}
                 </span>
               </StockItemMenuStatus>
@@ -387,7 +398,7 @@ function StockRow({ item }: { item: Product }) {
 
       <StockCountWrapper>
         <StockCount>{item.current_stock_count}</StockCount>
-        <StockColor style={{ backgroundColor: getStockColor() }} />
+        <StockColor style={{ backgroundColor: getStockBg() }} />
       </StockCountWrapper>
     </StockItem>
   );

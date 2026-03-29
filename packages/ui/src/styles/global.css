@@ -8,9 +8,9 @@
   --text-color: #363f3f;
   --paragraph-color: #53605f;
 
-  --green-bg: #15803d;
-  --yellow-bg: #c39637;
-  --red-bg: #dc2626;
+  --green-bg: #86efac;
+  --yellow-bg: #fde047;
+  --red-bg: #f87171;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -23,9 +23,9 @@
     --accent: #137771;
     --text-color: #e9ecec;
     --paragraph-color: #a4b1b0;
-    --green-bg: #86efac;
-    --yellow-bg: #fde047;
-    --red-bg: #f87171;
+    --green-text: #86efac;
+    --yellow-text: #fde047;
+    --red-text: #fca5a5;
   }
 }
 
