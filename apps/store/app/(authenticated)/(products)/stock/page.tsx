@@ -226,13 +226,6 @@ const StockItemMenuInfo = styled.div`
 
 const StockItemMenuName = styled.p`
   font-size: 0.9rem;
-  font-weight: 500;
-`;
-
-const StockItemMenuStatus = styled.p`
-  font-size: 0.8rem;
-  color: var(--paragraph-color);
-  margin-top: 2px;
 `;
 
 const StockItemMenuItem = styled.div`
@@ -344,12 +337,6 @@ function StockRow({ item }: { item: Product }) {
 
             <StockItemMenuInfo>
               <StockItemMenuName>{item.name}</StockItemMenuName>
-              <StockItemMenuStatus>
-                {item.current_stock_count} units ·{" "}
-                <span style={{ color: getStockTextColor() }}>
-                  {getStockLabel()}
-                </span>
-              </StockItemMenuStatus>
             </StockItemMenuInfo>
 
             <StockItemMenuItem onClick={() => console.log("View", item.name)}>
@@ -531,7 +518,7 @@ export default function Stocks() {
             >
               <span
                 className="material-symbols-sharp"
-                style={{ fontSize: "16px" }}
+                style={{ fontSize: "18px" }}
               >
                 {item.icon}
               </span>
