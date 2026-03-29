@@ -6,11 +6,12 @@ const Wrapper = styled.div`
   /* height: 200px; */
 `;
 
-const MenuItem = styled.div`
+const MenuItem = styled(Link)`
   display: flex;
   align-items: center;
   gap: 5px;
   padding: 5px;
+
   &:hover {
     background-color: var(--highlight);
   }
@@ -25,25 +26,29 @@ export function ProductNavItems() {
     {
       name: "stock",
       icon: "package",
+      link: "/stock",
+    },
+    {
+      name: "performance",
+      icon: "speed",
+      link: "/performance",
     },
   ];
   return (
     <Wrapper>
       {links.map((item) => (
-        <Link href={"/stock"} key={item.name}>
-          <MenuItem>
-            <span
-              className="material-symbols-sharp"
-              style={{
-                color: "var(--paragraph-color)",
-                fontSize: "20px",
-              }}
-            >
-              {item.icon}
-            </span>
-            <MenuItemTitle>{item.name}</MenuItemTitle>
-          </MenuItem>
-        </Link>
+        <MenuItem href={item.link} key={item.name}>
+          <span
+            className="material-symbols-sharp"
+            style={{
+              color: "var(--paragraph-color)",
+              fontSize: "20px",
+            }}
+          >
+            {item.icon}
+          </span>
+          <MenuItemTitle>{item.name}</MenuItemTitle>
+        </MenuItem>
       ))}
     </Wrapper>
   );
