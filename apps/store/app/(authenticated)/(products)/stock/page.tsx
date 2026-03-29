@@ -19,6 +19,16 @@ const Wrapper = styled.div`
   width: 100%;
 `;
 
+const PageName = styled.p`
+  text-transform: uppercase;
+  font-weight: 500;
+  padding-bottom: 20px;
+
+  @media only screen and (min-width: 992px) {
+    /* text-align: center; */
+  }
+`;
+
 const Action = styled.div`
   display: flex;
   justify-content: space-between;
@@ -270,6 +280,7 @@ export default function Stocks() {
 
   return (
     <Wrapper>
+      <PageName>Remaining Stocks</PageName>
       <Action>
         <FilterWrapper
           ref={refs.setReference}
