@@ -219,15 +219,6 @@ const StockItemMenuImage = styled.div`
   overflow: hidden;
 `;
 
-const StockItemMenuInfo = styled.div`
-  padding: 8px 12px;
-  border-bottom: var(--border);
-`;
-
-const StockItemMenuName = styled.p`
-  font-size: 0.9rem;
-`;
-
 const StockItemMenuItem = styled.div`
   padding: 8px 12px;
   display: flex;
@@ -264,34 +255,27 @@ type Product = (typeof product)[number];
 function StockRow({ item }: { item: Product }) {
   const [isOpen, setIsOpen] = useState(false);
 
+  const stock = item.stocks[0];
+
+  if (!stock) return null;
+
   const getStockBg = () => {
-    if (item.current_stock_count <= item.low_stock_count)
-      return "var(--red-bg)";
-    if (
-      item.current_stock_count <= item.high_stock_count &&
-      item.current_stock_count >= item.low_stock_count
-    )
+    if (stock.current <= stock.low_count) return "var(--red-bg)";
+    if (stock.current <= stock.high_count && stock.current >= stock.low_count)
       return "var(--yellow-bg)";
     return "var(--green-bg)";
   };
 
   const getStockTextColor = () => {
-    if (item.current_stock_count <= item.low_stock_count)
-      return "var(--red-text)";
-    if (
-      item.current_stock_count <= item.high_stock_count &&
-      item.current_stock_count >= item.low_stock_count
-    )
+    if (stock.current <= stock.low_count) return "var(--red-text)";
+    if (stock.current <= stock.high_count && stock.current >= stock.low_count)
       return "var(--yellow-text)";
     return "var(--green-text)";
   };
 
   const getStockLabel = () => {
-    if (item.current_stock_count <= item.low_stock_count) return "Low stock";
-    if (
-      item.current_stock_count <= item.high_stock_count &&
-      item.current_stock_count >= item.low_stock_count
-    )
+    if (stock.current <= stock.low_count) return "Low stock";
+    if (stock.current <= stock.high_count && stock.current >= stock.low_count)
       return "OK stock";
     return "High stock";
   };
@@ -328,11 +312,12 @@ function StockRow({ item }: { item: Product }) {
           >
             <StockItemMenuImage>
               <Image
-                src={item.cover_image}
+                src={item.image_url[0] ?? ""}
                 alt={item.name}
                 fill
                 style={{ objectFit: "cover" }}
               />
+              ```
             </StockItemMenuImage>
 
             <StockItemMenuItem onClick={() => console.log("View", item.name)}>
@@ -380,7 +365,7 @@ function StockRow({ item }: { item: Product }) {
       )}
 
       <StockCountWrapper>
-        <StockCount>{item.current_stock_count}</StockCount>
+        <StockCount>{stock.current}</StockCount>
         <StockColor style={{ backgroundColor: getStockBg() }} />
       </StockCountWrapper>
     </StockItem>
@@ -415,13 +400,12 @@ export default function Stocks() {
   ];
 
   const getStockStatus = (item: (typeof product)[number]): StockStatus => {
-    if (item.current_stock_count <= item.low_stock_count) return "low";
-    if (
-      item.current_stock_count <= item.high_stock_count &&
-      item.current_stock_count >= item.low_stock_count
-    )
+    const stock = item.stocks[0];
+    if (!stock) return "";
+    if (stock.current <= stock.low_count) return "low";
+    if (stock.current <= stock.high_count && stock.current >= stock.low_count)
       return "ok";
-    if (item.current_stock_count >= item.high_stock_count) return "high";
+    if (stock.current >= stock.high_count) return "high";
     return "";
   };
 
@@ -431,8 +415,8 @@ export default function Stocks() {
 
   const sortedProducts = [...filteredProducts].sort((a, b) =>
     activeSort === "asc"
-      ? a.current_stock_count - b.current_stock_count
-      : b.current_stock_count - a.current_stock_count,
+      ? (a.stocks[0]?.current ?? 0) - (b.stocks[0]?.current ?? 0)
+      : (b.stocks[0]?.current ?? 0) - (a.stocks[0]?.current ?? 0),
   );
 
   const totalPages = Math.ceil(sortedProducts.length / ITEMS_PER_PAGE);
