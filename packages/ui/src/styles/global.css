@@ -2,6 +2,7 @@
   --background: #f4f6f5;
   --foreground: #000000;
   --foreground-text: #f4f6f5;
+  --menu-bg: #ffffff;
   --highlight: #e9ecec;
   --border: 1px solid #8d9d9c;
   --accent: #137771;
@@ -17,6 +18,7 @@
     --background: #0e1010;
     --foreground: #ffffff;
     --foreground-text: #1c2121;
+    --menu-bg: #000000;
     --highlight: #1c2121;
     --border: 1px solid #363f3f;
     --accent: #137771;

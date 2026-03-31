@@ -61,7 +61,7 @@ const DropdownMenu = styled.div`
   top: 0;
   left: 0;
   border: var(--border);
-  background-color: var(--background);
+  background-color: var(--menu-bg);
   z-index: 9999;
   min-width: 160px;
 `;
@@ -206,7 +206,7 @@ const StockItemMenu = styled.div`
   top: 0;
   left: 0;
   border: var(--border);
-  background-color: var(--background);
+  background-color: var(--menu-bg);
   z-index: 9999;
   min-width: 200px;
 `;
@@ -452,7 +452,7 @@ export default function Stocks() {
           <span className="material-symbols-sharp" style={{ fontSize: "16px" }}>
             filter_list
           </span>
-          {activeFilterLabel ?? "Filter"}
+          {activeFilterLabel ?? "filter"}
           {activeFilter && (
             <span
               className="material-symbols-sharp"

@@ -46,9 +46,9 @@ const DropdownMenu = styled.div`
   top: 0;
   left: 0;
   border: var(--border);
-  background-color: var(--background);
+  background-color: var(--menu-bg);
   z-index: 9999;
-  min-width: 250px;
+  min-width: 200px;
 `;
 
 const DropDownItemsWrapper = styled.div``;

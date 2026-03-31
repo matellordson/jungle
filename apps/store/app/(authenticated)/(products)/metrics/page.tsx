@@ -13,7 +13,7 @@ const PageName = styled.p`
   padding-bottom: 20px;
 `;
 
-export default function Performance() {
+export default function Metrics() {
   return (
     <Wrapper>
       <PageName>Product Performance</PageName>

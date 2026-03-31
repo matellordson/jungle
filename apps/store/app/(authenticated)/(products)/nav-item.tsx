@@ -24,14 +24,19 @@ const MenuItemTitle = styled.p`
 export function ProductNavItems() {
   const links = [
     {
+      name: "inventory",
+      icon: "inventory_2",
+      link: "/inventory",
+    },
+    {
       name: "stock",
-      icon: "package",
+      icon: "numbers",
       link: "/stock",
     },
     {
-      name: "performance",
-      icon: "speed",
-      link: "/performance",
+      name: "metrics",
+      icon: "area_chart",
+      link: "/metrics",
     },
   ];
   return (
