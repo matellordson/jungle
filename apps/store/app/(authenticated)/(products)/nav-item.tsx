@@ -24,9 +24,9 @@ const MenuItemTitle = styled.p`
 export function ProductNavItems() {
   const links = [
     {
-      name: "inventory",
+      name: "catalog",
       icon: "inventory_2",
-      link: "/inventory",
+      link: "/catalog",
     },
     {
       name: "stock",
